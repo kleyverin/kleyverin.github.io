@@ -1,0 +1,35 @@
+*{
+	font-family: Verdana;
+}
+
+body{
+	background-image: linear-gradient(
+		170deg,
+		#7F1637,
+		#047878,
+		#FFB733
+	);
+	background-size: cover;
+	background-repeat: no-repeat;
+}
+
+@keyframes fade-in{
+	0%{opacity: 0},
+	100%{opacity: 1}
+}
+
+.content *{
+	animation: fade-in 2s ease;
+	color: white;
+}
+
+.brd{
+	border: 5px groove blue;
+}
+/*
+#7F1637,
+#047878,
+#FFB733,
+#F57336,
+#C22121
+*/

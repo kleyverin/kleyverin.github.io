@@ -1,0 +1,411 @@
+*{
+	        box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	   -moz-box-sizing: border-box;
+	flex-grow: 0;
+	flex-shrink: 0;
+	
+}
+
+body {
+  margin: 0;
+}
+
+/*Utility Rule*/
+.flex-all, .flex-all *{
+	display: flex;
+	display: -webkit-flex;
+	display: -moz-flex;
+	
+	flex-direction: row;
+	-webkit-flex-direction: row;
+	-moz-flex-direction: row;
+	
+	flex-wrap: wrap;
+	-webkit-flex-wrap: wrap;
+	-moz-flex-wrap: wrap;
+}
+
+.fullscreen{
+	min-width: 100%;
+	min-height: 100vh;
+}
+
+.fullheight{
+	min-height: 100vh;
+}
+
+.fullwidth{
+	min-width: 100vh;
+}
+
+.fillparent{
+	min-width: 100%;
+	min-height: 100%;
+}
+
+
+*[class*="%limitwidth"]{
+	max-width: 100%;
+	width: 100%;
+}
+
+/*Divine Rule*/
+.div{
+	display: flex;
+	display: -webkit-flex;
+	display: -moz-flex;
+	
+	flex-direction: row;
+	-webkit-flex-direction: row;
+	-moz-flex-direction: row;
+	
+	flex-wrap: wrap;
+	-webkit-flex-wrap: wrap;
+	-moz-flex-wrap: wrap;
+	
+	flex-grow: 1;
+	flex-shrink: 1;
+}
+
+.div[class*="%!column"]{
+	flex-direction: column-reverse;
+	-webkit-flex-direction: column-reverse;
+	-moz-flex-direction: column-reverse;
+}
+
+.div[class*="%!row"]{
+	flex-direction: row-reverse;
+	-webkit-flex-direction: row-reverse;
+	-moz-flex-direction: row-reverse;
+}
+
+.div[class*="%column"]{
+	flex-direction: column;
+	-webkit-flex-direction: column;
+	-moz-flex-direction: column;
+}
+
+.div[class*="%row"]{
+	flex-direction: row;
+	-webkit-flex-direction: row;
+	-moz-flex-direction: row;
+}
+
+.div[class*="%wrap"]{
+	flex-wrap: wrap;
+	-webkit-flex-wrap: wrap;
+	-moz-flex-wrap: wrap;
+}
+
+.div[class*="%!wrap"]{
+	flex-wrap: nowrap;
+	-webkit-flex-wrap: nowrap;
+	-moz-flex-wrap: nowrap;
+}
+
+.div[class*="%nowrap"]{
+	flex-wrap: nowrap;
+	-webkit-flex-wrap: nowrap;
+	-moz-flex-wrap: nowrap;
+}
+
+/*Divine align*/
+.div[class*="%items:center"]{
+	align-items: center;
+}
+
+.div[class*="%items:stretch"]{
+	align-items: stretch;
+}
+
+.div[class*="%items:start"]{
+	align-items: flex-start;
+}
+
+.div[class*="%items:end"]{
+	align-items: flex-end;
+}
+
+.div[class*="%items:baseline"]{
+	align-items: baseline;
+}
+
+
+
+.div[class*="%contents:center"]{
+	align-content: center;
+}
+
+.div[class*="%contents:stretch"]{
+	align-content: stretch;
+}
+
+.div[class*="%contents:start"]{
+	align-content: flex-start;
+}
+
+.div[class*="%contents:end"]{
+	align-content: flex-end;
+}
+
+.div[class*="%contents:space-around"]{
+	align-content: space-around;
+}
+
+.div[class*="%contents:space-between"]{
+	align-content: space-between;
+}
+
+
+.div[class*="%justify:center"]{
+	justify-content: center;
+}
+
+.div[class*="%justify:start"]{
+	justify-content: flex-start;
+}
+
+.div[class*="%justify:end"]{
+	justify-content: flex-end;
+}
+
+.div[class*="%justify:space-around"]{
+	justify-content: space-around;
+}
+
+.div[class*="%justify:space-between"]{
+	justify-content: space-between;
+}
+
+
+
+
+/*Bite Rules*/
+.bite{
+	flex-basis: auto;
+	flex-grow: 0;
+	flex-shrink: 1;
+}
+
+.div *[class*="%!grow"]{
+	flex-grow: 0;
+	-webkit-flex-grow: 0;
+	-mox-flex-grow:0;
+}
+
+.div *[class*="%nogrow"]{
+	flex-grow: 0;
+	-webkit-flex-grow: 0;
+	-mox-flex-grow:0;
+}
+
+.div *[class*="%grow"]{
+	flex-grow: 1;
+	-webkit-flex-grow: 1;
+	-mox-flex-grow:1;
+}
+
+.div *[class*="%!shrink"]{
+	flex-shrink: 0;
+	-webkit-flex-shrink: 0;
+	-mox-flex-shrink:0;
+}
+
+.div *[class*="%noshrink"]{
+	flex-shrink: 0;
+	-webkit-flex-shrink: 0;
+	-mox-flex-shrink:0;
+}
+
+.div *[class*="%shrink"]{
+	flex-shrink: 1;
+	-webkit-flex-shrink: 1;
+	-mox-flex-shrink:1;
+}
+
+/*Sizing*/
+.div *[class*="%g:0"]{
+	flex-grow: 0;
+	-webkit-flex-grow: 0;
+	-mox-flex-grow:0;
+}
+.div *[class*="%g:1"]{
+	flex-grow: 1;
+	-webkit-flex-grow: 1;
+	-mox-flex-grow:1;
+}
+.div *[class*="%g:2"]{
+	flex-grow: 2;
+	-webkit-flex-grow: 2;
+	-mox-flex-grow:2;
+}
+.div *[class*="%g:3"]{
+	flex-grow: 3;
+	-webkit-flex-grow: 3;
+	-mox-flex-grow:3;
+}
+.div *[class*="%g:4"]{
+	flex-grow: 4;
+	-webkit-flex-grow: 4;
+	-mox-flex-grow:4;
+}
+.div *[class*="%g:5"]{
+	flex-grow: 5;
+	-webkit-flex-grow: 5;
+	-mox-flex-grow:5;
+}
+.div *[class*="%g:6"]{
+	flex-grow: 6;
+	-webkit-flex-grow: 6;
+	-mox-flex-grow:6;
+}
+.div *[class*="%g:7"]{
+	flex-grow: 7;
+	-webkit-flex-grow: 7;
+	-mox-flex-grow:7;
+}
+.div *[class*="%g:8"]{
+	flex-grow: 8;
+	-webkit-flex-grow: 8;
+	-mox-flex-grow:8;
+}
+.div *[class*="%g:9"]{
+	flex-grow: 9;
+	-webkit-flex-grow: 9;
+	-mox-flex-grow:9;
+}
+.div *[class*="%g:10"]{
+	flex-grow: 10;
+	-webkit-flex-grow: 10;
+	-mox-flex-grow:10;
+}
+.div *[class*="%g:11"]{
+	flex-grow: 11;
+	-webkit-flex-grow: 11;
+	-mox-flex-grow:11;
+}
+.div *[class*="%g:12"]{
+	flex-grow: 12;
+	-webkit-flex-grow: 12;
+	-mox-flex-grow:12;
+}
+
+/* Special Layouts */
+
+/* The Cinema */
+.div.cinema{
+	min-width: 100%;
+	min-height: 100vh;
+	flex-flow:column;
+	
+	justify-content: center;
+	-webkit-justify-content: center;
+	-moz-justify-content: center;
+	
+	align-content: center;
+	-webkit-align-content: center;
+	-moz-align-content: center;
+	
+	align-items: center;
+	-webkit-align-items: center;
+	-moz-align-items: center;
+
+	text-align: center;
+	vertical-align: center;
+}
+
+.div.cinema h1{
+	font-size: 4em;
+}
+
+.div.cinema h2{
+	font-size: 3.5em;
+}
+
+.div.cinema h3{
+	font-size: 3em;
+}
+
+.div.cinema h4{
+	font-size: 2.5em;
+}
+
+.div.cinema h5{
+	font-size: 2em;
+}
+
+.div.cinema h6{
+	font-size: 1.5em;
+}
+
+.bite.callingcard{
+	display: flex;
+	display: -webkit-flex;
+	display: -moz-flex;
+	
+	background: #dddddd;
+	height: 160px;
+	width: 280px;
+	max-width: 90%;
+	margin: 10px;
+	padding: 10px;
+	
+	box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+.bite.callingcard, .bite.callingcard *{
+	color: black;
+}
+
+/*Fonts*/
+.smallcaps{
+	font-variant: small-caps;
+}
+
+/*Colors*/
+.blackveil{
+	background-color: rgba(0,0,0,0.6);
+}
+
+.whiteveil{
+	background-color: rgba(255,255,255,0.6);
+}
+
+
+/*Resolution Restricted Rule*/
+
+/*f'in large device*/
+@media (min-width: 1260px) {
+}
+
+/*extra large device*/
+@media (max-width: 1260px) {
+}
+
+/*large device*/
+@media (max-width: 960px){
+}
+
+/*medium device*/
+@media (max-width: 640px){
+}
+
+/*extra small device*/
+
+/*extra small device*/
+@media (max-width: 350px) {
+	*{
+		font-size: 10px;
+	}
+}
+
+@media (max-width: 320px) {
+}
+
+/*small like when you narrow your browser so much you can read sheets*/
+@media (max-width: 230px) {
+	*{
+		font-size: 5px;
+	}
+}
