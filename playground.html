@@ -8,7 +8,7 @@
 			var page = {};
 			window.onload = function(){
 				Vile.initialize(page)
-				Vile.ShadowCaster.cast('x-foo',function(element){
+				Vile.ShadowCaster.cast('business-card',function(element){
 					var content = page.e.makeE('p',element.innerHTML)
 					return content
 				},page.e.makeStyle('p',{'text-shadow':'1px 1px 3px rgba(0,0,0,0.3)'}))

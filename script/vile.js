@@ -176,15 +176,16 @@ var Vile = {
 				}
 				
 				var prototype = Object.create(HTMLElement.prototype, proto)
-				
 				//RENDERING THE ELEMENT'S CHILD
 				if(!prototype.attachedCallback){
 					prototype.attachedCallback = function(){
+						console.log(123)
 						var shadow = this.createShadowRoot();
 						shadow.innerHTML = "<style>"+style+"</style>"+content(this)
 					}
 				}
 				
+				console.log(prototype)
 				var new_element = document.registerElement(elementName,{
 					prototype: prototype
 				})
