@@ -185,7 +185,6 @@ var Vile = {
 					}
 				}
 				
-				console.log(prototype)
 				var new_element = document.registerElement(elementName,{
 					prototype: prototype
 				})

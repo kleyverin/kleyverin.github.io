@@ -9,16 +9,20 @@
 			window.onload = function(){
 				Vile.initialize(page)
 				Vile.ShadowCaster.cast('business-card',function(element){
-					var content = page.e.makeE('p',element.innerHTML)
+					var name = ""
+					if(element.hasAttribute('name')){
+						name+=page.e.makeE('div',element.getAttribute('name'),{class:'name'})
+					}
+					var content = name+page.e.makeE('p',element.innerHTML)
 					return content
-				},page.e.makeStyle('p',{'text-shadow':'1px 1px 3px rgba(0,0,0,0.3)'}))
+				},
+				page.e.makeStyle('p',{'text-shadow':'1px 1px 2px rgba(0,0,0,0.3)'})+
+				page.e.makeStyle('div.name',{'font-weight':'bold','text-shadow':'1px 1px 2px rgba(0,0,0,0.3)'}))
 			}
 		</script>
 	</head>
 	<body>
-		<div class="asdf" vile-weave="fucktard">
-		asdf
-		</div>
-		<x-foo>asdf</x-foo>
+		<business-card name="Alan">Darmasaputra</business-card>
+		<business-card name="Dea">Alverina</business-card>
 	</body>
 </html>	
