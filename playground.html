@@ -4,22 +4,43 @@
 		<title>
 		</title>
 		<style>
-			body,html{
-				height: 100%;
-				position: relative;
+			html,
+			body{
+				min-height: 100%;
+				height: auto;
 			}
 			body{
+				padding-top: 30vh;
+				margin: auto;
 				text-align: center;
 			}
 			kv-clock{
-				display:flex;
-				justify-content: center;
-				align-items: center;
+				display: inline-block;
 				height: 100%;
+				background: white;
+				margin: 30px;
 			}
 			kv-clock>div{
-				padding: 0.4em;
-				font-size: 1.8rem;
+				display: inline-block;
+				padding: 0.6em;
+			}
+			body>blockquote,
+			kv-clock>div{
+				font-family: serif;
+			}
+			body>blockquote{
+				font-size: 1.2em;
+				font-style: oblique;
+				text-align: center;
+				width: 30%;
+				min-width: 200px;
+				margin: auto;
+			}
+			body>blockquote:before{
+				content:' " ';
+			}
+			body>blockquote:after{
+				content:' " ';
 			}
 		</style>
 		<script src="script/vile.js"></script>
@@ -40,6 +61,25 @@
 			}
 			
 			window.onload = function(){
+				var wow = [
+					"The most precious thing you can give to someone is your time.",
+					"Time is precious, waste it wisely.",
+					"I recommend you to take care of the minutes, for the hours will take care of themselves.",
+					"Time is a gift that most of us take for granted. We get so caught up in the busyness of our daily lives that we rarely stop and take a serious look at how we're spending this gift.",
+					"The key is to have a balanced life. Set aside a fraction of your time to carry out your dreams and ambitions.",
+					"Every minute of your time is either spent helping or hurting your chance for the victory you are seeking in your life.",
+					"Don't wait for desperate times!",
+					"It's easy to make it through the good times; it's how we handle the bad times that can separates us from the crowd and move us closer to our goals.",
+					"I wish I could stand on a busy corner, hat in hand, and beg people to throw me all their wasted hours.",
+					"You may delay, but time will not.",
+					"You wake up in the morning and lo! Your purse is magically filled with twenty-four hours of the unmanufactured tissue of the universe of your life. It is yours. It is the most precious of your possessions. No one can take it from you. It is unstealable. And no one receives either more or less than you receive.",
+					"Yesterday is long gone, and there are no guarantees we will see tomorrow. Today is what we have and how we use it determines our appreciation of time.",
+					"Don't let the fear of the time it will take to accomplish something stand in the way of your doing it. The time will pass anyway; we might just as well put that passing time to the best possible use.",
+					"Time is a circus, always packing up and moving away.",
+					"One thing you can't recycle is wasted time. Lost time is never found again.",
+					"For everything there is a season, a time for every activity under heaven.A time to be born and a time to die. A time to plant and a time to harvest. A time to kill and a time to heal. A time to tear down and a time to build up.A time to cry and a time to laugh. A time to grieve and a time to dance. A time to scatter stones and a time to gather stones. A time to embrace and a time to turn away. A time to search and a time to quit searching. A time to keep and a time to throw away. A time to tear and a time to mend. A time to be quiet and a time to speak. A time to love and a time to hate. A time for war and a time for peace."
+					
+				]
 				Vile.initialize(page)
 				page.caster = {}
 				Vile.ShadowCaster.custom({
@@ -50,7 +90,7 @@
 							var element = this
 							setInterval(function(){
 								element.update();
-							},300)
+							},500)
 						}
 					},
 					method: {
@@ -70,20 +110,20 @@
 							minute.style = "box-shadow: inset 0 0 1.9em rgba("+red+","+green+","+blue+","+( 0.25 + date.getMinutes()/59/2 )+")"
 							second.innerHTML = twoDigit(date.getSeconds())
 							second.style = "box-shadow: inset 0 0 1.9em rgba("+red+","+green+","+blue+","+( 0.25 + date.getSeconds()/59/2 )+")"
-							/*
-							this.shadow(
-								twoDigit(date.getHours())+":"
-								+twoDigit(date.getMinutes())+":"
-								+twoDigit(date.getSeconds())
-							);
-							*/
 						}
 					}
 				})
+				function getRandomWow(){
+					var index = Math.round(Math.random()*(wow.length-1))
+					page.wordofwisdom.innerHTML = wow[index].replace('time','<strong>time</strong>').replace('Time','<strong>Time</strong>')
+				}
+				setInterval(getRandomWow,10000)
+				getRandomWow()
 			}
 		</script>
 	</head>
 	<body>
 		<kv-clock id="clock"></kv-clock>
+		<blockquote vile-weave="wordofwisdom"></blockquote>
 	</body>
 </html>	
