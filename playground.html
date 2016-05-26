@@ -36,14 +36,19 @@
 				min-width: 200px;
 				margin: auto;
 			}
-			body>blockquote:before{
-				content:' " ';
-			}
 			body>blockquote:after{
-				content:' " ';
+				content:'\201d';
+			}
+			body>blockquote:before{
+				content:'\201c';
+			}
+			body>blockquote:after,
+			body>blockquote:before{
+				zoom: 1.2;
+				font-weight: bold;
 			}
 		</style>
-		<script src="script/vile.js"></script>
+		<script src="script/vile.min.js"></script>
 		<script>
 			var page = {};
 			function twoDigit(number){
@@ -86,9 +91,10 @@
 					callback: {
 						oncreate: function(){
 							var element = this
-							setInterval(function(){
+							function update(){
 								element.update();
-							},500)
+							}
+							setInterval(update,500)
 						}
 					},
 					method: {
@@ -114,6 +120,40 @@
 				function getRandomWow(){
 					var index = Math.round(Math.random()*(wow.length-1))
 					page.wordofwisdom.innerHTML = wow[index].replace('time','<strong>time</strong>').replace('Time','<strong>Time</strong>')
+					/*
+				text-shadow: 2px 1px 40px rgba(23,200,100,0.5);*/
+					var r = Math.round(Math.random()*255),
+						g = Math.round(Math.random()*255),
+						b = Math.round(Math.random()*255)/*
+					var r1 = Math.round(Math.random()*255),
+						g1 = Math.round(Math.random()*255),
+						b1 = Math.round(Math.random()*255)
+					var r2 = Math.round(Math.random()*255),
+						g2 = Math.round(Math.random()*255),
+						b2 = Math.round(Math.random()*255)
+					var r3 = Math.round(Math.random()*255),
+						g3 = Math.round(Math.random()*255),
+						b3 = Math.round(Math.random()*255)
+					var r4 = Math.round(Math.random()*255),
+						g4 = Math.round(Math.random()*255),
+						b4 = Math.round(Math.random()*255)
+					var r5 = Math.round(Math.random()*255),
+						g5 = Math.round(Math.random()*255),
+						b5 = Math.round(Math.random()*255)
+					var r6 = Math.round(Math.random()*255),
+						g6 = Math.round(Math.random()*255),
+						b6 = Math.round(Math.random()*255)
+					var r7 = Math.round(Math.random()*255),
+						g7 = Math.round(Math.random()*255),
+						b7 = Math.round(Math.random()*255)*/
+					page.wordofwisdom.style = "text-shadow: 2px 1px 20px rgba("+r+","+g+","+b+",0.5)"/*
+						+"2px 1px 20px rgba("+r1+","+g1+","+b1+",0.2),"
+						+"2px 1px 20px rgba("+r2+","+g2+","+b2+",0.2),"
+						+"2px 1px 20px rgba("+r3+","+g3+","+b3+",0.2),"
+						+"2px 1px 20px rgba("+r4+","+g4+","+b4+",0.2),"
+						+"2px 1px 20px rgba("+r5+","+g5+","+b5+",0.2),"
+						+"2px 1px 20px rgba("+r6+","+g6+","+b6+",0.2),"
+						+"2px 1px 20px rgba("+r7+","+g7+","+b7+",0.2)"*/	
 				}
 				setInterval(getRandomWow,10000)
 				getRandomWow()
