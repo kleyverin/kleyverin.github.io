@@ -124,12 +124,27 @@ var Vile = {
 				var attributes = editor.generateAttributes(attrib)
 				return "<"+element+attributes+">"+content+"</"+element+">";
 			}
-			editor.make = function(element,content,attrib){
-				if(list_void[element]!=true){
-					return editor.makeE(element,'',attrib);
+			editor.make = function(element,attrib,content){
+				var nAttribute;
+				var nContent;
+				
+				else if(isObject(attrib) && typeof content == 'string'){
+					nAttribute = attrib
+					nContent = content
+				}
+				else if(isObject(content) && typeof attrib == 'string'){
+					nAttribute = content
+					nContent = attrib
 				}
 				else{
-					return editor.makeVoid(element,attrib);
+					throw new VileException("Invalid parameters. editor.make parameters should be element(string),content(string),attrib(object) or element(string),attrib(object),content(string)");
+				}
+				
+				if(list_void[element]!=true){
+					return editor.makeE(element,nContent,nAttribute);
+				}
+				else{
+					return editor.makeVoid(element,nAttribute);
 				}
 			}
 			editor.makeStyle = function(element,attrib){
