@@ -18,13 +18,17 @@ var Vile = {
 		"vile-weave"
 	],
 	validate_page_object: function(page,action){
-		if(typeof page !== 'object'){
+		if(typeof page !== 'object' && typeof page !== 'undefined'){
 			var message = "Cannot "+(action != null ? action : "process")+" non-object and non-null"
 			throw new VileException(message);
 		}
-		else if(page === null){
+		else if(page === null || typeof page == 'undefined'){
 			page = {};
 		}
+		return page
+	},
+	isAlpha : function(str){
+		return str.match(/[a-z]/i)
 	},
 	
 	
@@ -128,7 +132,7 @@ var Vile = {
 				var nAttribute;
 				var nContent;
 				
-				else if(isObject(attrib) && typeof content == 'string'){
+				if(isObject(attrib) && typeof content == 'string'){
 					nAttribute = attrib
 					nContent = content
 				}
@@ -183,31 +187,83 @@ var Vile = {
 	/**********************/
 	ShadowCaster : (function(){
 		return {
-			cast: function(elementName, content = function(element){ return element.innerHTML }, style = {}, proto = {}, attrib = {}){
-				//CHECKING ELEMENT NAME
-				Vile.validate_page_object(attrib)
+			cast: function(element){
+				var shadow = this.createShadowRoot();
+				return shadow;
+			},
+			custom: function(command){
+				Vile.validate_page_object(command)
+				
+				var elementName = command.name.toLowerCase();
+				var content = command.content
+				var lifecycle = command.lifecycle
+				var method = command.method
+				
+				//ERROR HANDLER
 				if(!elementName.includes('-')){
 					throw new VileException("ShadowCast needs name with '-' in it, such as 'foo-bar' or 'my-phone-number'");
 				}
+				if(!Vile.isAlpha(elementName[0]) || !Vile.isAlpha(elementName[elementName.length - 1])){
+					throw new VileException("ShadowCast needs name must start and end with alphabetic character");
+				}
+				if(typeof content != 'function' && typeof content != 'string'){
+					content = function(element){
+						return element.innerHTML
+					}
+				}
+				lifecycle = Vile.validate_page_object(lifecycle)
+				method = Vile.validate_page_object(method)
 				
-				var prototype = Object.create(HTMLElement.prototype, proto)
-				//RENDERING THE ELEMENT'S CHILD
-				if(!prototype.attachedCallback){
-					prototype.attachedCallback = function(){
-						console.log(123)
-						var shadow = this.createShadowRoot();
-						shadow.innerHTML = "<style>"+style+"</style>"+content(this)
+				var prototype = Object.create(HTMLElement.prototype)
+				for(var key in method){
+					prototype[key] = method[key]
+				}
+				prototype.shadow = function(set){
+					if(set == null){
+						
+						if(this.shadowRo==null){
+							this.shadowRo = this.createShadowRoot();
+						}
+						return this.shadowRo;
+					
+					}else if(typeof set == 'string'){
+						
+						if(this.shadowRo==null){
+							this.shadowRo = this.createShadowRoot();
+						}
+						this.shadowRo = set
+					}
+				}
+				prototype.refresh = function(){
+					if(typeof content == 'function'){
+						this.innerHTML = content(this)
+					}
+					else if(typeof content == 'string'){
+						this.innerHTML = content
 					}
 				}
 				
+				//ATTACHING LIFECYCLE
+				if(typeof lifecycle.created == 'function'){
+					prototype.createdCallback = lifecycle.created
+				}
+				if(typeof lifecycle.attached == 'function'){
+					prototype.attachedCallback = lifecycle.attached
+				}
+				if(typeof lifecycle.detached == 'function'){
+					prototype.detachedCallback = lifecycle.detached
+				}
+				
+				//RENDERING THE ELEMENT'S CHILD
+				if(!prototype.attachedCallback){
+					prototype.attachedCallback = prototype.refresh
+				}
+				if(!prototype.createdCallback){
+					prototype.createdCallback = prototype.refresh
+				}
 				var new_element = document.registerElement(elementName,{
 					prototype: prototype
 				})
-				
-				for(var key in attrib){
-					new_element.key = attrib[key]
-				}
-				
 			}
 		}
 	})()

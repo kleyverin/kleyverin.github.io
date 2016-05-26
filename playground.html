@@ -8,6 +8,7 @@
 			var page = {};
 			window.onload = function(){
 				Vile.initialize(page)
+				/*
 				Vile.ShadowCaster.cast('business-card',function(element){
 					var name = ""
 					if(element.hasAttribute('name')){
@@ -18,11 +19,39 @@
 				},
 				page.e.makeStyle('p',{'text-shadow':'1px 1px 2px rgba(0,0,0,0.3)'})+
 				page.e.makeStyle('div.name',{'font-weight':'bold','text-shadow':'1px 1px 2px rgba(0,0,0,0.3)'}))
+				*/
+				Vile.ShadowCaster.custom({
+					name: 'x-clock',
+					content: function(element){
+						return new Date();
+					},
+					lifecycle: {
+						created: function(){
+						},
+						attached: function(){
+							var element = this
+							setInterval(function(){
+								element.update();
+							},300)
+						}
+					},
+					method: {
+						update: function(){
+							var date = new Date();
+							this.innerHTML = date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+						}
+					}
+				})
 			}
 		</script>
 	</head>
 	<body>
-		<business-card name="Alan">Darmasaputra</business-card>
-		<business-card name="Dea">Alverina</business-card>
+		<!--business-card name="Alan">Darmasaputra</business-card-->
+		<!--business-card name="Dea">Alverina</business-card-->
+		<x-clock id="clock"></x-clock>
+		<x-clock id="clock"></x-clock>
+		<x-clock id="clock"></x-clock>
+		<x-clock id="clock"></x-clock>
+		<x-clock id="clock"></x-clock>
 	</body>
 </html>	
