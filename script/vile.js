@@ -180,8 +180,6 @@ var Vile = {
 	},
 	
 	
-	
-	
 	/**********************/
 	/*****ShadowCaster*****/
 	/**********************/
@@ -196,7 +194,7 @@ var Vile = {
 				
 				var elementName = command.name.toLowerCase();
 				var content = command.content
-				var lifecycle = command.lifecycle
+				var callback = command.callback
 				var method = command.method
 				
 				//ERROR HANDLER
@@ -211,7 +209,7 @@ var Vile = {
 						return element.innerHTML
 					}
 				}
-				lifecycle = Vile.validate_page_object(lifecycle)
+				callback = Vile.validate_page_object(callback)
 				method = Vile.validate_page_object(method)
 				
 				var prototype = Object.create(HTMLElement.prototype)
@@ -243,15 +241,18 @@ var Vile = {
 					}
 				}
 				
-				//ATTACHING LIFECYCLE
-				if(typeof lifecycle.created == 'function'){
-					prototype.createdCallback = lifecycle.created
+				//ATTACHING callback
+				if(typeof callback.oncreate == 'function'){
+					prototype.createdCallback = callback.oncreate
 				}
-				if(typeof lifecycle.attached == 'function'){
-					prototype.attachedCallback = lifecycle.attached
+				if(typeof callback.onattach == 'function'){
+					prototype.attachedCallback = callback.attached
 				}
-				if(typeof lifecycle.detached == 'function'){
-					prototype.detachedCallback = lifecycle.detached
+				if(typeof callback.ondetach == 'function'){
+					prototype.detachedCallback = callback.detached
+				}
+				if(typeof callback.onattributechange == 'function'){
+					prototype.attributeChangedCallback = callback.onattributechange
 				}
 				
 				//RENDERING THE ELEMENT'S CHILD
@@ -266,12 +267,23 @@ var Vile = {
 				})
 			}
 		}
-	})()
+	})(),
 	
-	
-	
-	
-	
+	Factory : {
+		mold: function(template,obj){
+			if(typeof template !== 'string'){
+				throw new VileException("Template must be string");
+			}
+			obj = Vile.validate_page_object(obj)
+			
+			var p = 0;
+			while(p<template.length){
+				
+				
+				p++
+			}
+		}	
+	}
 	/**********************/
 	/*****VileLoading******/
 	/**********************/

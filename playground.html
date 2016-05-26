@@ -3,27 +3,50 @@
 	<head>
 		<title>
 		</title>
+		<style>
+			body,html{
+				height: 100%;
+				position: relative;
+			}
+			body{
+				text-align: center;
+			}
+			kv-clock{
+				display:flex;
+				justify-content: center;
+				align-items: center;
+				height: 100%;
+			}
+			kv-clock>div{
+				padding: 0.4em;
+				font-size: 1.8rem;
+			}
+		</style>
 		<script src="script/vile.js"></script>
 		<script>
 			var page = {};
+			function twoDigit(number){
+				number = String(number)
+				if(number.length == 0){
+					number = "00"
+				}
+				else if(number.length == 1){
+					number = "0"+number
+				}
+				else if(number.length > 2){
+					number = number.substr(number.length-2)
+				}
+				return number
+			}
+			
 			window.onload = function(){
 				Vile.initialize(page)
-				/*
-				Vile.ShadowCaster.cast('business-card',function(element){
-					var name = ""
-					if(element.hasAttribute('name')){
-						name+=page.e.makeE('div',element.getAttribute('name'),{class:'name'})
-					}
-					var content = name+page.e.makeE('p',element.innerHTML)
-					return content
-				},
-				page.e.makeStyle('p',{'text-shadow':'1px 1px 2px rgba(0,0,0,0.3)'})+
-				page.e.makeStyle('div.name',{'font-weight':'bold','text-shadow':'1px 1px 2px rgba(0,0,0,0.3)'}))
-				*/
+				page.caster = {}
 				Vile.ShadowCaster.custom({
-					name: 'x-clock',
-					lifecycle: {
-						created: function(){
+					name: 'kv-clock',
+					content: '<div class="hour"></div><div class="minute"></div><div class="second"></div>',
+					callback: {
+						oncreate: function(){
 							var element = this
 							setInterval(function(){
 								element.update();
@@ -32,18 +55,35 @@
 					},
 					method: {
 						update: function(){
+							var hour = this.querySelector('.hour')
+							var minute = this.querySelector('.minute')
+							var second = this.querySelector('.second')
 							var date = new Date();
-							this.shadow(date.getHours()+":"+date.getMinutes()+":"+date.getSeconds());
+							
+							var red = Math.round(date.getHours() / 23 * 128) + 64
+							var green = Math.round(date.getMinutes() / 59 * 128) + 64
+							var blue = Math.round(date.getSeconds() / 59 * 128) + 64
+							
+							hour.innerHTML = twoDigit(date.getHours())
+							hour.style = "box-shadow: inset 0 0 1.9em rgba("+red+","+green+","+blue+","+( 0.25 + date.getHours()/23/2 )+")"
+							minute.innerHTML = twoDigit(date.getMinutes())
+							minute.style = "box-shadow: inset 0 0 1.9em rgba("+red+","+green+","+blue+","+( 0.25 + date.getMinutes()/59/2 )+")"
+							second.innerHTML = twoDigit(date.getSeconds())
+							second.style = "box-shadow: inset 0 0 1.9em rgba("+red+","+green+","+blue+","+( 0.25 + date.getSeconds()/59/2 )+")"
+							/*
+							this.shadow(
+								twoDigit(date.getHours())+":"
+								+twoDigit(date.getMinutes())+":"
+								+twoDigit(date.getSeconds())
+							);
+							*/
 						}
 					}
 				})
-				console.log(page.bodo)
 			}
 		</script>
 	</head>
 	<body>
-		<!--business-card name="Alan">Darmasaputra</business-card-->
-		<!--business-card name="Dea">Alverina</business-card-->
-		<x-clock id="clock"></x-clock>
+		<kv-clock id="clock"></kv-clock>
 	</body>
 </html>	
