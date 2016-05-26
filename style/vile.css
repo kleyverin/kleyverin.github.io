@@ -1,4 +1,24 @@
 html{
     font-family: sans-serif;
-    
+    position: relative;
+}
+
+html, body{
+    min-width: 100%;
+    min-height: 100%;
+}
+
+body{
+    font-size: 14px;
+    margin: 0;
+}
+
+a{
+    color: #446CB3;
+    text-decoration: none;
+}
+
+a:hover,
+a:focus{
+    color: #22A7F0;
 }
