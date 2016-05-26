@@ -22,13 +22,8 @@
 				*/
 				Vile.ShadowCaster.custom({
 					name: 'x-clock',
-					content: function(element){
-						return new Date();
-					},
 					lifecycle: {
 						created: function(){
-						},
-						attached: function(){
 							var element = this
 							setInterval(function(){
 								element.update();
@@ -38,20 +33,17 @@
 					method: {
 						update: function(){
 							var date = new Date();
-							this.innerHTML = date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+							this.shadow(date.getHours()+":"+date.getMinutes()+":"+date.getSeconds());
 						}
 					}
 				})
+				console.log(page.bodo)
 			}
 		</script>
 	</head>
 	<body>
 		<!--business-card name="Alan">Darmasaputra</business-card-->
 		<!--business-card name="Dea">Alverina</business-card-->
-		<x-clock id="clock"></x-clock>
-		<x-clock id="clock"></x-clock>
-		<x-clock id="clock"></x-clock>
-		<x-clock id="clock"></x-clock>
 		<x-clock id="clock"></x-clock>
 	</body>
 </html>	

@@ -221,17 +221,17 @@ var Vile = {
 				prototype.shadow = function(set){
 					if(set == null){
 						
-						if(this.shadowRo==null){
-							this.shadowRo = this.createShadowRoot();
+						if(this.shadowElement==null){
+							this.shadowElement = this.createShadowRoot();
 						}
-						return this.shadowRo;
+						return this.shadowElement;
 					
 					}else if(typeof set == 'string'){
 						
-						if(this.shadowRo==null){
-							this.shadowRo = this.createShadowRoot();
+						if(this.shadowElement==null){
+							this.shadowElement = this.createShadowRoot();
 						}
-						this.shadowRo = set
+						this.shadowElement.innerHTML = set
 					}
 				}
 				prototype.refresh = function(){
