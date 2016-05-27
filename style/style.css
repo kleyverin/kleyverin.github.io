@@ -1,5 +1,6 @@
 *{  
     font-family: Raleway;
+    transition: all 0.5s ease;
 }
 
 html, body{
@@ -20,6 +21,39 @@ html, body{
     color: white;
 }
 
+.text-center{
+    text-align: center;
+}
+
 .home-title{
-    font-size: 50px;
+    font-size: 100px;
+}
+
+.kley{
+    padding-top: 1em;
+}
+
+.home-title-and{
+    font-size: 70px;
+}
+
+.notification{
+    font-size: 14px;
+}
+
+.btn-playground{
+    color: white;
+    margin-top: 2em;
+    background-color: black;
+    border-radius: 5px;
+    width: auto;
+    height: 60px;
+    font-size: 20px;
+    transition: 0.5s ease;
+}
+
+.btn-playground:hover{
+    background-color: white;
+    color: black;
+    border-color: white;
 }
