@@ -7,18 +7,18 @@
 }
 
 @font-face {
-  font-family: 'Raleway';
+  font-family: 'Quicksand';
   font-style: normal;
   font-weight: 400;
-  src: url('../font/Raleway-Regular.ttf');
+  src: url('../font/Quicksand-Regular.ttf');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
 }
 
 @font-face {
-  font-family: 'Raleway';
+  font-family: 'Quicksand';
   font-style: normal;
   font-weight: 500;
-  src: url('../font/Raleway-Bold.ttf');
+  src: url('../font/Quicksand-Bold.ttf');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
 }
 
@@ -47,10 +47,10 @@
 }
 
 @font-face {
-  font-family: 'Raleway';
+  font-family: 'Quicksand';
   font-style: normal;
   font-weight: 300;
-  src: url('../font/Raleway-Light.ttf');
+  src: url('../font/Quicksand-Light.ttf');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
 }
 
