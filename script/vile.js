@@ -12,7 +12,9 @@ var Vile = {
 	/**********************/
 	initialize: function(page){
 		this.weave(page)
-		page.e = this.VileEditor.makeEditor()
+		page.e = this.VileEditor.makeEditor();
+		page.f = this.Factory.makeFactory();
+		page.template = this.weaveTemplate()
 	},
 	list_attr_previxes : [
 		"vile-weave"
@@ -32,6 +34,28 @@ var Vile = {
 	},
 	
 	
+	//ESCAPE UNESCAPE BY http://shebang.brandonmintern.com/
+	escape:function(str) {
+		var div = document.createElement('div');
+		div.appendChild(document.createTextNode(str));
+		return div.innerHTML;
+	},
+	unescape:function(escapedStr) {
+		var div = document.createElement('div');
+		div.innerHTML = escapedStr;
+		var child = div.childNodes[0];
+		return child ? child.nodeValue : '';
+	},
+	unescapeTemplate:function(escapedStr){
+		return escapedStr
+         .replace("&amp;","&")
+         .replace("&lt;","<")
+         .replace("&gt;",">")
+         .replace("&quot;","\"")
+         .replace("&#039;","'");
+	},
+	
+	
 	
 	
 	
@@ -39,7 +63,7 @@ var Vile = {
 	/*****ElementWeave*****/
 	/**********************/
 	weave : function(page){
-		this.validate_page_object(page,"weave");
+		page = this.validate_page_object(page,"weave");
 		let weaver = document.querySelectorAll("*[vile-weave]")
 		for(let i = 0; i<weaver.length; i++){
 			var weave_name = weaver[i].getAttribute('vile-weave');
@@ -54,7 +78,7 @@ var Vile = {
 			if (typeof $ == 'undefined' || !window.jQuery) {  
 				throw ""
 			}
-			this.validate_page_object(page,"weave");
+			page = this.validate_page_object(page,"weave");
 			let weaver = document.querySelectorAll("*[vile-weave]")
 			for(let i = 0; i<weaver.length; i++){
 				var weave_name = weaver[i].getAttribute('vile-weave');
@@ -67,6 +91,19 @@ var Vile = {
 		catch(e){
 			throw new VileException('JQuery is not loaded')
 		}
+	},
+	weaveTemplate : function(page){
+		page = this.validate_page_object(page,"weave templates");
+		let templates = document.querySelectorAll("template")
+		for(let i = 0; i<templates.length; i++){
+			if(templates[i].hasAttribute('id')){
+				var template_name = templates[i].getAttribute('id');
+				if(template_name.length > 0){
+					page[template_name] = templates[i].innerHTML.trim()
+				}
+			}
+		}
+		return page;
 	},
 	
 	
@@ -159,7 +196,6 @@ var Vile = {
 				for(var key in attrib){
 					attributes+=key+":"+attrib[key]+";"
 				}
-				console.log(attributes)
 				return attributes;
 			}
 			editor.generateAttributes = function(attrib){
@@ -190,7 +226,7 @@ var Vile = {
 				return shadow;
 			},
 			custom: function(command){
-				Vile.validate_page_object(command)
+				command = Vile.validate_page_object(command)
 				
 				var elementName = command.name.toLowerCase();
 				var content = command.content
@@ -246,10 +282,10 @@ var Vile = {
 					prototype.createdCallback = callback.oncreate
 				}
 				if(typeof callback.onattach == 'function'){
-					prototype.attachedCallback = callback.attached
+					prototype.attachedCallback = callback.onattach
 				}
 				if(typeof callback.ondetach == 'function'){
-					prototype.detachedCallback = callback.detached
+					prototype.detachedCallback = callback.ondetach
 				}
 				if(typeof callback.onattributechange == 'function'){
 					prototype.attributeChangedCallback = callback.onattributechange
@@ -275,14 +311,96 @@ var Vile = {
 				throw new VileException("Template must be string");
 			}
 			obj = Vile.validate_page_object(obj)
+			//------------------
+			function searchTag(p){
+				var start = template.indexOf('&lt;%=',p)
+				var startEscape = template.indexOf('&lt;%-',p)
+				var escape = false;
+				//search for start tag
+				if(startEscape<start && startEscape>=0){
+					start = startEscape
+					escape = true
+				}
+				
+				//search for end tag
+				var end = template.indexOf('%&gt;',start+6)
+				
+				//checking if the next start tag is valid or not
+				var nextStart = template.indexOf('&lt;%=',start+6)
+				var nextStartEscape = template.indexOf('&lt;%-',start+6)
+				if(nextStartEscape<nextStart && nextStartEscape>=0){
+					nextStart = nextStartEscape
+				}
+				
+				if(end>nextStart && nextStart>=0){
+					end = -1
+				}
+				
+				return {
+					start: start,
+					end: end,
+					escape: escape
+				}
+			}
+			//-------------------------
+			function moldTag(positions){
+				var replaced = template.substr(positions.start+6,(positions.end-1)-(positions.start+6)).trim()
+				var replacor = ""
+				if(replaced.length!=0){
+					if(typeof (obj[replaced]) != 'undefined'){
+						replacor = obj[replaced]
+					}
+					if(positions.escape){
+						replacor = Vile.escape(replacor)
+					}
+				}
+				
+				template = template.substr(0,positions.start) + replacor + template.substr(positions.end+5)
+				
+				return replacor
+			}
 			
+			//---------------------
+			//Start iterating through the template
 			var p = 0;
 			while(p<template.length){
+				var positions = searchTag(p)
 				
+				//NO OPENING TAGS FOUND
+				if(positions.start == -1){
+					break;
+				}
+				else if(positions.start >= 0 && positions.end == -1){
+					throw new VileException('There\'s an error in the given template.')
+				}
 				
+				p=positions.start
+				var replacor = moldTag(positions)
+				p+=replacor.length;
 				p++
 			}
-		}	
+			return template
+		},
+		moldMany: function(template,array){
+			var html = ""
+			for(var i = 0; i<array.length; i++){
+				html+=this.mold(template,array[i])
+			}
+			return html
+		},
+		moldArray: function(template,array){
+			var array = []
+			for(var i = 0; i<array.length; i++){
+				array.push(this.mold(template,array[i]))
+			}
+			return array
+		},
+		makeFactory: function(obj = {}){
+			for(var key in this){
+				obj[key] = this[key]
+			}
+			return obj
+		}
 	}
 	/**********************/
 	/*****VileLoading******/

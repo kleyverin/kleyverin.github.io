@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<title>
 		</title>
 		<style>
@@ -48,7 +49,7 @@
 				font-weight: bold;
 			}
 		</style>
-		<script src="script/vile.min.js"></script>
+		<script src="script/vile.js"></script>
 		<script>
 			var page = {};
 			function twoDigit(number){
@@ -89,12 +90,13 @@
 					name: 'kv-clock',
 					content: '<div class="hour"></div><div class="minute"></div><div class="second"></div>',
 					callback: {
-						oncreate: function(){
+						onattach: function(){
 							var element = this
 							function update(){
 								element.update();
 							}
 							setInterval(update,500)
+							element.update()
 						}
 					},
 					method: {
@@ -103,17 +105,25 @@
 							var minute = this.querySelector('.minute')
 							var second = this.querySelector('.second')
 							var date = new Date();
-							
+							/*
 							var red = Math.round(date.getHours() / 23 * 128) + 64
 							var green = Math.round(date.getMinutes() / 59 * 128) + 64
 							var blue = Math.round(date.getSeconds() / 59 * 128) + 64
+							*/
+							var h = Math.round(360*(date.getHours()+(date.getMinutes()/59)+(date.getSeconds()/59/59))/23)
 							
 							hour.innerHTML = twoDigit(date.getHours())
-							hour.style = "box-shadow: inset 0 0 1.9em rgba("+red+","+green+","+blue+","+( 0.25 + date.getHours()/23/2 )+")"
+							//hour.style = "box-shadow: inset 0 0 1.9em rgba("+red+","+green+","+blue+","+( 0.25 + date.getHours()/23/2 )+")"
+							hour.style = "box-shadow: inset 0 0 1.9em hsla("+h+","+Math.round(60-30*date.getHours()/23 )+"%,"+Math.round(30+date.getHours()/23*65)+"%,1)"
+							
 							minute.innerHTML = twoDigit(date.getMinutes())
-							minute.style = "box-shadow: inset 0 0 1.9em rgba("+red+","+green+","+blue+","+( 0.25 + date.getMinutes()/59/2 )+")"
+							//minute.style = "box-shadow: inset 0 0 1.9em rgba("+red+","+green+","+blue+","+( 0.25 + date.getMinutes()/59/2 )+")"
+							minute.style = "box-shadow: inset 0 0 1.9em hsla("+h+","+Math.round(60-30*date.getMinutes()/59 )+"%,"+Math.round(30+date.getMinutes()/59*65)+"%,1)"
+							
 							second.innerHTML = twoDigit(date.getSeconds())
-							second.style = "box-shadow: inset 0 0 1.9em rgba("+red+","+green+","+blue+","+( 0.25 + date.getSeconds()/59/2 )+")"
+							//second.style = "box-shadow: inset 0 0 1.9em rgba("+red+","+green+","+blue+","+( 0.25 + date.getSeconds()/59/2 )+")"
+							second.style = "box-shadow: inset 0 0 1.9em hsla("+h+","+Math.round(60-30*date.getSeconds()/59 )+"%,"+Math.round(30+date.getSeconds()/59*65)+"%,1)"	
+
 						}
 					}
 				})
@@ -163,5 +173,6 @@
 	<body>
 		<kv-clock id="clock"></kv-clock>
 		<blockquote vile-weave="wordofwisdom"></blockquote>
+		<div vile-weave="asdf"></div>
 	</body>
-</html>	
+</html>
