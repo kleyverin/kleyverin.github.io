@@ -8,20 +8,20 @@ html, body{
 }
 
 #box{
-    background-image: url("../image/background.jpg");
+    background-image: linear-gradient(90deg,rgba(212,173,142,0.5),rgba(147,31,94,0.5)), linear-gradient(rgba(235,221,186,0.74),rgba(34,35,63,0.7), rgba(9,8,13,0.9)),url("../image/background.jpg");
     background-repeat: no-repeat;
     background-position: center;
-    background-blend-mode:  darken, darken, normal;
+    background-blend-mode: darken, darken, normal;
     min-height: 100%;
 }
 
 #left{
     min-height: 100%;
     color: white;
-    background-image: linear-gradient(90deg,rgba(212,173,142,0.5),rgba(147,31,94,0.5)), linear-gradient(rgba(235,221,186,0.74),rgba(34,35,63,0.7), rgba(9,8,13,0.9));
 }
 
 #right{
+    background-image: linear-gradient(rgba(0,0,0,0.05),rgba(0,0,0,0.05));
     min-height: 100%;
     color: white;
 }
