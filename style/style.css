@@ -1,3 +1,7 @@
+*{  
+    font-family: Raleway;
+}
+
 html, body{
     min-height: 100%;
 }
@@ -14,4 +18,8 @@ html, body{
     opacity: 0.6;
     min-height: 100%;
     color: white;
+}
+
+.home-title{
+    font-size: 50px;
 }
