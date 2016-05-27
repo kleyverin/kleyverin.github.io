@@ -1,10 +1,13 @@
 *{  
     font-family: Quicksand;
-    transition: all 0.5s ease;
 }
 
 html, body{
     min-height: 100%;
+}
+
+body{
+    transition: all 0.5s ease;
 }
 
 #box{
