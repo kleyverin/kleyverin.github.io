@@ -3,7 +3,7 @@
 		Vile.Element = (function(){
 			var elementlib = {
 				'kv-loadicon-wave': {
-					info: '',
+					info: 'Loading animation. It is word "Loading" which every characters of it jumps one by one',
 					activation: function(){
 						Vile.ShadowCaster.custom({
 							name: 'kv-loadicon-wave',
@@ -45,6 +45,15 @@
 			element.help = function(activatedElement){
 				if(typeof elementlib[activatedElement] !== 'undefined'){
 					console.info(elementlib[activatedElement].info)
+				}
+				else if(activatedElement==null){
+					var list = "List of new elements:\n";
+					for(var key in elementlib){
+						list+='\n\t'+key
+					}
+					list+="\n\nYou can read the description by typing Vile.Element.help([new elements])"
+					list+="\n\ne.g. Vile.Element.help('kv-loadicon-wave')"
+					console.info(list)
 				}
 			}
 			return element

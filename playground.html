@@ -172,12 +172,30 @@
 				setInterval(getRandomWow,10000)
 				getRandomWow()
 				Vile.Element.activate('kv-loadicon-wave')
+				page.loader = Vile.Component.createLoader(
+					function(){
+						page.loadIcon.style="opacity:1"
+					},
+					function(){
+						page.loadIcon.style="opacity:0"
+					}
+				)
+				page.load.onclick = function(){
+					page.loader.enqueue('a')
+					page.loader.enqueue('b')
+				}
+				page.unload.onclick = function(){
+					page.loader.dequeue('a')
+					page.loader.dequeue('b')
+				}
 			}
 		</script>
 	</head>
 	<body>
 		<kv-clock id="clock"></kv-clock>
-		<kv-loadicon-wave></kv-loadicon-wave>
+		<kv-loadicon-wave vile-weave="loadIcon"></kv-loadicon-wave>
 		<blockquote vile-weave="wordofwisdom"></blockquote>
+		<button vile-weave="load">Loading</button>
+		<button vile-weave="unload">Selesai Loading</button>
 	</body>
 </html>

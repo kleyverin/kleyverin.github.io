@@ -457,9 +457,8 @@ var Vile = {
 					}
 				}
 			}
+			return loader
 		}
-		
-		
 		
 		return component
 	})()
