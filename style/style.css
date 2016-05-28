@@ -187,8 +187,8 @@ kv-clock>div{
         transform: translateY(0);
     }
     40%{
-        -webkit-transform: translateY(-5px);
-        transform: translateY(-5px);
+        -webkit-transform: translateY(-10px);
+        transform: translateY(-10px);
     }
     50%{
         -webkit-transform: translateY(0);
@@ -216,7 +216,7 @@ kv-clock>div{
         transform: translateY(0);
     }
     40%{
-        transform: translateY(-5px);
+        transform: translateY(-10px);
     }
     50%{
      transform: translateY(0);
