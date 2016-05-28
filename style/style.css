@@ -142,8 +142,39 @@ kv-clock>div{
 }
 
 .l{
-    -webkit-animation: jump 100/7s ease 0s infinite normal ;
-    animation: jump 100/7s ease 0s infinite normal ;
+    -webkit-animation: jump 1s ease-out 1s infinite normal ;
+    animation: jump 1s ease-out 1s infinite normal ;
+	animation-delay: 0.1s;
+}
+.o{
+    -webkit-animation: jump 1s ease-out 1s infinite normal ;
+    animation: jump 1s ease-out 1s infinite normal ;
+	animation-delay: 0.15s;
+}
+.a{
+    -webkit-animation: jump 1s ease-out 1s infinite normal ;
+    animation: jump 1s ease-out 1s infinite normal ;
+	animation-delay: 0.2s;
+}
+.d{
+    -webkit-animation: jump 1s ease-out 1s infinite normal ;
+    animation: jump 1s ease-out 1s infinite normal ;
+	animation-delay: 0.25s;
+}
+.i{
+    -webkit-animation: jump 1s ease-out 1s infinite normal ;
+    animation: jump 1s ease-out 1s infinite normal ;
+	animation-delay: 0.3s;
+}
+.n{
+    -webkit-animation: jump 1s ease-out 1s infinite normal ;
+    animation: jump 1s ease-out 1s infinite normal ;
+	animation-delay: 0.35s;
+}
+.g{
+    -webkit-animation: jump 1s ease-out 1s infinite normal ;
+    animation: jump 1s ease-out 1s infinite normal ;
+	animation-delay: 0.4s;
 }
 
 @-webkit-keyframes jump {
@@ -156,16 +187,16 @@ kv-clock>div{
         transform: translateY(0);
     }
     40%{
-        -webkit-transform: translateY(-30px);
-        transform: translateY(-30px);
+        -webkit-transform: translateY(-5px);
+        transform: translateY(-5px);
     }
     50%{
         -webkit-transform: translateY(0);
         transform: translateY(0);
     }
     60%{
-        -webkit-transform: translateY(-15px);
-        transform: translateY(-15px);
+        -webkit-transform: translateY(0px);
+        transform: translateY(0px);
     }
     80%{
         -webkit-transform: translateY(0);
@@ -185,13 +216,13 @@ kv-clock>div{
         transform: translateY(0);
     }
     40%{
-        transform: translateY(-30px);
+        transform: translateY(-5px);
     }
     50%{
      transform: translateY(0);
     }
     60%{
-        transform: translateY(-15px);
+        transform: translateY(0px);
     }
     80%{
         transform: translateY(0);
