@@ -53,6 +53,7 @@
 			}
 		</style>
 		<script src="script/vile.js"></script>
+		<script src="script/vile.element.js"></script>
 		<script>
 			var page = {};
 			function twoDigit(number){
@@ -170,11 +171,13 @@
 				}
 				setInterval(getRandomWow,10000)
 				getRandomWow()
+				Vile.Element.activate('kv-loadicon-wave')
 			}
 		</script>
 	</head>
 	<body>
 		<kv-clock id="clock"></kv-clock>
+		<kv-loadicon-wave></kv-loadicon-wave>
 		<blockquote vile-weave="wordofwisdom"></blockquote>
 	</body>
 </html>

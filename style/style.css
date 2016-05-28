@@ -178,11 +178,7 @@ kv-clock>div{
 }
 
 @-webkit-keyframes jump {
-    0%{
-        -webkit-transform: translateY(0);
-        transform: translateY(0);
-    }
-    20%{
+    25%{
         -webkit-transform: translateY(0);
         transform: translateY(0);
     }
@@ -194,25 +190,10 @@ kv-clock>div{
         -webkit-transform: translateY(0);
         transform: translateY(0);
     }
-    60%{
-        -webkit-transform: translateY(0px);
-        transform: translateY(0px);
-    }
-    80%{
-        -webkit-transform: translateY(0);
-        transform: translateY(0);
-    }
-    100%{
-        -webkit-transform: translateY(0);
-        transform: translateY(0);
-    }
 }
 
 @keyframes jump {
-    0%{
-        transform: translateY(0);
-    }
-    20%{
+    30%{
         transform: translateY(0);
     }
     40%{
@@ -220,14 +201,5 @@ kv-clock>div{
     }
     50%{
      transform: translateY(0);
-    }
-    60%{
-        transform: translateY(0px);
-    }
-    80%{
-        transform: translateY(0);
-    }
-    100%{
-        transform: translateY(0);
     }
 }
