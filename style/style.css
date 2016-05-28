@@ -90,9 +90,17 @@ body *{
     border-color: rgba(255,255,255,0.5);
 }
 
+#content{
+    position: relative;
+    width: 100%;    
+    min-height: 100%;
+    height: auto !important;
+    margin: 0 auto -155px;
+    padding-top: 12em;
+}
+
 .coming-soon{
     font-size: 50px;
-    margin-top: 3em;
 }
 
 .coming-soon-isi{
@@ -118,9 +126,53 @@ kv-clock{
 kv-clock>div{
     display: inline-block;
     padding: 5px;
-    width: 5%;
+    width: 6%;
     border: 2px solid rgba(255,255,255,0.4);
     margin: 10px;
+}
+
+#menu{
+    display: inline-block;   
+    position: fixed;
+    width: auto;
+    margin: 0 auto;
+}
+
+.hexagon{
+    display: inline-block;
+    position: relative;
+    width: 40px; 
+    height: 23.09px;
+    background: none;
+    margin: 11.55px 15px;
+    border-left: solid 2px #ffffff;
+    border-right: solid 2px #ffffff;
+}
+
+.hexagon:before,
+.hexagon:after{
+    content: "";
+    position: absolute;
+    z-index: 1;
+    width: 28.28px;
+    height: 28.28px;
+    -webkit-transform: scaleY(0.5774) rotate(-45deg);
+    -ms-transform: scaleY(0.5774) rotate(-45deg);
+    transform: scaleY(0.5774) rotate(-45deg);
+    background-color: inherit;
+    left: 3.8579px;
+}
+
+.hexagon:before{
+    top: -14.1421px;
+    border-top: solid 2.8284px #ffffff;
+    border-right: solid 2.8284px #ffffff;
+}
+
+.hexagon:after{
+    bottom: -14.1421px;
+    border-bottom: solid 2.8284px #ffffff;
+    border-left: solid 2.8284px #ffffff;
 }
 
 .hidden{
