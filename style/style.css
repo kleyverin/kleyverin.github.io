@@ -50,6 +50,32 @@ body *{
     color: white;
     overflow: auto;
     max-height: 100vh;
+	display: flex;
+	flex-flow: column nowrap;
+	padding: 0;
+}
+
+#content{
+	/*
+    position: relative;
+    min-height: 100%;
+    height: auto !important;
+    padding-top: 12em;
+	*/
+    width: 100%;
+	flex: 1 0 auto;
+	display: flex;
+	flex-flow: column wrap;
+	justify-content: center;
+}
+
+#menu{
+    display: block;
+	position: relative;
+    width: 100%;
+    margin: 0 auto;
+	padding: 20px;
+	background-color: rgba(0,0,0,0.3);
 }
 
 .text-center{
@@ -90,15 +116,6 @@ body *{
     border-color: rgba(255,255,255,0.5);
 }
 
-#content{
-    position: relative;
-    width: 100%;    
-    min-height: 100%;
-    height: auto !important;
-    margin: 0 auto -155px;
-    padding-top: 12em;
-}
-
 .coming-soon{
     font-size: 50px;
 }
@@ -129,13 +146,6 @@ kv-clock>div{
     width: 6%;
     border: 2px solid rgba(255,255,255,0.4);
     margin: 10px;
-}
-
-#menu{
-    display: inline-block;   
-    position: fixed;
-    width: auto;
-    margin: 0 auto;
 }
 
 .hexagon{
