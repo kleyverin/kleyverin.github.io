@@ -169,11 +169,11 @@ var Vile = {
 				var nAttribute;
 				var nContent;
 				
-				if(isObject(attrib) && typeof content == 'string'){
+				if(isObject(attrib) && (typeof content != 'function' || typeof content != 'object')  ){
 					nAttribute = attrib
 					nContent = content
 				}
-				else if(isObject(content) && typeof attrib == 'string'){
+				else if(isObject(content) && (typeof attrib != 'function' || typeof attrib != 'object')){
 					nAttribute = content
 					nContent = attrib
 				}
@@ -348,7 +348,7 @@ var Vile = {
 				var replacor = ""
 				if(replaced.length!=0){
 					if(typeof (obj[replaced]) != 'undefined'){
-						replacor = obj[replaced]
+						replacor = String(obj[replaced])
 					}
 					if(positions.escape){
 						replacor = Vile.escape(replacor)
@@ -367,6 +367,8 @@ var Vile = {
 				var positions = searchTag(p)
 				
 				//NO OPENING TAGS FOUND
+				
+				console.log(p,positions)
 				if(positions.start == -1){
 					break;
 				}
@@ -401,8 +403,64 @@ var Vile = {
 			}
 			return obj
 		}
-	}
+	},
 	/**********************/
 	/*****VileLoading******/
 	/**********************/
+	
+	Component : (function(){
+		var component = {}
+		component.createLoader = function(onload, onfinish){
+			if(typeof onload !=='function' || typeof onfinish !=='function'){
+				throw new VileException("Page loader needs onload and on finish function");		
+			}
+			var loader = {
+				processes: [],
+				get: function(string){
+					if(typeof string !== 'string'){
+						throw new VileException("Page loader only accept string");
+					}
+					for(var i = 0; i<this.processes.length; i++){
+						if(this.processes[i]==string){
+							return i
+						}
+					}
+					return false;
+				},
+				enqueue: function(string){
+					if(typeof string !== 'string'){
+						throw new VileException("Page loader only accept string");
+					}
+					var exists = this.get(string)
+					if(exists === false){
+						this.processes.push(string)
+					}
+					this.refresh();
+				},
+				dequeue: function(string){
+					if(typeof string !== 'string'){
+						throw new VileException("Page loader only accept string");
+					}
+					var exists = this.get(string)
+					if(exists !== false){
+						this.processes.splice(exists,1)
+					}
+					this.refresh();
+				},
+				remaining: function(){return this.processes.length},
+				refresh: function(){
+					if(this.processes.length>0){
+						onload()
+					}
+					else{
+						onfinish()
+					}
+				}
+			}
+		}
+		
+		
+		
+		return component
+	})()
 }
