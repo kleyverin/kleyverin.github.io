@@ -90,16 +90,8 @@ body *{
     border-color: rgba(255,255,255,0.5);
 }
 
-#content{
-    position: relative;
-    width: 100%;    
-    min-height: 100%;
-    height: auto !important;
-    margin: 0 auto -155px;
-    padding-top: 12em;
-}
-
 .coming-soon{
+    padding-top: 3em;
     font-size: 50px;
 }
 
@@ -133,9 +125,18 @@ kv-clock>div{
 
 #menu{
     display: inline-block;   
-    position: fixed;
+    position: absolute;
     width: auto;
     margin: 0 auto;
+    top: calc(100% - 75px)
+}
+
+#content{
+    position: relative;
+    width: 100%;    
+    min-height: 100%;
+    height: auto !important;
+    margin: 0 auto -155px;
 }
 
 .hexagon{
