@@ -8,6 +8,7 @@
 		<link rel="stylesheet" href="style/font.css">
 		<link rel="stylesheet" href="style/bootstrap/css/bootstrap.css">
         <script src="script/vile.min.js"></script>
+		<script src="script/vile.element.js"></script>
 	</head>
 	<body>
 		<div id="box">
@@ -42,13 +43,7 @@
                 </div>
             </row>
             <div class="loading hidden">
-                <div class="l">L</div>
-                <div class="o">O</div>
-                <div class="a">A</div>
-                <div class="d">D</div>
-                <div class="i">I</div>
-                <div class="n">N</div>
-                <div class="g">G</div>
+                <kv-loadicon-wave></kv-loadicon-wave>
             </div>
         </div>
 	</body>
@@ -98,5 +93,6 @@
                 }
             }
         })
+        Vile.Element.activate('kv-loadicon-wave')
     }
 </script>
