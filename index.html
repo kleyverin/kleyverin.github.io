@@ -7,10 +7,11 @@
 		<link rel="stylesheet" href="style/style.css">
 		<link rel="stylesheet" href="style/font.css">
 		<link rel="stylesheet" href="style/bootstrap/css/bootstrap.css">
+        <script src="script/vile.min.js"></script>
 	</head>
 	<body>
 		<div id="box">
-            <row>
+            <row class="hidden">
                 <div id="left" class="text-center col-md-4">
                     <div class="home-title kley">
                         Kley
@@ -28,10 +29,74 @@
                         <a href="playground.html"><button type="button" class="btn-playground">Playground</button></a>
                     </div>
                 </div>
-                <div id="right" class="col-md-8">
-
+                <div id="right" class="col-md-8 container">
+                    <div class="coming-soon text-center">
+                        COMING SOON
+                    </div>
+                    <div class="line">
+                    </div>
+                    <div class="coming-soon-isi text-center">
+                        We are currently working on creating our new website.<br>We will be back soon!
+                    </div>
+                    <kv-clock id="clock"></kv-clock>
                 </div>
             </row>
+            <div class="loading">
+                <div class="l">L</div>
+                <div class="o">O</div>
+                <div class="a">A</div>
+                <div class="d">D</div>
+                <div class="i">I</div>
+                <div class="n">N</div>
+                <div class="g">G</div>
+            </div>
         </div>
 	</body>
 </html>
+
+<script>
+    var page = {};
+    function twoDigit(number){
+        number = String(number)
+        if(number.length == 0){
+            number = "00"
+        }
+        else if(number.length == 1){
+            number = "0"+number
+        }
+        else if(number.length > 2){
+            number = number.substr(number.length-2)
+        }
+        return number
+    }
+    window.onload = function(){
+        Vile.initialize(page)
+        page.caster = {}
+        Vile.ShadowCaster.custom({
+            name: 'kv-clock',
+            content: '<div class="hour"></div>:<div class="minute"></div>:<div class="second"></div>',
+            callback: {
+                onattach: function(){
+                    var element = this
+                    function update(){
+                        element.update();
+                    }
+                    setInterval(update,500)
+                    element.update()
+                }
+            },
+            method: {
+                update: function(){
+                    var hour = this.querySelector('.hour')
+                    var minute = this.querySelector('.minute')
+                    var second = this.querySelector('.second')
+                    var date = new Date();
+                    var h = Math.round(360*(date.getHours()+(date.getMinutes()/59)+(date.getSeconds()/59/59))/23)
+                    hour.innerHTML = twoDigit(date.getHours())
+                    minute.innerHTML = twoDigit(date.getMinutes())
+                    second.innerHTML = twoDigit(date.getSeconds())
+                }
+            }
+        })
+    }
+</script>

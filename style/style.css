@@ -1,5 +1,6 @@
 *{  
     font-family: Quicksand;
+    transition: all 0.5 ease;
 }
 
 html, body{
@@ -8,6 +9,7 @@ html, body{
 
 body{
     transition: all 1s ease;
+    text-align: center;
 }
 
 body *{
@@ -26,9 +28,15 @@ body *{
 #box{
     background-image: linear-gradient(90deg,rgba(212,173,142,0.5),rgba(147,31,94,0.5)), linear-gradient(rgba(235,221,186,0.74),rgba(34,35,63,0.7), rgba(9,8,13,0.9)),url("../image/background.jpg");
     background-repeat: no-repeat;
+    position: relative;
+    background-attachment: fixed;
     background-position: center;
     background-blend-mode: darken, darken, normal;
     min-height: 100%;
+    height: auto;
+    overflow: hidden;
+    width:100%;
+    height:100%;
 }
 
 #left{
@@ -40,6 +48,8 @@ body *{
     background-image: linear-gradient(rgba(0,0,0,0.05),rgba(0,0,0,0.05));
     min-height: 100%;
     color: white;
+    overflow: auto;
+    max-height: 100vh;
 }
 
 .text-center{
@@ -78,4 +88,115 @@ body *{
 .btn-playground:hover{
     background-color: rgba(255,255,255,0.5);
     border-color: rgba(255,255,255,0.5);
+}
+
+.coming-soon{
+    font-size: 50px;
+    margin-top: 3em;
+}
+
+.coming-soon-isi{
+    font-size: 18px;
+}
+
+.line{
+    margin-top: 2em;
+    margin-bottom: 2em;
+    border-bottom: 1px solid rgba(255,255,255,0.4);
+    margin-left: 40%;
+    margin-right: 40%;
+}
+
+kv-clock{
+    margin-top: 1em;
+    font-size: 20px;
+    display: inline-block;
+    background: none;
+    width: 100%;
+}
+
+kv-clock>div{
+    display: inline-block;
+    padding: 5px;
+    width: 5%;
+    border: 2px solid rgba(255,255,255,0.4);
+    margin: 10px;
+}
+
+.hidden{
+    display: none;
+}
+
+.loading{
+    min-height: 100%;
+    width: 100%;
+    background-color: black;
+    color: white;
+    font-size: 20px;
+    padding-top: 15em;
+    display: inline-block;
+}
+
+.loading>div{
+    display: inline-block;
+}
+
+.l{
+    -webkit-animation: jump 100/7s ease 0s infinite normal ;
+    animation: jump 100/7s ease 0s infinite normal ;
+}
+
+@-webkit-keyframes jump {
+    0%{
+        -webkit-transform: translateY(0);
+        transform: translateY(0);
+    }
+    20%{
+        -webkit-transform: translateY(0);
+        transform: translateY(0);
+    }
+    40%{
+        -webkit-transform: translateY(-30px);
+        transform: translateY(-30px);
+    }
+    50%{
+        -webkit-transform: translateY(0);
+        transform: translateY(0);
+    }
+    60%{
+        -webkit-transform: translateY(-15px);
+        transform: translateY(-15px);
+    }
+    80%{
+        -webkit-transform: translateY(0);
+        transform: translateY(0);
+    }
+    100%{
+        -webkit-transform: translateY(0);
+        transform: translateY(0);
+    }
+}
+
+@keyframes jump {
+    0%{
+        transform: translateY(0);
+    }
+    20%{
+        transform: translateY(0);
+    }
+    40%{
+        transform: translateY(-30px);
+    }
+    50%{
+     transform: translateY(0);
+    }
+    60%{
+        transform: translateY(-15px);
+    }
+    80%{
+        transform: translateY(0);
+    }
+    100%{
+        transform: translateY(0);
+    }
 }
