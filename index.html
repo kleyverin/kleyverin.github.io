@@ -31,6 +31,20 @@
                     </div>
                 </div>
                 <div id="right" class="col-md-8 container">
+                    <div class="container-menu">
+                        <div id="main-menu" class="menu" onclick="myFunction(this)">
+                            <div class="bar1"></div>
+                            <div class="bar2"></div>
+                            <div class="bar3"></div>
+                        </div>
+                        <div id="list-menu" class="menus hidden">
+                            <div class="menu-item item-1"></div>
+                            <div class="menu-item item-2"></div>
+                            <div class="menu-item item-3"></div>
+                            <div class="menu-item item-4"></div>
+                            <div class="menu-item item-5"></div>
+                        </div>
+                    </div>
                     <div id="content">
                         <div class="coming-soon text-center">
                             COMING SOON
@@ -42,12 +56,6 @@
                         </div>
                         <kv-clock id="clock"></kv-clock>
                     </div>
-                    <div id="menu">
-                        <div class="hexagon portfolio"></div>
-                        <div class="hexagon product"></div>
-                        <div class="hexagon about"></div>
-                        <div class="hexagon contact"></div>
-                    </div>
                 </div>
             </row>
             <div class="loading hidden">
@@ -58,6 +66,24 @@
 </html>
 
 <script>
+    /*
+    page.changeBackgroundColor = function(e, element){
+            e.preventDefault()
+            $(element).parents('.box').addClass('change-background-color')
+        }
+    */
+    function myFunction(x){
+        x.classList.toggle("change");
+        var mainmenu = document.getElementById('main-menu');
+        var menu = document.getElementById('list-menu');
+        if(mainmenu.classList.contains('change')){
+            menu.classList.remove('hidden');
+        }
+        else{
+            menu.classList.add('hidden');
+        }
+    }
+    
     var page = {};
     function twoDigit(number){
         number = String(number)
