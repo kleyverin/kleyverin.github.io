@@ -11,7 +11,6 @@
 		<script src="script/vile.element.js"></script>
 	</head>
 	<script>
-		//LOADING
 		/*
 		function onReady(callback){
 			var intervalID = window.setInterval(checkReady, 5000);
@@ -59,7 +58,7 @@
 		function show(id,value){
 			document.getElementById(id).style.display = value ? 'block' : 'none';
 		}
-		//TOGGLE MENU
+        
 		function myFunction(x){
 			x.classList.toggle("change");
 			var mainmenu = document.getElementById('main-menu');
@@ -72,7 +71,6 @@
 			}
 		}
 
-		//CLOCK
 		var page = {};
 		function twoDigit(number){
 			number = String(number)
@@ -87,6 +85,7 @@
 			}
 			return number
 		}
+        
 		window.onload = function(){
 			Vile.initialize(page)
 			page.caster = {}
@@ -94,6 +93,7 @@
 			show('loading', false);
 		}
 	</script>
+    
 	<body>
 		<div id="box">
             <row id="box-row">
