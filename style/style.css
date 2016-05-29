@@ -131,7 +131,7 @@ body *{
     position: absolute;
     text-align: left;
     line-height: 50px;
-    cursor: pointer;
+    cursor: not-allowed;
     background-color: white;
     background-image: url(../image/closed.png);
     background-size: contain;
