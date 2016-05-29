@@ -28,6 +28,33 @@
 			show('loading', false);
 		});*/
 
+		Vile.ShadowCaster.custom({
+			name: 'kv-clock',
+			content: '<div class="hour"></div>:<div class="minute"></div>:<div class="second"></div>',
+			callback: {
+				onattach: function(){
+					var element = this
+					function update(){
+						element.update();
+					}
+					setInterval(update,500)
+					element.update()
+				}
+			},
+			method: {
+				update: function(){
+					var hour = this.querySelector('.hour')
+					var minute = this.querySelector('.minute')
+					var second = this.querySelector('.second')
+					var date = new Date();
+					var h = Math.round(360*(date.getHours()+(date.getMinutes()/59)+(date.getSeconds()/59/59))/23)
+					hour.innerHTML = twoDigit(date.getHours())
+					minute.innerHTML = twoDigit(date.getMinutes())
+					second.innerHTML = twoDigit(date.getSeconds())
+				}
+			}
+		})
+		Vile.Element.activate('kv-loadicon-wave')
 
 		function show(id,value){
 			document.getElementById(id).style.display = value ? 'block' : 'none';
@@ -63,33 +90,6 @@
 		window.onload = function(){
 			Vile.initialize(page)
 			page.caster = {}
-			Vile.ShadowCaster.custom({
-				name: 'kv-clock',
-				content: '<div class="hour"></div>:<div class="minute"></div>:<div class="second"></div>',
-				callback: {
-					onattach: function(){
-						var element = this
-						function update(){
-							element.update();
-						}
-						setInterval(update,500)
-						element.update()
-					}
-				},
-				method: {
-					update: function(){
-						var hour = this.querySelector('.hour')
-						var minute = this.querySelector('.minute')
-						var second = this.querySelector('.second')
-						var date = new Date();
-						var h = Math.round(360*(date.getHours()+(date.getMinutes()/59)+(date.getSeconds()/59/59))/23)
-						hour.innerHTML = twoDigit(date.getHours())
-						minute.innerHTML = twoDigit(date.getMinutes())
-						second.innerHTML = twoDigit(date.getSeconds())
-					}
-				}
-			})
-			Vile.Element.activate('kv-loadicon-wave')
 			show('box-row', true);
 			show('loading', false);
 		}
