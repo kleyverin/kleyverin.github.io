@@ -26,7 +26,7 @@ body *{
 }
 
 ::-webkit-scrollbar {
-    width: 10px;
+    width: 7px;
 }
  
 /* Track */
@@ -86,6 +86,7 @@ body *{
 	justify-content: center;
 }
 
+/** MENU **/
 .container-menu{
     position: absolute;
     top: 0;
@@ -108,10 +109,18 @@ body *{
     z-index:2;
 }
 
+.menu:hover{
+    transform: scale(1.3);
+}
+
+.menu:hover>div{
+    background-color: rgba(255,255,255,1);
+}
+
 .bar1, .bar2, .bar3{
     width: 35px;
     height: 2px;
-    background-color: white;
+    background-color: rgba(255,255,255,0.4);
     margin: 6px 0;
     transition: 0.4s;
 }
@@ -154,6 +163,10 @@ body *{
     transform: scale(1);
 }
 
+.menu-item:hover{
+    transform: scale(1.2);
+}
+
 .item-1{
     top: 80;
     background-image: url(../image/closed.png);
@@ -189,10 +202,7 @@ body *{
     transition-delay: 375ms;
 }
 
-.text-center{
-    text-align: center;
-}
-
+/** LEFT **/
 .home-title{
     font-size: 100px;
     text-shadow: 0 5px 25px rgba(0,0,0,0.7);
@@ -205,10 +215,6 @@ body *{
 .home-title-and{
     font-size: 70px;
     text-shadow: 0 5px 25px rgba(0,0,0,0.7);
-}
-
-.notification{
-    font-size: 14px;
 }
 
 .btn-playground{
@@ -227,6 +233,7 @@ body *{
     border-color: rgba(255,255,255,0.5);
 }
 
+/** RIGHT **/
 .coming-soon{
     font-size: 50px;
 }
@@ -243,6 +250,7 @@ body *{
     margin-right: 40%;
 }
 
+/** CLOCK **/
 kv-clock{
     margin-top: 1em;
     font-size: 20px;
@@ -259,10 +267,12 @@ kv-clock>div{
     margin: 10px;
 }
 
-.hidden{
-    display: none;
+/** PORTFOLIO **/
+.pf-content{
+    padding: 2em;
 }
 
+/** LOADING **/
 #loading{
     display: block;
 }
@@ -279,4 +289,17 @@ kv-clock>div{
 
 .loading>div{
     display: inline-block;
+}
+
+/** ETC **/
+.hidden{
+    display: none;
+}
+
+.text-center{
+    text-align: center;
+}
+
+.notification{
+    font-size: 14px;
 }
