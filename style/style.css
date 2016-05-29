@@ -132,10 +132,9 @@ body *{
     text-align: left;
     line-height: 50px;
     cursor: pointer;
-}
-
-.menu-item{
-    background: none;
+    background-color: white;
+    background-image: url(../image/closed.png);
+    background-size: contain;
     border: 2px solid white;
     box-shadow: 3px 3px 0 0 rgba(0, 0, 0, 0.14);
 }
@@ -229,45 +228,6 @@ kv-clock>div{
     border: 2px solid rgba(255,255,255,0.4);
     margin: 10px;
 }
-
-/*
-.hexagon{
-    display: inline-block;
-    position: relative;
-    width: 40px; 
-    height: 23.09px;
-    margin: 11.55px 15px;
-    border-left: solid 2px #ffffff;
-    border-right: solid 2px #ffffff;
-    cursor: pointer;
-}
-
-.hexagon:before,
-.hexagon:after{
-    content: "";
-    position: absolute;
-    z-index: 1;
-    width: 28.28px;
-    height: 28.28px;
-    -webkit-transform: scaleY(0.5774) rotate(-45deg);
-    -ms-transform: scaleY(0.5774) rotate(-45deg);
-    transform: scaleY(0.5774) rotate(-45deg);
-    background-color: inherit;
-    left: 3.8579px;
-}
-
-.hexagon:before{
-    top: -14.1421px;
-    border-top: solid 2.8284px #ffffff;
-    border-right: solid 2.8284px #ffffff;
-}
-
-.hexagon:after{
-    bottom: -14.1421px;
-    border-bottom: solid 2.8284px #ffffff;
-    border-left: solid 2.8284px #ffffff;
-}
-*/
 
 .hidden{
     display: none;
