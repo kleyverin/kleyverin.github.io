@@ -113,10 +113,14 @@ body *{
     transform: scale(1.3);
 }
 
+.menu:hover>div{
+    background-color: rgba(255,255,255,1);
+}
+
 .bar1, .bar2, .bar3{
     width: 35px;
     height: 2px;
-    background-color: white;
+    background-color: rgba(255,255,255,0.4);
     margin: 6px 0;
     transition: 0.4s;
 }
@@ -261,6 +265,11 @@ kv-clock>div{
     width: 6%;
     border: 2px solid rgba(255,255,255,0.4);
     margin: 10px;
+}
+
+/** PORTFOLIO **/
+.pf-content{
+    padding: 2em;
 }
 
 /** LOADING **/
