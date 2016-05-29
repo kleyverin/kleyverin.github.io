@@ -12,7 +12,7 @@
 	</head>
 	<body>
 		<div id="box">
-            <row class="">
+            <row id="box-row">
                 <div id="left" class="text-center col-md-4">
                     <div class="home-title kley">
                         Kley
@@ -31,6 +31,20 @@
                     </div>
                 </div>
                 <div id="right" class="col-md-8 container">
+                    <div class="container-menu">
+                        <div id="main-menu" class="menu" onclick="myFunction(this)">
+                            <div class="bar1"></div>
+                            <div class="bar2"></div>
+                            <div class="bar3"></div>
+                        </div>
+                        <div id="list-menu" class="menus hidden">
+                            <div class="menu-item item-1"></div>
+                            <div class="menu-item item-2"></div>
+                            <div class="menu-item item-3"></div>
+                            <div class="menu-item item-4"></div>
+                            <div class="menu-item item-5"></div>
+                        </div>
+                    </div>
                     <div id="content">
                         <div class="coming-soon text-center">
                             COMING SOON
@@ -42,15 +56,9 @@
                         </div>
                         <kv-clock id="clock"></kv-clock>
                     </div>
-                    <div id="menu">
-                        <div class="hexagon portfolio"></div>
-                        <div class="hexagon product"></div>
-                        <div class="hexagon about"></div>
-                        <div class="hexagon contact"></div>
-                    </div>
                 </div>
             </row>
-            <div class="loading hidden">
+            <div class="loading" id="loading">
                 <kv-loadicon-wave></kv-loadicon-wave>
             </div>
         </div>
@@ -58,6 +66,40 @@
 </html>
 
 <script>
+    //LOADING
+    function onReady(callback){
+        var intervalID = window.setInterval(checkReady, 5000);
+        function checkReady(){
+            if(document.getElementsByTagName('body')[0] !== undefined){
+                window.clearInterval(intervalID);
+                callback.call(this);
+            }
+        }
+    }
+    
+    function show(id,value){
+        document.getElementById(id).style.display = value ? 'block' : 'none';
+    }
+    
+    onReady(function(){
+        show('box-row', true);
+        show('loading', false);
+    });
+    
+    //TOGGLE MENU
+    function myFunction(x){
+        x.classList.toggle("change");
+        var mainmenu = document.getElementById('main-menu');
+        var menu = document.getElementById('list-menu');
+        if(mainmenu.classList.contains('change')){
+            menu.classList.remove('hidden');
+        }
+        else{
+            menu.classList.add('hidden');
+        }
+    }
+    
+    //CLOCK
     var page = {};
     function twoDigit(number){
         number = String(number)
