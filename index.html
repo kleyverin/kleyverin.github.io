@@ -12,22 +12,6 @@
 		<script src="script/jquery-2.2.1.js"></script>
 	</head>
 	<script>
-		/*
-		function onReady(callback){
-			var intervalID = window.setInterval(checkReady, 5000);
-			function checkReady(){
-				if(document.getElementsByTagName('body')[0] !== undefined){
-					window.clearInterval(intervalID);
-					callback.call(this);
-				}
-			}
-		}
-
-		onReady(function(){
-			show('box-row', true);
-			show('loading', false);
-		});*/
-
 		Vile.ShadowCaster.custom({
 			name: 'kv-clock',
 			content: '<div class="hour"></div>:<div class="minute"></div>:<div class="second"></div>',
@@ -59,7 +43,7 @@
 		function show(id,value){
 			document.getElementById(id).style.display = value ? 'block' : 'none';
 		}
-
+        
 		var page = {};
 		function twoDigit(number){
 			number = String(number)
@@ -82,14 +66,14 @@
 			show('loading', false);
 		}
         
+        //MENU
         $(function(){
-            $('#main-menu').click(function(){
-                $('#main-menu').toggleClass('change');
+            $('.menu').click(function(){
+                $('.menu').toggleClass('change');
                 $('.menu-item').toggleClass('top');
             });
         });
 	</script>
-    
 	<body>
 		<div id="box">
             <row id="box-row">
@@ -112,18 +96,16 @@
                 </div>
                 <div id="right" class="col-md-8 container">
                     <div class="container-menu">
-                        <div id="main-menu" class="menu">
+                        <div class="menu">
                             <div class="bar1"></div>
                             <div class="bar2"></div>
                             <div class="bar3"></div>
                         </div>
-                        <div id="list-menu" class="menus">
-                            <div class="menu-item item-1"></div>
-                            <div class="menu-item item-2"></div>
-                            <div class="menu-item item-3"></div>
-                            <div class="menu-item item-4"></div>
-                            <div class="menu-item item-5"></div>
-                        </div>
+                        <div class="menu-item item-1"></div>
+                        <div class="menu-item item-2"></div>
+                        <div class="menu-item item-3"></div>
+                        <div class="menu-item item-4"></div>
+                        <div class="menu-item item-5"></div>
                     </div>
                     <div id="content">
                         <div class="coming-soon text-center">
