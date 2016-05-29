@@ -9,6 +9,7 @@
 		<link rel="stylesheet" href="style/bootstrap/css/bootstrap.css">
         <script src="script/vile.min.js"></script>
 		<script src="script/vile.element.js"></script>
+		<script src="script/jquery-2.2.1.js"></script>
 	</head>
 	<script>
 		/*
@@ -58,18 +59,6 @@
 		function show(id,value){
 			document.getElementById(id).style.display = value ? 'block' : 'none';
 		}
-        
-		function myFunction(x){
-			x.classList.toggle("change");
-			var mainmenu = document.getElementById('main-menu');
-			var menu = document.getElementById('list-menu');
-			if(mainmenu.classList.contains('change')){
-				menu.classList.remove('hidden');
-			}
-			else{
-				menu.classList.add('hidden');
-			}
-		}
 
 		var page = {};
 		function twoDigit(number){
@@ -92,6 +81,13 @@
 			show('box-row', true);
 			show('loading', false);
 		}
+        
+        $(function(){
+            $('#main-menu').click(function(){
+                $('#main-menu').toggleClass('change');
+                $('.menu-item').toggleClass('top');
+            });
+        });
 	</script>
     
 	<body>
@@ -116,12 +112,12 @@
                 </div>
                 <div id="right" class="col-md-8 container">
                     <div class="container-menu">
-                        <div id="main-menu" class="menu" onclick="myFunction(this)">
+                        <div id="main-menu" class="menu">
                             <div class="bar1"></div>
                             <div class="bar2"></div>
                             <div class="bar3"></div>
                         </div>
-                        <div id="list-menu" class="menus hidden">
+                        <div id="list-menu" class="menus">
                             <div class="menu-item item-1"></div>
                             <div class="menu-item item-2"></div>
                             <div class="menu-item item-3"></div>
