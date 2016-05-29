@@ -59,6 +59,10 @@ body *{
     height:100%;
 }
 
+#box-row{
+    display: none;
+}
+
 #left{
     min-height: 100%;
     color: white;
@@ -231,6 +235,10 @@ kv-clock>div{
 
 .hidden{
     display: none;
+}
+
+#loading{
+    display: block;
 }
 
 .loading{

@@ -12,7 +12,7 @@
 	</head>
 	<body>
 		<div id="box">
-            <row class="">
+            <row id="box-row">
                 <div id="left" class="text-center col-md-4">
                     <div class="home-title kley">
                         Kley
@@ -58,7 +58,7 @@
                     </div>
                 </div>
             </row>
-            <div class="loading hidden">
+            <div class="loading" id="loading">
                 <kv-loadicon-wave></kv-loadicon-wave>
             </div>
         </div>
@@ -66,12 +66,27 @@
 </html>
 
 <script>
-    /*
-    page.changeBackgroundColor = function(e, element){
-            e.preventDefault()
-            $(element).parents('.box').addClass('change-background-color')
+    //LOADING
+    function onReady(callback){
+        var intervalID = window.setInterval(checkReady, 1000);
+        function checkReady(){
+            if(document.getElementsByTagName('body')[0] !== undefined){
+                window.clearInterval(intervalID);
+                callback.call(this);
+            }
         }
-    */
+    }
+    
+    function show(id,value){
+        document.getElementById(id).style.display = value ? 'block' : 'none';
+    }
+    
+    onReady(function(){
+        show('box-row', true);
+        show('loading', false);
+    });
+    
+    //TOGGLE MENU
     function myFunction(x){
         x.classList.toggle("change");
         var mainmenu = document.getElementById('main-menu');
@@ -84,6 +99,7 @@
         }
     }
     
+    //CLOCK
     var page = {};
     function twoDigit(number){
         number = String(number)
