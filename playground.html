@@ -131,6 +131,13 @@
 						}
 					}
 				})
+				Vile.ShadowCaster.custom({
+					extends: 'input',
+					name: 'input-money',
+					content: function(element){
+						return element.innerHTML + 9
+					}
+				})
 				function getRandomWow(){
 					var index = Math.round(Math.random()*(wow.length-1))
 					page.wordofwisdom.innerHTML = wow[index].replace('time','<strong>time</strong>').replace('Time','<strong>Time</strong>')
@@ -197,5 +204,6 @@
 		<blockquote vile-weave="wordofwisdom"></blockquote>
 		<button vile-weave="load">Loading</button>
 		<button vile-weave="unload">Selesai Loading</button>
+		<input type='number' vile-weave="inputTest" value='3'>
 	</body>
 </html>

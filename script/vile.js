@@ -228,12 +228,17 @@ var Vile = {
 			custom: function(command){
 				command = Vile.validate_page_object(command)
 				
+				var extend = command.extends;
 				var elementName = command.name.toLowerCase();
 				var content = command.content
 				var callback = command.callback
 				var method = command.method
 				
 				//ERROR HANDLER
+				
+				if((typeof extend !== 'string' && typeof extend !=='undefined') && extend != null){
+					throw new VileException("Extend parameter must be string");
+				}
 				if(!elementName.includes('-')){
 					throw new VileException("ShadowCast needs name with '-' in it, such as 'foo-bar' or 'my-phone-number'");
 				}
@@ -298,9 +303,18 @@ var Vile = {
 				if(!prototype.createdCallback){
 					prototype.createdCallback = prototype.refresh
 				}
-				var new_element = document.registerElement(elementName,{
-					prototype: prototype
-				})
+				var new_element;
+				if(!extend){
+					new_element = document.registerElement(elementName,{
+						prototype: prototype
+					})
+				}
+				else{
+					new_element = document.registerElement(elementName,{
+						prototype: prototype,
+						extends: extend
+					})
+				}
 			}
 		}
 	})(),
