@@ -85,49 +85,59 @@ body *{
 .container-menu{
     position: fixed;
     top: 0;
-    width: 50px;
-    height: 50px;
     text-align: left;
     box-sizing: border-box;
     font-size: 26px;
-	margin-left: 20px;
+	width: 100%;
+	height: 100vh;
+	padding-top: 30px;
+	padding-left: 20px;
+	transition: background 0.2s ease;
 }
 
-.menu{
-    margin-top: 20px;
+.container-menu.change{
+	background: rgba(0,0,0,0.8);
+}
+
+.container-menu .menu{
     display: inline-block;
     cursor: pointer;
-    margin-left: 9px;
     transition:all 0.2s ease;
     z-index:2;
+    width: 50px;
+    height: 50px;
+	text-align: center;
+	padding: 0px 5px;
 }
 
-.menu:hover{
+.container-menu .menu:hover{
     transform: scale(1.3);
 }
 
-.menu:hover>div{
+.container-menu .menu:hover>div{
     background-color: rgba(255,255,255,1);
 }
 
 .bar1, .bar2, .bar3{
-    width: 35px;
-    height: 2px;
+	text-align: center;
+	margin: auto;
+	width: 100%;
+	height: 2px;
     background-color: rgba(255,255,255,0.4);
     margin: 6px 0;
     transition: 0.4s;
 }
 
-.change .bar1{
+.container-menu.change .menu .bar1{
     -webkit-transform: rotate(-45deg) translate(-5px, 2px);
     transform: rotate(-45deg) translate(-5px, 2px);
 }
 
-.change .bar2{
+.container-menu.change .menu .bar2{
     opacity: 0;
 }
 
-.change .bar3{
+.container-menu.change .menu .bar3{
     -webkit-transform: rotate(45deg) translate(-8px, -8px);
     transform: rotate(45deg) translate(-8px, -8px);
 }
@@ -148,6 +158,10 @@ body *{
     z-index:1;
 }
 
+.menu-item>*{
+	margin-left: 55px;
+}
+
 .active{
     opacity: 0.7;
 }
@@ -162,35 +176,30 @@ body *{
 
 .item-1{
     top: 80;
-    background-image: url(../image/closed.png);
     background-size: contain;
     transition-delay: 75ms;
 }
 
 .item-2{
     top: 160;
-    background-image: url(../image/closed.png);
     background-size: contain;
     transition-delay: 150ms;
 }
 
 .item-3{
     top: 240;
-    background-image: url(../image/closed.png);
     background-size: contain;
     transition-delay: 225ms;
 }
 
 .item-4{
     top: 320;
-    background-image: url(../image/closed.png);
     background-size: contain;
     transition-delay: 300ms;
 }
 
 .item-5{
     top: 400;
-    background-image: url(../image/closed.png);
     background-size: contain;
     transition-delay: 375ms;
 }
