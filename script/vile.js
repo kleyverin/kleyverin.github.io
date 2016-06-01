@@ -64,8 +64,8 @@ var Vile = {
 	/**********************/
 	weave : function(page){
 		page = this.validate_page_object(page,"weave");
-		let weaver = document.querySelectorAll("*[vile-weave]")
-		for(let i = 0; i<weaver.length; i++){
+		var weaver = document.querySelectorAll("*[vile-weave]")
+		for(var i = 0; i<weaver.length; i++){
 			var weave_name = weaver[i].getAttribute('vile-weave');
 			if(weave_name.length > 0){
 				page[weave_name] = weaver[i]
@@ -79,8 +79,8 @@ var Vile = {
 				throw ""
 			}
 			page = this.validate_page_object(page,"weave");
-			let weaver = document.querySelectorAll("*[vile-weave]")
-			for(let i = 0; i<weaver.length; i++){
+			var weaver = document.querySelectorAll("*[vile-weave]")
+			for(var i = 0; i<weaver.length; i++){
 				var weave_name = weaver[i].getAttribute('vile-weave');
 				if(weave_name.length > 0){
 					page[weave_name] = $(weaver[i])
@@ -94,8 +94,8 @@ var Vile = {
 	},
 	weaveTemplate : function(page){
 		page = this.validate_page_object(page,"weave templates");
-		let templates = document.querySelectorAll("template")
-		for(let i = 0; i<templates.length; i++){
+		var templates = document.querySelectorAll("template")
+		for(var i = 0; i<templates.length; i++){
 			if(templates[i].hasAttribute('id')){
 				var template_name = templates[i].getAttribute('id');
 				if(template_name.length > 0){
