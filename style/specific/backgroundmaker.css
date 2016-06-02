@@ -1,0 +1,45 @@
+*{  
+    font-family: Quicksand;
+    transition: all 0.5 ease;
+}
+
+html, body{
+    min-height: 100%;
+}
+body{
+	transition: all 1s ease;
+	overflow-x: hidden;
+}
+
+body{
+    -webkit-animation: fadein 1s; /* Safari, Chrome and Opera > 12.1 */
+       -moz-animation: fadein 1s; /* Firefox < 16 */
+        -ms-animation: fadein 1s; /* Internet Explorer */
+         -o-animation: fadein 1s; /* Opera < 12.1 */
+            animation: fadein 1s;
+}
+
+@keyframes fadein{
+	from { opacity: 0; }
+	to   { opacity: 1; }
+}
+::-webkit-scrollbar {
+	width: 7px;
+	height: 7px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	background: #ddd; 
+	-webkit-box-shadow: inset 0 0 5px rgba(0,0,0,1); 
+
+}

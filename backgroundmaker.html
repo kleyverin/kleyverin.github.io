@@ -1,0 +1,390 @@
+<!DOCTYPE>
+<html>
+	<head>
+		<title>
+			Background Maker | Kley &amp; Verin
+		</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="stylesheet" href="style/specific/backgroundmaker.css">
+		<link rel="stylesheet" href="style/font.css">
+		<link rel="stylesheet" href="style/bootstrap/css/bootstrap.css">
+        <script src="script/vile.min.js"></script>
+		<script src="script/vile.element.js"></script>
+		<script src="script/jquery-2.2.1.js"></script>
+	</head>
+	<style>
+		.workscreen{
+			width: 100%;
+			height: 100%;
+			display: flex;
+			justify-content: flex-start;
+			flex-flow: column;
+		}
+		.workplace{
+			flex: 1 0 auto;
+			height: calc(100% - 30px)
+		}
+		.workplace>div{
+			height: 100%;
+		}
+		@media only screen and (max-width:767px){
+			.workplace>div.display{
+				height: 60vw;
+			}
+			.workplace>div.control-panel{
+				height: auto;
+				overflow-y: auto;
+			}
+		}
+		.top{
+			height: 30px;
+			width: 100%;
+			margin: auto;
+			flex: 0 0 auto;
+		}
+		.top>div{
+			padding: 0 15px;
+			float: left;
+		}
+		.top>div:nth-child(1){
+			width: 25%;
+		}
+		.top>div:nth-child(2){
+			width: 50%;
+		}
+		.top>div:nth-child(3){
+			width: 25%;
+		}
+		@media only screen and (max-width:767px){
+			.top>div:nth-child(1){
+				width: 50%;
+			}
+			.top>div:nth-child(2){
+				display: none;
+			}
+			.top>div:nth-child(3){
+				width: 50%;
+			}
+		}
+		.top:after{
+			clear: 
+		}
+		.back-banner{
+			background: black;
+			padding: 5px 0;
+		}
+		.back-banner div,
+		.back-banner a{
+			color: white;
+			font-weight: bold;
+		}
+		.back-banner a{
+			cursor: pointer;
+		}
+		.button-container>a{
+			transition: background 0.3s ease, color 0.3s ease;
+			background: #337ab7;
+			color: white;
+			cursor: pointer;
+			box-shadow: 0 0 3px rgba(0,0,0,0.3);
+			padding: 2px 6px;
+			display: inline-block;
+		}
+		.button-container>a:hover{
+			text-decoration: none;
+			color: #337ab7;
+			background: white;
+			transform: translateZ(30px);
+		}
+		.control-panel{
+			border-left: 1px solid #ccc;
+			overflow-y: scroll;
+		}
+		.section{
+			margin: 0 -15px;
+		}
+		.section>label{
+			margin: 0;
+			display: block;
+			background: linear-gradient(black,black);
+			color: white;
+		}
+		.section{
+			border-top: 1px solid #ddd;
+			border-bottom: 1px solid #ddd;
+		}
+		.section:first-child{
+			border-top: none;
+		}
+		.section:last-child{
+			border-bottom: none;
+		}
+		.section .button-container{
+			border-bottom: 1px solid #ddd;
+		}
+		.list-layer{
+			overflow-y: scroll;
+			height: 200px;
+			border-bottom: 1px solid #ddd;
+			box-shadow: inset 1px 2px 4px rgba(124,124,124,0.3);
+		}
+		.code-panel .back-banner{
+			background: white;
+			padding-left: 15px;
+			padding-right: 15px;
+			box-shadow: 0 1px 0 black;
+		}
+		.code-panel .back-banner a{
+			color: black;
+		}
+		.code-panel{
+			transition: right 0.5s ease;
+			position: absolute;
+			width: 400px;
+			max-width: 100%;
+			height: 100%;
+			background: rgba(255,255,255,0.7);
+			margin-left: -15px;
+			margin-right: -15px;
+			right: -400px;
+			box-shadow: 0 0 3px black;
+			z-index: 100;
+		}
+		.code-panel.active{
+			right: 0;
+		}
+	</style>
+	<script>
+		function hslToRgb(h,s,l){
+			var ret = {}
+			var c = (1-Math.abs((2*l/100-1)))*(s/100)
+			var x = c * (1-Math.abs(((h/60)%2)-1))
+			var m = l/100-c/2
+			var r,g,b;
+			if	   (  0<=h && h<60 ){ r=c ; g=x ; b=0 ;}
+			else if( 60<=h && h<60 ){ r=x ; g=c ; b=0 ;}
+			else if(120<=h && h<180){ r=0 ; g=c ; b=x ;}
+			else if(180<=h && h<240){ r=0 ; g=x ; b=c ;}
+			else if(240<=h && h<300){ r=x ; g=0 ; b=c ;}
+			else if(300<=h && h<360){ r=c ; g=0 ; b=x ;}
+			ret.r = Math.round((r+m)*255)
+			ret.g = Math.round((g+m)*255)
+			ret.b = Math.round((b+m)*255)
+			return ret
+		}
+		function rgbToHsl(r,g,b){
+			var ret = {}
+			ret.h;ret.s;ret.l;
+			var min = 100, max = 0
+			r=r/255*100
+			g=g/255*100
+			b=b/255*100
+			if(r<min){min = r}
+			if(g<min){min = g}
+			if(b<min){min = b}
+			if(r>max){max = r}
+			if(g>max){max = g}
+			if(b>max){max = b}
+			console.log(max-min)
+			//l
+			ret.l = (max+min)/2
+			//s
+			if(max-min == 0){ret.s = 0}
+			else{ret.s = (max-min)/(1-Math.abs((2*ret.l)/100-1))}
+			//h
+			if(max-min==0){ret.h = 0}
+			else if(max==r){ ret.h = 60 * (((g-b)/(max-min))%6) }
+			else if(max==g){ ret.h = 60 * (((b-r)/(max-min))+2) }
+			else if(max==b){ ret.h = 60 * (((r-g)/(max-min))+4) }
+			return ret
+		}
+		function decimalToHex(number){
+			function toHex(numbers){
+				if(numbers < 10){
+					return numbers
+				}
+				else{
+					switch(numbers){
+						case 10: return 'A'
+						case 11: return 'B'
+						case 12: return 'C'
+						case 13: return 'D'
+						case 14: return 'E'
+						case 15: return 'F'
+						default: throw new VileException('Invalid number')
+					}
+				}
+			}
+			var string = ""
+			while(true){
+				if(number==0){
+					break
+				}
+				string = toHex(number%16)+string
+				number = Math.floor(number/16)
+			}
+			return string;
+		}
+		function hexToDecimal(string){
+			string = String(string)
+			function toDecimal(char){
+				switch(char.toUpperCase()){
+					case 'A': return 10
+					case 'B': return 11
+					case 'C': return 12
+					case 'D': return 13
+					case 'E': return 14
+					case 'F': return 15
+					default: 
+						try{
+							return Number(char)
+						}catch(e){
+							throw new VileException('Invalid char')
+						}
+				}
+			}
+			var number = 0;
+			var pow = 1;
+			var p = string.length-1
+			while(true){
+				console.log(p)
+				if(p<0){
+					break;
+				}
+				number += pow*toDecimal(string[p])
+				pow *= 16
+				p-=1
+			}
+			return number;
+		}
+		function rgbToHex(r,g,b){
+			return (('00')+decimalToHex(r)).slice(-2)
+				+(('00')+decimalToHex(g)).slice(-2)
+				+(('00')+decimalToHex(b)).slice(-2)
+		}
+		function hextToRgb(string){
+			if(string.length == 6){
+				return {
+					r: hexToDecimal(string[0]+string[1]),
+					g: hexToDecimal(string[2]+string[3]),
+					b: hexToDecimal(string[4]+string[5])
+				}
+			}
+			else if(string.length == 3){
+				return {
+					r: hexToDecimal(string[0])*16,
+					g: hexToDecimal(string[1])*16,
+					b: hexToDecimal(string[2])*16
+				}
+			}
+			else{
+				throw "Hex invalid";
+			}
+		}
+		function color(){
+			var self = this
+			this.hsl = false;
+			this.r = 255
+			this.g = 255
+			this.b = 255
+			this.h = 0
+			this.s = 0
+			this.l = 100
+			this.a = 1
+			this.refreshHSL = function(){
+				var newConf = rgbToHsl(r,g,b);
+				self.h = newConf.h
+				self.s = newConf.s
+				self.l = newConf.l
+			}
+			this.refreshRGB = function(){
+				var newConf = hslToRgb(h,s,l)
+				self.r = newConf.r
+				self.g = newConf.g
+				self.b = newConf.b
+			}
+		}
+		function codifyLayer(layer){
+			var attribute = ""
+			if(layer.linear){attribute += "linear-gradient( "}
+			else{attribute += "radial-gradient( "}
+			for(var i = 0; i < layer.colors.length; i++){
+				if(i!=0){
+					attribute+=" , "
+				}
+				if(layer.colors[i].hsl){attribute+="hsla("+layer.colors[i].h+","+layer.colors[i].s+"%,"+layer.colors[i].l+"%,"+layer.colors[i].a+")"}
+				else{attribute+="rgba("+layer.colors[i].r+","+layer.colors[i].g+","+layer.colors[i].b+","+layer.colors[i].a+")"}
+				attribute+=" "+(layer.colors[i].position*100)+"%"
+			}
+			attribute+= " )"
+			return attribute
+		}
+		function codifyLayers(){
+			var attributes = ""
+			for(var i = 0; i<page.layers.length; i++){
+				attributes+=" "+codifyLayer(page.layers[i])
+			}
+			return attributes
+		}
+		var page = {}
+		page.layers = []
+		$(document).ready(function(){
+			Vile.initialize(page)
+			page.toggleCodePanel = function(){
+				$('.code-panel').toggleClass('active')
+			}
+			page.refreshLayers = function(){
+			}
+			page.addLayer = function(){
+				layers.push({
+					//mode, if linear == false than it is radial gradient
+					name: 'layer '+page.layers.length,
+					linear: true,
+					colors: [{position: 0,color:new Color()},{position:1,color:new Color()}]
+				})
+				page.refreshLayers();
+			}
+			page.deleteLayer = function(event, element){
+				event.preventDefault();
+			}
+		})
+	</script>
+	<body>
+		<div class='code-panel'>
+			<div class="beta">
+			</div>
+			<div class="back-banner text-left">
+				<a onclick = "page.toggleCodePanel()">Close</a>
+			</div>
+		</div>
+		<div class="workscreen">
+			<div class="top back-banner">
+				<div class="text-left">
+					<div class="">
+						<a href="index.html">&#60;&#60;back</a>
+					</div>
+				</div>
+				<div class="text-center">
+					<span>Background Maker</span>
+				</div>
+				<div class="text-right">
+					<a onclick="page.toggleCodePanel()">View Code</a>
+				</div>
+			</div>
+			<div class="workplace">
+				<div class="display col-sm-9">
+				</div>
+				<div class="control-panel col-sm-3">
+					<div class="section section-layer">
+						<label>Layers</label>
+						<div class='button-container text-right'>
+							<a onclick="page.addLayer()">New Layer</a>
+						</div>
+						<div vile-weave="listLayer" class="list-layer">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

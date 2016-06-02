@@ -89,8 +89,9 @@ body *{
     box-sizing: border-box;
     font-size: 26px;
 	padding-top: 20px;
-	padding-left: 950px;
+	padding-left: calc( 70% - 10px);
 	transition: background 0.2s ease;
+	z-index: 1000000000;
 }
 
 .container-menu.change{
@@ -331,8 +332,8 @@ body *{
 	margin-top: 50px;
 }
 
-.portfolio{
-    display: none;
+.portfolio:after{
+	clear: both;
 }
 
 .por-item{
