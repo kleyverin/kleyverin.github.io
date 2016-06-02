@@ -168,14 +168,21 @@ var Vile = {
 			editor.make = function(element,attrib,content){
 				var nAttribute;
 				var nContent;
-				
-				if(isObject(attrib) && (typeof content != 'function' || typeof content != 'object')  ){
+				if(isObject(attrib) && (typeof content != 'function' || typeof content != 'object') && typeof content != 'undefined'){
 					nAttribute = attrib
 					nContent = content
 				}
-				else if(isObject(content) && (typeof attrib != 'function' || typeof attrib != 'object')){
+				else if(isObject(content) && (typeof attrib != 'function' || typeof attrib != 'object') && typeof content != 'undefined'){
 					nAttribute = content
 					nContent = attrib
+				}
+				else if((typeof attrib != 'function' || typeof attrib != 'object') && typeof content != 'undefined'){
+					nAttribute = {}
+					nContent = attrib
+				}
+				else if(isObject(attrib)){
+					nAttribute = attrib
+					nContent = ''
 				}
 				else{
 					throw new VileException("Invalid parameters. editor.make parameters should be element(string),content(string),attrib(object) or element(string),attrib(object),content(string)");

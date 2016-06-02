@@ -8,7 +8,7 @@
 		<link rel="stylesheet" href="style/specific/backgroundmaker.css">
 		<link rel="stylesheet" href="style/font.css">
 		<link rel="stylesheet" href="style/bootstrap/css/bootstrap.css">
-        <script src="script/vile.min.js"></script>
+        <script src="script/vile.js"></script>
 		<script src="script/vile.element.js"></script>
 		<script src="script/jquery-2.2.1.js"></script>
 	</head>
@@ -127,6 +127,36 @@
 			height: 200px;
 			border-bottom: 1px solid #ddd;
 			box-shadow: inset 1px 2px 4px rgba(124,124,124,0.3);
+		}
+		.list-layer .layer-item>div{
+			float:left;
+			height: 40px;
+			background: white;
+		}
+		.list-layer .layer-item:after{
+			display: block;
+			clear: both;
+			content: '';
+		}
+		.list-layer .layer-item .layer-display{
+			width: 20%;
+			border: 1px solid #ddd;
+		}
+		.list-layer .layer-item .layer-title{
+			padding: 10px;
+			width: 70%;
+			border: 1px solid #ddd;
+		}
+		.list-layer .layer-item .layer-delete{
+			padding-top: 10px;
+			width: 10%;
+			border: 1px solid #ddd;
+			text-align: center;
+		}
+		.list-layer .layer-item .layer-title>input{
+			font-size: 11;
+			border: 0px solid black;
+			width: auto;
 		}
 		.code-panel .back-banner{
 			background: white;
@@ -281,7 +311,7 @@
 				throw "Hex invalid";
 			}
 		}
-		function color(){
+		function Color(){
 			var self = this
 			this.hsl = false;
 			this.r = 255
@@ -327,6 +357,26 @@
 			return attributes
 		}
 		var page = {}
+		var selectedLayer;
+		page.modifyLayer = function(event,element){
+			var attribute = $(element).attr('data-attr')
+			var index = $(element).parents('.layer-item').attr('data-index')
+			page.layers[index][attribute] = $(element).val()
+		}
+		page.deleteLayer = function(event,element){
+			console.log(1)
+			var index = $(element).parents('.layer-item').attr('data-index')
+			if(selectedLayer == page.layers.splice(index,1)){
+				selectedLayer = null
+			}
+			page.refreshLayers();
+		}
+		page.selectLayer = function(event,element){
+			var selected = $(element).parents('.layer-item')
+			var index = $(element).parents('.layer-item').attr('data-index')
+			selectedLayer = page.layers[index]
+			selected.addClass('active')
+		}
 		page.layers = []
 		$(document).ready(function(){
 			Vile.initialize(page)
@@ -334,9 +384,21 @@
 				$('.code-panel').toggleClass('active')
 			}
 			page.refreshLayers = function(){
+				var layerItems = ""
+				for(var i = 0 ; i < page.layers.length; i++){
+					var display = page.e.make('div',{class:'layer-display',onclick:'page.selectLayer(event,this)'},'')
+					var title = page.e.make('div',
+											{class:'layer-title'},
+											page.e.make('input',{'data-attr':'name',value:page.layers[i].name,type:'text',onchange:'page.modifyLayer(event,this)'},''))
+					var del = page.e.make('a',{class:'layer-delete',onclick:'page.deleteLayer(event,this)'},page.e.make('span',{class:'glyphicon glyphicon-remove'}))
+					var item = page.e.make('div',{'data-index':i,class:'layer-item'},display+title+del)
+					
+					layerItems+=item	
+				}
+				$(page.listLayer).html(layerItems)
 			}
 			page.addLayer = function(){
-				layers.push({
+				page.layers.push({
 					//mode, if linear == false than it is radial gradient
 					name: 'layer '+page.layers.length,
 					linear: true,
@@ -382,6 +444,9 @@
 						</div>
 						<div vile-weave="listLayer" class="list-layer">
 						</div>
+					</div>
+					<div vile-weave="sectionSingle" class="section section-single-layer hidden">
+						<label></label>
 					</div>
 				</div>
 			</div>
