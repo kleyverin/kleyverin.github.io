@@ -148,15 +148,32 @@
 			border: 1px solid #ddd;
 		}
 		.list-layer .layer-item .layer-delete{
+			display: block;
+			float: left;
+			height: 40px;
 			padding-top: 10px;
 			width: 10%;
 			border: 1px solid #ddd;
+			color: #337ab7;
+			background: white;
 			text-align: center;
+			cursor: pointer;
+		}
+		.list-layer .layer-item .layer-delete:hover{
+			color: white;
+			background: #337ab7;
 		}
 		.list-layer .layer-item .layer-title>input{
 			font-size: 11;
 			border: 0px solid black;
 			width: auto;
+		}
+		.list-layer .layer-item.active>div{
+			background: #337ab7;
+		}
+		.list-layer .layer-item.active .layer-title>input{
+			background: #337ab7;
+			color: white;
 		}
 		.code-panel .back-banner{
 			background: white;
@@ -342,8 +359,8 @@
 				if(i!=0){
 					attribute+=" , "
 				}
-				if(layer.colors[i].hsl){attribute+="hsla("+layer.colors[i].h+","+layer.colors[i].s+"%,"+layer.colors[i].l+"%,"+layer.colors[i].a+")"}
-				else{attribute+="rgba("+layer.colors[i].r+","+layer.colors[i].g+","+layer.colors[i].b+","+layer.colors[i].a+")"}
+				if(layer.colors[i].color.hsl){attribute+="hsla("+layer.colors[i].color.h+","+layer.colors[i].color.s+"%,"+layer.colors[i].color.l+"%,"+layer.colors[i].color.a+")"}
+				else{attribute+="rgba("+layer.colors[i].color.r+","+layer.colors[i].color.g+","+layer.colors[i].color.b+","+layer.colors[i].color.a+")"}
 				attribute+=" "+(layer.colors[i].position*100)+"%"
 			}
 			attribute+= " )"
@@ -363,35 +380,53 @@
 			var index = $(element).parents('.layer-item').attr('data-index')
 			page.layers[index][attribute] = $(element).val()
 		}
-		page.deleteLayer = function(event,element){
-			console.log(1)
-			var index = $(element).parents('.layer-item').attr('data-index')
-			if(selectedLayer == page.layers.splice(index,1)){
-				selectedLayer = null
-			}
-			page.refreshLayers();
-		}
 		page.selectLayer = function(event,element){
 			var selected = $(element).parents('.layer-item')
-			var index = $(element).parents('.layer-item').attr('data-index')
-			selectedLayer = page.layers[index]
-			selected.addClass('active')
+			if(selected.hasClass('active')){
+				page.unselectLayer()
+			}else{
+				$(page.listLayer).children('.layer-item').removeClass('active')
+				var index = $(element).parents('.layer-item').attr('data-index')
+				selectedLayer = page.layers[index]
+				selected.addClass('active')
+			}
 		}
+		page.unselectLayer = function(){
+			$(page.listLayer).children('.layer-item').removeClass('active')
+			selectedLayer = null
+		}
+		page.layerCount = 0
 		page.layers = []
 		$(document).ready(function(){
 			Vile.initialize(page)
 			page.toggleCodePanel = function(){
 				$('.code-panel').toggleClass('active')
 			}
+			page.deleteLayer = function(event,element){
+				var index = $(element).parents('.layer-item').attr('data-index')
+				if(selectedLayer == page.layers.splice(index,1)){
+					page.unselectLayer()
+				}
+				page.refreshLayers();
+			}
 			page.refreshLayers = function(){
 				var layerItems = ""
 				for(var i = 0 ; i < page.layers.length; i++){
-					var display = page.e.make('div',{class:'layer-display',onclick:'page.selectLayer(event,this)'},'')
+					var display = page.e.make('div',{
+						class:'layer-display',
+						'onclick':'page.selectLayer(event,this)',
+						style: 'background: '+codifyLayer(page.layers[i])+";"
+					},'')
 					var title = page.e.make('div',
 											{class:'layer-title'},
 											page.e.make('input',{'data-attr':'name',value:page.layers[i].name,type:'text',onchange:'page.modifyLayer(event,this)'},''))
-					var del = page.e.make('a',{class:'layer-delete',onclick:'page.deleteLayer(event,this)'},page.e.make('span',{class:'glyphicon glyphicon-remove'}))
-					var item = page.e.make('div',{'data-index':i,class:'layer-item'},display+title+del)
+					var del = page.e.make('a',{class:'layer-delete','onclick':'page.deleteLayer(event,this)'},page.e.make('span',{class:'glyphicon glyphicon-remove'}))
+					var item
+					if(page.layers[i] == selectedLayer){
+						item = page.e.make('div',{'data-index':i,class:'layer-item active'},display+title+del)
+					}else{
+						item = page.e.make('div',{'data-index':i,class:'layer-item'},display+title+del)
+					}
 					
 					layerItems+=item	
 				}
@@ -400,14 +435,11 @@
 			page.addLayer = function(){
 				page.layers.push({
 					//mode, if linear == false than it is radial gradient
-					name: 'layer '+page.layers.length,
+					name: 'layer '+(++page.layerCount),
 					linear: true,
 					colors: [{position: 0,color:new Color()},{position:1,color:new Color()}]
 				})
 				page.refreshLayers();
-			}
-			page.deleteLayer = function(event, element){
-				event.preventDefault();
 			}
 		})
 	</script>
