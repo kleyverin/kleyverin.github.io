@@ -61,15 +61,23 @@ $(function(){
 });
 
 $(document).ready(function(){
-    $('.item-2').hover(function(){
-        $('.portfolio').removeClass('hidden');
-        $('.coming-soon').addClass('hidden');
-        $('.what-we-do').addClass('hidden');
-        $('.vile').addClass('hidden');
-    }, function(){
-        $('.portfolio').addClass('hidden');
-        $('.coming-soon').removeClass('hidden');
-        $('.what-we-do').removeClass('hidden');
-        $('.vile').removeClass('hidden');
-    });
+    $('.portfolio').hide();
+    $('.item-2').mouseenter(function(){
+        $('.portfolio').show();
+        $('.coming-soon').hide();
+        $('.what-we-do').hide();
+        $('.vile').hide();
+    })
+        .mouseover(function(){
+        $('.portfolio').show();
+        $('.coming-soon').hide();
+        $('.what-we-do').hide();
+        $('.vile').hide();
+    }) 
+        .mouseleave(function(){
+        $('.portfolio').hide();
+        $('.coming-soon').show();
+        $('.what-we-do').show();
+        $('.vile').show();
+    })
 });
