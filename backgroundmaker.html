@@ -390,10 +390,12 @@
 				selectedLayer = page.layers[index]
 				selected.addClass('active')
 			}
+			page.refreshLayerOption()
 		}
 		page.unselectLayer = function(){
 			$(page.listLayer).children('.layer-item').removeClass('active')
 			selectedLayer = null
+			page.refreshLayerOption()
 		}
 		page.layerCount = 0
 		page.layers = []
@@ -431,6 +433,17 @@
 					layerItems+=item	
 				}
 				$(page.listLayer).html(layerItems)
+			}
+			page.refreshLayerOption = function(){
+				if(selectedLayer){
+					var layerOption = $(page.sectionLayerOption)
+					layerOption.removeClass('hidden')
+					layerOption.children('label:first-child').text(selectedLayer.name)
+					
+				}
+				else{
+					$(page.sectionLayerOption).addClass('hidden')
+				}
 			}
 			page.addLayer = function(){
 				page.layers.push({
@@ -477,7 +490,7 @@
 						<div vile-weave="listLayer" class="list-layer">
 						</div>
 					</div>
-					<div vile-weave="sectionSingle" class="section section-single-layer hidden">
+					<div vile-weave="sectionLayerOption" class="section section-layer-option hidden">
 						<label></label>
 					</div>
 				</div>
