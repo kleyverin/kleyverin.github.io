@@ -339,21 +339,23 @@ page.layerOption.positionSetting.refresh = function(){
 	$(page.inputPositionYSetting).val(selectedLayer.position.y)
 }
 page.layerOption.colorGraph={}
-page.layerOption.colorGraph.selectColor = function(event, element){
-	if(selectedPeon==null){
+page.layerOption.colorGraph.selectPeon = function(event, element){
+	if(selectedPeon!=element){
+		$(selectedPeon).removeClass('active')
 		selectedPeon = element
 		$(selectedPeon).addClass('active')
-		draggedPeon = element
 	}else{
 		$(selectedPeon).removeClass('active')
 		selectedPeon = null
 	}
+	draggedPeon = element
 }
 window.addEventListener('mouseup',function(e){
 	if(draggedPeon!=null){
 		draggedPeon = null
 	}
 })
+page.colorOption = {}
 window.addEventListener('mousemove',function(e){
 	if(draggedPeon!=null){
 		var left = ((e.pageX - (draggedPeon.offsetWidth/2) - page.colorGraph.getBoundingClientRect().left)/(page.colorGraph.offsetWidth-12)*100);
@@ -370,7 +372,7 @@ window.addEventListener('mousemove',function(e){
 page.layerOption.colorGraph.makePeon = function(color,index){
 	var inside = page.e.make('div',{
 		'data-index': index,
-		onmousedown: "page.layerOption.colorGraph.selectColor(event,this)",
+		onmousedown: "page.layerOption.colorGraph.selectPeon(event,this)",
 		style: page.e.generateAttributesForStyle({
 			background: codifyColor(color),
 			left: color.position+"%"
