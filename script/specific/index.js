@@ -62,22 +62,10 @@ $(function(){
 
 $(document).ready(function(){
     $('.portfolio').hide();
-    $('.item-2').mouseenter(function(){
+    $('.item-2').click(function(){
         $('.portfolio').show();
         $('.coming-soon').hide();
         $('.what-we-do').hide();
         $('.vile').hide();
-    })
-        .mouseover(function(){
-        $('.portfolio').show();
-        $('.coming-soon').hide();
-        $('.what-we-do').hide();
-        $('.vile').hide();
-    }) 
-        .mouseleave(function(){
-        $('.portfolio').hide();
-        $('.coming-soon').show();
-        $('.what-we-do').show();
-        $('.vile').show();
     })
 });
