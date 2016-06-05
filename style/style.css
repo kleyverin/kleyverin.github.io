@@ -77,7 +77,7 @@ body *{
 .bar1, .bar2, .bar3{
     width: 100%;
     height: 3px;
-    background-color: rgba(100,100,100,1);
+    background-color: rgba(100,100,100,0.5);
     margin: 4px 0;
 }
 
@@ -96,7 +96,7 @@ body *{
     flex-flow: column;
     justify-content: center;
     min-height: 100%;
-    background-color: rgba(219,219,219,0.1);
+    background-color: rgba(219,219,219,0.2);
 }
 
 .home-title{
@@ -111,4 +111,51 @@ body *{
 .construction{
     padding-top: 1em;
     font-size: 14px;
+}
+
+/** NEW PRODUCT **/
+.new-product{
+    min-height: 100%;
+    padding: 3em 6em;
+}
+
+.newpro-title{
+    font-size: 40px;
+    border-bottom: 2px solid rgba(170,170,170,0.06);
+}
+
+.newpro-cont-img{
+    height: 80vh;
+    background-image: url(../image/backgroundmaker.PNG);
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.newpro-cont-txt{
+    text-align: center;
+    display: flex;
+    align-items: center;
+    flex-flow: row;
+    justify-content: center;
+    height: 80vh;
+}
+
+.txt-box{
+    padding: 0 2em;
+}
+
+.txt-desc{
+    font-size: 20px;
+}
+
+.txt-proname{
+    font-size: 25px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #3DA1DB;
+}
+
+.txt-proname:hover{
+    text-decoration: none;
 }
