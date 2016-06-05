@@ -96,7 +96,8 @@ body *{
     flex-flow: column;
     justify-content: center;
     min-height: 100%;
-    background-color: rgba(219,219,219,0.2);
+    background-image: url(../image/home-background.jpg);
+    /*background-color: rgba(219,219,219,0.2);*/
 }
 
 .home-title{
