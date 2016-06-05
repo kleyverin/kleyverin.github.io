@@ -11,451 +11,323 @@
         <script src="script/vile.js"></script>
 		<script src="script/vile.element.js"></script>
 		<script src="script/jquery-2.2.1.js"></script>
-	</head>
-	<style>
-		.workscreen{
-			width: 100%;
-			height: 100%;
-			display: flex;
-			justify-content: flex-start;
-			flex-flow: column;
-		}
-		.workplace{
-			flex: 1 0 auto;
-			height: calc(100% - 30px)
-		}
-		.workplace>div{
-			height: 100%;
-		}
-		@media only screen and (max-width:767px){
-			.workplace>div.display{
-				height: 60vw;
+		<style>
+		</style>
+		<script>
+			function Color(){
+				var self = this
+				this.hsl = false;
+				this.r = 255
+				this.g = 255
+				this.b = 255
+				this.h = 0
+				this.s = 0
+				this.l = 100
+				this.a = 1
+				this.refreshHSL = function(){
+					var newConf = rgbToHsl(r,g,b);
+					self.h = newConf.h
+					self.s = newConf.s
+					self.l = newConf.l
+				}
+				this.refreshRGB = function(){
+					var newConf = hslToRgb(h,s,l)
+					self.r = newConf.r
+					self.g = newConf.g
+					self.b = newConf.b
+				}
 			}
-			.workplace>div.control-panel{
-				height: auto;
-				overflow-y: auto;
+			function hslToRgb(h,s,l){
+				var ret = {}
+				var c = (1-Math.abs((2*l/100-1)))*(s/100)
+				var x = c * (1-Math.abs(((h/60)%2)-1))
+				var m = l/100-c/2
+				var r,g,b;
+				if	   (  0<=h && h<60 ){ r=c ; g=x ; b=0 ;}
+				else if( 60<=h && h<60 ){ r=x ; g=c ; b=0 ;}
+				else if(120<=h && h<180){ r=0 ; g=c ; b=x ;}
+				else if(180<=h && h<240){ r=0 ; g=x ; b=c ;}
+				else if(240<=h && h<300){ r=x ; g=0 ; b=c ;}
+				else if(300<=h && h<360){ r=c ; g=0 ; b=x ;}
+				ret.r = Math.round((r+m)*255)
+				ret.g = Math.round((g+m)*255)
+				ret.b = Math.round((b+m)*255)
+				return ret
 			}
-		}
-		.top{
-			height: 30px;
-			width: 100%;
-			margin: auto;
-			flex: 0 0 auto;
-		}
-		.top>div{
-			padding: 0 15px;
-			float: left;
-		}
-		.top>div:nth-child(1){
-			width: 25%;
-		}
-		.top>div:nth-child(2){
-			width: 50%;
-		}
-		.top>div:nth-child(3){
-			width: 25%;
-		}
-		@media only screen and (max-width:767px){
-			.top>div:nth-child(1){
-				width: 50%;
+			function rgbToHsl(r,g,b){
+				var ret = {}
+				ret.h;ret.s;ret.l;
+				var min = 100, max = 0
+				r=r/255*100
+				g=g/255*100
+				b=b/255*100
+				if(r<min){min = r}
+				if(g<min){min = g}
+				if(b<min){min = b}
+				if(r>max){max = r}
+				if(g>max){max = g}
+				if(b>max){max = b}
+				console.log(max-min)
+				//l
+				ret.l = (max+min)/2
+				//s
+				if(max-min == 0){ret.s = 0}
+				else{ret.s = (max-min)/(1-Math.abs((2*ret.l)/100-1))}
+				//h
+				if(max-min==0){ret.h = 0}
+				else if(max==r){ ret.h = 60 * (((g-b)/(max-min))%6) }
+				else if(max==g){ ret.h = 60 * (((b-r)/(max-min))+2) }
+				else if(max==b){ ret.h = 60 * (((r-g)/(max-min))+4) }
+				return ret
 			}
-			.top>div:nth-child(2){
-				display: none;
+			function decimalToHex(number){
+				function toHex(numbers){
+					if(numbers < 10){
+						return numbers
+					}
+					else{
+						switch(numbers){
+							case 10: return 'A'
+							case 11: return 'B'
+							case 12: return 'C'
+							case 13: return 'D'
+							case 14: return 'E'
+							case 15: return 'F'
+							default: throw new VileException('Invalid number')
+						}
+					}
+				}
+				var string = ""
+				while(true){
+					if(number==0){
+						break
+					}
+					string = toHex(number%16)+string
+					number = Math.floor(number/16)
+				}
+				return string;
 			}
-			.top>div:nth-child(3){
-				width: 50%;
+			function hexToDecimal(string){
+				string = String(string)
+				function toDecimal(char){
+					switch(char.toUpperCase()){
+						case 'A': return 10
+						case 'B': return 11
+						case 'C': return 12
+						case 'D': return 13
+						case 'E': return 14
+						case 'F': return 15
+						default: 
+							try{
+								return Number(char)
+							}catch(e){
+								throw new VileException('Invalid char')
+							}
+					}
+				}
+				var number = 0;
+				var pow = 1;
+				var p = string.length-1
+				while(true){
+					console.log(p)
+					if(p<0){
+						break;
+					}
+					number += pow*toDecimal(string[p])
+					pow *= 16
+					p-=1
+				}
+				return number;
 			}
-		}
-		.top:after{
-			clear: 
-		}
-		.back-banner{
-			background: black;
-			padding: 5px 0;
-		}
-		.back-banner div,
-		.back-banner a{
-			color: white;
-			font-weight: bold;
-		}
-		.back-banner a{
-			cursor: pointer;
-		}
-		.button-container>a{
-			transition: background 0.3s ease, color 0.3s ease;
-			background: #337ab7;
-			color: white;
-			cursor: pointer;
-			box-shadow: 0 0 3px rgba(0,0,0,0.3);
-			padding: 2px 6px;
-			display: inline-block;
-		}
-		.button-container>a:hover{
-			text-decoration: none;
-			color: #337ab7;
-			background: white;
-			transform: translateZ(30px);
-		}
-		.control-panel{
-			border-left: 1px solid #ccc;
-			overflow-y: scroll;
-		}
-		.section{
-			margin: 0 -15px;
-		}
-		.section>label{
-			margin: 0;
-			display: block;
-			background: linear-gradient(black,black);
-			color: white;
-		}
-		.section{
-			border-top: 1px solid #ddd;
-			border-bottom: 1px solid #ddd;
-		}
-		.section:first-child{
-			border-top: none;
-		}
-		.section:last-child{
-			border-bottom: none;
-		}
-		.section .button-container{
-			border-bottom: 1px solid #ddd;
-		}
-		.list-layer{
-			overflow-y: scroll;
-			height: 200px;
-			border-bottom: 1px solid #ddd;
-			box-shadow: inset 1px 2px 4px rgba(124,124,124,0.3);
-		}
-		.list-layer .layer-item>div{
-			float:left;
-			height: 40px;
-			background: white;
-		}
-		.list-layer .layer-item:after{
-			display: block;
-			clear: both;
-			content: '';
-		}
-		.list-layer .layer-item .layer-display{
-			width: 20%;
-			border: 1px solid #ddd;
-		}
-		.list-layer .layer-item .layer-title{
-			padding: 10px;
-			width: 70%;
-			border: 1px solid #ddd;
-		}
-		.list-layer .layer-item .layer-delete{
-			display: block;
-			float: left;
-			height: 40px;
-			padding-top: 10px;
-			width: 10%;
-			border: 1px solid #ddd;
-			color: #337ab7;
-			background: white;
-			text-align: center;
-			cursor: pointer;
-		}
-		.list-layer .layer-item .layer-delete:hover{
-			color: white;
-			background: #337ab7;
-		}
-		.list-layer .layer-item .layer-title>input{
-			font-size: 11;
-			border: 0px solid black;
-			width: auto;
-		}
-		.list-layer .layer-item.active>div{
-			background: #337ab7;
-		}
-		.list-layer .layer-item.active .layer-title>input{
-			background: #337ab7;
-			color: white;
-		}
-		.code-panel .back-banner{
-			background: white;
-			padding-left: 15px;
-			padding-right: 15px;
-			box-shadow: 0 1px 0 black;
-		}
-		.code-panel .back-banner a{
-			color: black;
-		}
-		.code-panel{
-			transition: right 0.5s ease;
-			position: absolute;
-			width: 400px;
-			max-width: 100%;
-			height: 100%;
-			background: rgba(255,255,255,0.7);
-			margin-left: -15px;
-			margin-right: -15px;
-			right: -400px;
-			box-shadow: 0 0 3px black;
-			z-index: 100;
-		}
-		.code-panel.active{
-			right: 0;
-		}
-	</style>
-	<script>
-		function hslToRgb(h,s,l){
-			var ret = {}
-			var c = (1-Math.abs((2*l/100-1)))*(s/100)
-			var x = c * (1-Math.abs(((h/60)%2)-1))
-			var m = l/100-c/2
-			var r,g,b;
-			if	   (  0<=h && h<60 ){ r=c ; g=x ; b=0 ;}
-			else if( 60<=h && h<60 ){ r=x ; g=c ; b=0 ;}
-			else if(120<=h && h<180){ r=0 ; g=c ; b=x ;}
-			else if(180<=h && h<240){ r=0 ; g=x ; b=c ;}
-			else if(240<=h && h<300){ r=x ; g=0 ; b=c ;}
-			else if(300<=h && h<360){ r=c ; g=0 ; b=x ;}
-			ret.r = Math.round((r+m)*255)
-			ret.g = Math.round((g+m)*255)
-			ret.b = Math.round((b+m)*255)
-			return ret
-		}
-		function rgbToHsl(r,g,b){
-			var ret = {}
-			ret.h;ret.s;ret.l;
-			var min = 100, max = 0
-			r=r/255*100
-			g=g/255*100
-			b=b/255*100
-			if(r<min){min = r}
-			if(g<min){min = g}
-			if(b<min){min = b}
-			if(r>max){max = r}
-			if(g>max){max = g}
-			if(b>max){max = b}
-			console.log(max-min)
-			//l
-			ret.l = (max+min)/2
-			//s
-			if(max-min == 0){ret.s = 0}
-			else{ret.s = (max-min)/(1-Math.abs((2*ret.l)/100-1))}
-			//h
-			if(max-min==0){ret.h = 0}
-			else if(max==r){ ret.h = 60 * (((g-b)/(max-min))%6) }
-			else if(max==g){ ret.h = 60 * (((b-r)/(max-min))+2) }
-			else if(max==b){ ret.h = 60 * (((r-g)/(max-min))+4) }
-			return ret
-		}
-		function decimalToHex(number){
-			function toHex(numbers){
-				if(numbers < 10){
-					return numbers
+			function rgbToHex(r,g,b){
+				return (('00')+decimalToHex(r)).slice(-2)
+					+(('00')+decimalToHex(g)).slice(-2)
+					+(('00')+decimalToHex(b)).slice(-2)
+			}
+			function hexToRgb(string){
+				if(string.length == 6){
+					return {
+						r: hexToDecimal(string[0]+string[1]),
+						g: hexToDecimal(string[2]+string[3]),
+						b: hexToDecimal(string[4]+string[5])
+					}
+				}
+				else if(string.length == 3){
+					return {
+						r: hexToDecimal(string[0])*16,
+						g: hexToDecimal(string[1])*16,
+						b: hexToDecimal(string[2])*16
+					}
 				}
 				else{
-					switch(numbers){
-						case 10: return 'A'
-						case 11: return 'B'
-						case 12: return 'C'
-						case 13: return 'D'
-						case 14: return 'E'
-						case 15: return 'F'
-						default: throw new VileException('Invalid number')
+					throw "Hex invalid";
+				}
+			}
+			function codifyLayer(layer){
+				var attribute = ""
+				if(layer.linear){attribute += "linear-gradient( "}
+				else{attribute += "radial-gradient( "}
+				for(var i = 0; i < layer.colors.length; i++){
+					if(i!=0){
+						attribute+=" , "
 					}
+					if(layer.colors[i].color.hsl){attribute+="hsla("+layer.colors[i].color.h+","+layer.colors[i].color.s+"%,"+layer.colors[i].color.l+"%,"+layer.colors[i].color.a+")"}
+					else{attribute+="rgba("+layer.colors[i].color.r+","+layer.colors[i].color.g+","+layer.colors[i].color.b+","+layer.colors[i].color.a+")"}
+					attribute+=" "+(layer.colors[i].position*100)+"%"
 				}
+				attribute+= " )"
+				return attribute
 			}
-			var string = ""
-			while(true){
-				if(number==0){
-					break
+			function codifyLayers(){
+				var attributes = ""
+				for(var i = 0; i<page.layers.length; i++){
+					attributes+=" "+codifyLayer(page.layers[i])
 				}
-				string = toHex(number%16)+string
-				number = Math.floor(number/16)
+				return attributes
 			}
-			return string;
-		}
-		function hexToDecimal(string){
-			string = String(string)
-			function toDecimal(char){
-				switch(char.toUpperCase()){
-					case 'A': return 10
-					case 'B': return 11
-					case 'C': return 12
-					case 'D': return 13
-					case 'E': return 14
-					case 'F': return 15
-					default: 
-						try{
-							return Number(char)
-						}catch(e){
-							throw new VileException('Invalid char')
-						}
-				}
-			}
-			var number = 0;
-			var pow = 1;
-			var p = string.length-1
-			while(true){
-				console.log(p)
-				if(p<0){
-					break;
-				}
-				number += pow*toDecimal(string[p])
-				pow *= 16
-				p-=1
-			}
-			return number;
-		}
-		function rgbToHex(r,g,b){
-			return (('00')+decimalToHex(r)).slice(-2)
-				+(('00')+decimalToHex(g)).slice(-2)
-				+(('00')+decimalToHex(b)).slice(-2)
-		}
-		function hextToRgb(string){
-			if(string.length == 6){
-				return {
-					r: hexToDecimal(string[0]+string[1]),
-					g: hexToDecimal(string[2]+string[3]),
-					b: hexToDecimal(string[4]+string[5])
-				}
-			}
-			else if(string.length == 3){
-				return {
-					r: hexToDecimal(string[0])*16,
-					g: hexToDecimal(string[1])*16,
-					b: hexToDecimal(string[2])*16
-				}
-			}
-			else{
-				throw "Hex invalid";
-			}
-		}
-		function Color(){
-			var self = this
-			this.hsl = false;
-			this.r = 255
-			this.g = 255
-			this.b = 255
-			this.h = 0
-			this.s = 0
-			this.l = 100
-			this.a = 1
-			this.refreshHSL = function(){
-				var newConf = rgbToHsl(r,g,b);
-				self.h = newConf.h
-				self.s = newConf.s
-				self.l = newConf.l
-			}
-			this.refreshRGB = function(){
-				var newConf = hslToRgb(h,s,l)
-				self.r = newConf.r
-				self.g = newConf.g
-				self.b = newConf.b
-			}
-		}
-		function codifyLayer(layer){
-			var attribute = ""
-			if(layer.linear){attribute += "linear-gradient( "}
-			else{attribute += "radial-gradient( "}
-			for(var i = 0; i < layer.colors.length; i++){
-				if(i!=0){
-					attribute+=" , "
-				}
-				if(layer.colors[i].color.hsl){attribute+="hsla("+layer.colors[i].color.h+","+layer.colors[i].color.s+"%,"+layer.colors[i].color.l+"%,"+layer.colors[i].color.a+")"}
-				else{attribute+="rgba("+layer.colors[i].color.r+","+layer.colors[i].color.g+","+layer.colors[i].color.b+","+layer.colors[i].color.a+")"}
-				attribute+=" "+(layer.colors[i].position*100)+"%"
-			}
-			attribute+= " )"
-			return attribute
-		}
-		function codifyLayers(){
-			var attributes = ""
-			for(var i = 0; i<page.layers.length; i++){
-				attributes+=" "+codifyLayer(page.layers[i])
-			}
-			return attributes
-		}
-		var page = {}
-		var selectedLayer;
-		page.modifyLayer = function(event,element){
-			var attribute = $(element).attr('data-attr')
-			var index = $(element).parents('.layer-item').attr('data-index')
-			page.layers[index][attribute] = $(element).val()
-		}
-		page.selectLayer = function(event,element){
-			var selected = $(element).parents('.layer-item')
-			if(selected.hasClass('active')){
-				page.unselectLayer()
-			}else{
-				$(page.listLayer).children('.layer-item').removeClass('active')
+			var page = {}
+			/******
+			layer management
+			*****/
+			var selectedLayer;
+			page.modifyLayer = function(event,element){
+				var attribute = $(element).attr('data-attr')
 				var index = $(element).parents('.layer-item').attr('data-index')
-				selectedLayer = page.layers[index]
-				selected.addClass('active')
+				page.layers[index][attribute] = $(element).val()
 			}
-			page.refreshLayerOption()
-		}
-		page.unselectLayer = function(){
-			$(page.listLayer).children('.layer-item').removeClass('active')
-			selectedLayer = null
-			page.refreshLayerOption()
-		}
-		page.layerCount = 0
-		page.layers = []
-		$(document).ready(function(){
-			Vile.initialize(page)
-			page.toggleCodePanel = function(){
-				$('.code-panel').toggleClass('active')
-			}
-			page.deleteLayer = function(event,element){
-				var index = $(element).parents('.layer-item').attr('data-index')
-				if(selectedLayer == page.layers.splice(index,1)){
+			page.selectLayer = function(event,element){
+				var selected = $(element).parents('.layer-item')
+				if(!selected.hasClass('active')){
+					$(page.listLayer).children('.layer-item').removeClass('active')
+					var index = $(element).parents('.layer-item').attr('data-index')
+					selectedLayer = page.layers[index]
+					selected.addClass('active')
+				}else{
 					page.unselectLayer()
 				}
-				page.refreshLayers();
+				page.layerOption.refresh()
 			}
-			page.refreshLayers = function(){
-				var layerItems = ""
-				for(var i = 0 ; i < page.layers.length; i++){
-					var display = page.e.make('div',{
-						class:'layer-display',
-						'onclick':'page.selectLayer(event,this)',
-						style: 'background: '+codifyLayer(page.layers[i])+";"
-					},'')
-					var title = page.e.make('div',
-											{class:'layer-title'},
-											page.e.make('input',{'data-attr':'name',value:page.layers[i].name,type:'text',onchange:'page.modifyLayer(event,this)'},''))
-					var del = page.e.make('a',{class:'layer-delete','onclick':'page.deleteLayer(event,this)'},page.e.make('span',{class:'glyphicon glyphicon-remove'}))
-					var item
-					if(page.layers[i] == selectedLayer){
-						item = page.e.make('div',{'data-index':i,class:'layer-item active'},display+title+del)
-					}else{
-						item = page.e.make('div',{'data-index':i,class:'layer-item'},display+title+del)
-					}
-					
-					layerItems+=item	
+			page.unselectLayer = function(){
+				$(page.listLayer).children('.layer-item').removeClass('active')
+				selectedLayer = null
+				page.layerOption.refresh()
+			}
+			page.layerOption = {}
+			page.layerOption.changeGradientMode = function(event,element){
+				if(element.value=='linear'){
+					selectedLayer.linear = true;
 				}
-				$(page.listLayer).html(layerItems)
+				else if(element.value=='radial'){
+					selectedLayer.linear = false;
+				}
+				page.layerOption.refreshModeSpecific()
 			}
-			page.refreshLayerOption = function(){
+			page.layerOption.refresh = function(){
 				if(selectedLayer){
 					var layerOption = $(page.sectionLayerOption)
 					layerOption.removeClass('hidden')
 					layerOption.children('label:first-child').text(selectedLayer.name)
 					
+					$(page.gradientMode).children('option').removeAttr('selected')
+					if(selectedLayer.linear){
+						$(page.gradientMode).children('option[value="linear"]').prop('selected',true)
+					}else{
+						$(page.gradientMode).children('option[value="radial"]').prop('selected',true)
+					}
+					page.layerOption.refreshModeSpecific()
 				}
 				else{
 					$(page.sectionLayerOption).addClass('hidden')
 				}
 			}
-			page.addLayer = function(){
-				page.layers.push({
-					//mode, if linear == false than it is radial gradient
-					name: 'layer '+(++page.layerCount),
-					linear: true,
-					colors: [{position: 0,color:new Color()},{position:1,color:new Color()}]
-				})
-				page.refreshLayers();
+			page.layerOption.refreshModeSpecific = function(){
+				if(selectedLayer.linear){
+					$('.linear-only').show();
+					$('.radial-only').hide();
+					page.layerOption.refreshAngleSetting()
+				}
+				else{
+					$('.radial-only').show();
+					$('.linear-only').hide();
+				}
 			}
-		})
-	</script>
+			page.layerOption.angleSettingUp = function(){
+				var angle = $(page.inputAngleSetting).val()
+				angle++;
+				if(angle>359){
+					angle = angle%360
+				}
+				selectedLayer.angle = angle;
+				$(page.inputAngleSetting).val(angle)
+			}
+			page.layerOption.angleSettingDown = function(){
+				var angle = $(page.inputAngleSetting).val()
+				angle--;
+				while(angle<0){
+					angle+=360
+				}
+				selectedLayer.angle = angle;
+				$(page.inputAngleSetting).val(angle)
+			}
+			page.layerOption.updateAngleSetting = function(){
+				selectedLayer.angle = $(page.inputAngleSetting).val()
+			}
+			page.layerOption.refreshAngleSetting = function(){
+				$(page.inputAngleSetting).val(selectedLayer.angle)
+			}
+			page.layerCount = 0
+			page.layers = []
+			/******
+			document ready
+			*****/
+			$(document).ready(function(){
+				Vile.initialize(page)
+				page.toggleCodePanel = function(){
+					$('.code-panel').toggleClass('active')
+				}
+				page.deleteLayer = function(event,element){
+					var index = $(element).parents('.layer-item').attr('data-index')
+					if(selectedLayer == page.layers.splice(index,1)[0]){
+						page.unselectLayer()
+					}
+					page.refreshLayers();
+				}
+				page.refreshLayers = function(){
+					var layerItems = ""
+					for(var i = 0 ; i < page.layers.length; i++){
+						var display = page.e.make('div',{
+							class:'layer-display',
+							'onclick':'page.selectLayer(event,this)',
+							style: 'background: '+codifyLayer(page.layers[i])+";"
+						},'')
+						var title = page.e.make('div',
+												{class:'layer-title'},
+												page.e.make('input',{'data-attr':'name',value:page.layers[i].name,type:'text',onchange:'page.modifyLayer(event,this)'},''))
+						var del = page.e.make('a',{class:'layer-delete','onclick':'page.deleteLayer(event,this)'},page.e.make('span',{class:'glyphicon glyphicon-remove'}))
+						var item
+						if(page.layers[i] == selectedLayer){
+							item = page.e.make('div',{'data-index':i,class:'layer-item active'},display+title+del)
+						}else{
+							item = page.e.make('div',{'data-index':i,class:'layer-item'},display+title+del)
+						}
+
+						layerItems+=item	
+					}
+					$(page.listLayer).html(layerItems)
+				}
+				page.addLayer = function(){
+					page.layers.push({
+						//mode, if linear == false than it is radial gradient
+						name: 'layer '+(++page.layerCount),
+						linear: true,
+						colors: [{position: 0,color:new Color()},{position:1,color:new Color()}],
+						angle: 0
+					})
+					page.refreshLayers();
+				}
+			})
+		</script>
+	</head>
 	<body>
 		<div class='code-panel'>
 			<div class="beta">
@@ -491,7 +363,37 @@
 						</div>
 					</div>
 					<div vile-weave="sectionLayerOption" class="section section-layer-option hidden">
-						<label></label>
+						<label>
+						</label>
+						<div vile-weave="colorGraph" id="color-graph" class="color-graph">
+						</div>
+						<div class="layer-option-options">
+							<div>
+								<label>
+									Mode
+								</label>
+								<p><small>There are two available gradient mode: radial and linear</small></p>
+								<select onchange="page.layerOption.changeGradientMode(event,this)" vile-weave="gradientMode">
+									<option value="linear">
+										Linear
+									</option>
+									<option value="radial">
+										Radial
+									</option>
+								</select>
+							</div>
+							<div class="linear-only angle-setting">
+								<label>
+									Angle Degree
+								</label>
+								<p><small>Only available for linear-gradient. Controls the angle of the background layer.</small></p>
+								<div>
+									<button onclick="page.layerOption.angleSettingUp()" class="up"><span class="glyphicon glyphicon-menu-up"></span></button>
+									<button onclick="page.layerOption.angleSettingDown()" class="down"><span class="glyphicon glyphicon-menu-down"></span></button>
+									<input vile-weave="inputAngleSetting" onchange="page.layerOption.updateAngleSetting()" type="number" min="0" max="359">
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>

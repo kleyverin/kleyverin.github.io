@@ -24,13 +24,14 @@ body{
 	to   { opacity: 1; }
 }
 ::-webkit-scrollbar {
-	width: 4px;
-	height: 4px;
+	width: 5px;
+	height: 5px;
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
-	border-radius: 5px;
+	box-shadow: inset 0px 0px 3px rgba(0,0,0,0.3);
+	background: #eeeeee;
 }
 
 /* Handle */
@@ -38,4 +39,240 @@ body{
 	border-radius: 5px;
 	background: black; 
 
+}
+.workscreen{
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: flex-start;
+	flex-flow: column;
+}
+.workplace{
+	flex: 1 0 auto;
+	height: calc(100% - 30px)
+}
+.workplace>div{
+	height: 100%;
+}
+@media only screen and (max-width:767px){
+	.workplace>div.display{
+		height: 60vw;
+	}
+	.workplace>div.control-panel{
+		height: auto;
+		overflow-y: auto;
+	}
+}
+.top{
+	height: 30px;
+	width: 100%;
+	margin: auto;
+	flex: 0 0 auto;
+}
+.top>div{
+	padding: 0 15px;
+	float: left;
+}
+.top>div:nth-child(1){
+	width: 25%;
+}
+.top>div:nth-child(2){
+	width: 50%;
+}
+.top>div:nth-child(3){
+	width: 25%;
+}
+@media only screen and (max-width:767px){
+	.top>div:nth-child(1){
+		width: 50%;
+	}
+	.top>div:nth-child(2){
+		display: none;
+	}
+	.top>div:nth-child(3){
+		width: 50%;
+	}
+}
+.top:after{
+	clear: 
+}
+.back-banner{
+	background: black;
+	padding: 5px 0;
+}
+.back-banner div,
+.back-banner a{
+	color: white;
+	font-weight: bold;
+}
+.back-banner a{
+	cursor: pointer;
+}
+.button-container>a{
+	transition: background 0.3s ease, color 0.3s ease;
+	background: #F6F4C2;
+	box-shadow: inset 3px 3px 12px #F0D878, inset -3px -3px 12px #BF9D3E, 0 0 3px rgba(0,0,0,0.3);
+	color: black;
+	cursor: pointer;
+	padding: 2px 6px;
+	display: inline-block;
+	-webkit-user-select: none; /* Chrome/Safari */        
+	-moz-user-select: none; /* Firefox */
+	-ms-user-select: none; /* IE10+ */
+
+	/* Rules below not implemented in browsers yet */
+	-o-user-select: none;
+	user-select: none;
+}
+.button-container>a:hover{
+	text-decoration: none;
+	color: #ce112d;
+	background: white;
+	box-shadow: 0 0 3px rgba(0,0,0,0.3);
+	transform: translateZ(30px);
+}
+.control-panel{
+	border-left: 1px solid #ccc;
+	overflow-y: scroll;
+}
+.section{
+	margin: 0 -15px;
+	border-top: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+}
+.section>label{
+	padding: 0 5px;
+	margin: 0;
+	display: block;
+	background: linear-gradient(250deg,#F0D878,#BF9D3E,#BF9D3E);
+	color: white;
+}
+.section:first-child{
+	border-top: none;
+}
+.section:last-child{
+	border-bottom: none;
+}
+.section .button-container{
+	border-bottom: 1px solid #ddd;
+}
+.list-layer{
+	overflow-y: scroll;
+	height: 200px;
+	border-bottom: 1px solid #ddd;
+	box-shadow: inset 1px 2px 4px rgba(124,124,124,0.3);
+}
+.list-layer .layer-item>div{
+	float:left;
+	height: 40px;
+	background: white;
+}
+.list-layer .layer-item:after{
+	display: block;
+	clear: both;
+	content: '';
+}
+.list-layer .layer-item .layer-display{
+	width: 20%;
+	border: 1px solid #ddd;
+}
+.list-layer .layer-item .layer-title{
+	padding: 10px;
+	width: 70%;
+	border: 1px solid #ddd;
+}
+.list-layer .layer-item .layer-delete{
+	display: block;
+	float: left;
+	height: 40px;
+	padding-top: 10px;
+	width: 10%;
+	border: 1px solid #ddd;
+	color: #ce112d;
+	background: white;
+	text-align: center;
+	cursor: pointer;
+	transition: all 0.2s ease;
+}
+.list-layer .layer-item .layer-delete:hover{
+	color: white;
+	background: #ce112d;
+}
+.list-layer .layer-item .layer-title>input{
+	font-size: 11;
+	border: 0px solid black;
+	width: auto;
+}
+.list-layer .layer-item.active>div{
+	background: linear-gradient(250deg,#F0D878,#BF9D3E,#BF9D3E);
+}
+.list-layer .layer-item.active .layer-title>input{
+	background: none;
+	color: white;
+}
+.list-layer .layer-item.active .layer-title>input:focus{
+	background: white;
+	color: black;
+}
+.layer-option-options>div{
+	margin: 8px 0;
+}
+.layer-option-options>div>*{
+	margin-bottom: 2px;
+	margin-left: 5px;
+	margin-right: 5px;
+}
+.layer-option-options>.angle-setting>div>*{
+	float:left;
+	height: 30px;
+}
+.layer-option-options>.angle-setting>div>input{
+	width: 60px;
+}
+.layer-option-options>.angle-setting>div>button
+{
+	background: #F6F4C2;
+	box-shadow: inset 3px 3px 12px #F0D878, inset -3px -3px 12px #BF9D3E, 0 0 3px rgba(0,0,0,0.3);
+	border: 0;
+}
+.layer-option-options>.angle-setting>div>button:active
+{
+	background: white;
+	box-shadow: 0 0 3px rgba(0,0,0,0.3);
+	color: #ce112d;
+}
+.layer-option-options>.angle-setting>div:after{
+	display: block;
+	content: '';
+	clear: both;
+}
+.color-graph{
+	width: 100%;
+	background: black;
+	height: 100px;
+}
+.code-panel{
+	transition: right 0.5s ease;
+	position: absolute;
+	width: 400px;
+	max-width: 100%;
+	height: 100%;
+	background: rgba(255,255,255,0.7);
+	margin-left: -15px;
+	margin-right: -15px;
+	right: -400px;
+	box-shadow: 0 0 3px black;
+	z-index: 100;
+}
+.code-panel.active{
+	right: 0;
+}
+.code-panel .back-banner{
+	background: white;
+	padding-left: 15px;
+	padding-right: 15px;
+	box-shadow: 0 1px 0 black;
+}
+.code-panel .back-banner a{
+	color: black;
 }
