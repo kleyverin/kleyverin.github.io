@@ -222,18 +222,22 @@
 				}
 				page.layerOption.refreshModeSpecific()
 			}
+			page.layerOption.refreshGradientMode = function(){
+				$(page.gradientMode).children('option').removeAttr('selected')
+				if(selectedLayer.linear){
+					$(page.gradientMode).children('option[value="linear"]').prop('selected',true)
+				}else{
+					$(page.gradientMode).children('option[value="radial"]').prop('selected',true)
+				}
+			}
 			page.layerOption.refresh = function(){
 				if(selectedLayer){
 					var layerOption = $(page.sectionLayerOption)
 					layerOption.removeClass('hidden')
 					layerOption.children('label:first-child').text(selectedLayer.name)
 					
-					$(page.gradientMode).children('option').removeAttr('selected')
-					if(selectedLayer.linear){
-						$(page.gradientMode).children('option[value="linear"]').prop('selected',true)
-					}else{
-						$(page.gradientMode).children('option[value="radial"]').prop('selected',true)
-					}
+					page.layerOption.refreshGradientMode();
+					
 					page.layerOption.refreshModeSpecific()
 				}
 				else{
@@ -244,14 +248,16 @@
 				if(selectedLayer.linear){
 					$('.linear-only').show();
 					$('.radial-only').hide();
-					page.layerOption.refreshAngleSetting()
+					page.layerOption.angleSetting.refresh()
 				}
 				else{
 					$('.radial-only').show();
 					$('.linear-only').hide();
+					page.layerOption.shapeSetting.refresh()
 				}
 			}
-			page.layerOption.angleSettingUp = function(){
+			page.layerOption.angleSetting = {}
+			page.layerOption.angleSetting.up = function(){
 				var angle = $(page.inputAngleSetting).val()
 				angle++;
 				if(angle>359){
@@ -260,7 +266,7 @@
 				selectedLayer.angle = angle;
 				$(page.inputAngleSetting).val(angle)
 			}
-			page.layerOption.angleSettingDown = function(){
+			page.layerOption.angleSetting.down = function(){
 				var angle = $(page.inputAngleSetting).val()
 				angle--;
 				while(angle<0){
@@ -269,12 +275,29 @@
 				selectedLayer.angle = angle;
 				$(page.inputAngleSetting).val(angle)
 			}
-			page.layerOption.updateAngleSetting = function(){
+			page.layerOption.angleSetting.update = function(){
 				selectedLayer.angle = $(page.inputAngleSetting).val()
 			}
-			page.layerOption.refreshAngleSetting = function(){
+			page.layerOption.angleSetting.refresh = function(){
 				$(page.inputAngleSetting).val(selectedLayer.angle)
 			}
+			page.layerOption.shapeSetting={}
+			page.layerOption.shapeSetting.update = function(event, element){
+				selectedLayer.shape = $(element).val()
+			}
+			page.layerOption.shapeSetting.refresh = function(){
+				$(page.shapeMode).children('option').removeAttr('selected')
+				if(selectedLayer.shape == "ellipse"){
+					$(page.shapeMode).children('option[value="ellipse"]').prop('selected',true)
+				}else{
+					$(page.shapeMode).children('option[value="circle"]').prop('selected',true)
+				}
+			}
+			page.layerOption.positionSetting = {}
+			page.layerOption.positionSetting.update = function(){
+				
+			}
+			
 			page.layerCount = 0
 			page.layers = []
 			/******
@@ -321,7 +344,12 @@
 						name: 'layer '+(++page.layerCount),
 						linear: true,
 						colors: [{position: 0,color:new Color()},{position:1,color:new Color()}],
-						angle: 0
+						angle: 0,
+						shape: "circle",
+						position:{
+							x: 50,
+							y: 50
+						}
 					})
 					page.refreshLayers();
 				}
@@ -384,13 +412,49 @@
 							</div>
 							<div class="linear-only angle-setting">
 								<label>
-									Angle Degree
+									Angle
 								</label>
 								<p><small>Only available for linear-gradient. Controls the angle of the background layer.</small></p>
 								<div>
-									<button onclick="page.layerOption.angleSettingUp()" class="up"><span class="glyphicon glyphicon-menu-up"></span></button>
-									<button onclick="page.layerOption.angleSettingDown()" class="down"><span class="glyphicon glyphicon-menu-down"></span></button>
-									<input vile-weave="inputAngleSetting" onchange="page.layerOption.updateAngleSetting()" type="number" min="0" max="359">
+									<button onclick="page.layerOption.angleSetting.up()" class="up"><span class="glyphicon glyphicon-menu-up"></span></button>
+									<button onclick="page.layerOption.angleSetting.down()" class="down"><span class="glyphicon glyphicon-menu-down"></span></button>
+									<input vile-weave="inputAngleSetting" onchange="page.layerOption.angleSetting.update()" type="number" min="0" max="359">
+								</div>
+							</div>
+							<div class="radial-only shape-setting">
+								<label>
+									Shape
+								</label>
+								<p><small>Only available for radial-gradient. Choose the ending shape of the gradient: circle or ellipse.</small></p>
+								<div>
+								<select onchange="page.layerOption.shapeSetting.update(event,this)" vile-weave="shapeMode">
+									<option value="circle">
+										Circle
+									</option>
+									<option value="ellipse">
+										Ellipse
+									</option>
+								</select>
+								</div>
+							</div>
+							<div class="radial-only position-setting">
+								<label>
+									Position
+								</label>
+								<p><small>Only available for radial-gradient. Set the gradient center position.</small></p>
+								<div>
+									<span>X</span>
+									<button onclick="page.layerOption.positionSetting.up.X()" class="up"><span class="glyphicon glyphicon-menu-up"></span></button>
+									<button onclick="page.layerOption.positionSetting.down.X()" class="down"><span class="glyphicon glyphicon-menu-down"></span></button>
+									<input vile-weave="inputPositionXSetting" onchange="page.layerOption.positionSetting.update()" type="number" min="0" max="100">
+									<span>&nbsp;Percent</span>
+								</div>
+								<div>
+									<span>Y</span>
+									<button onclick="page.layerOption.positionSetting.up.Y()" class="up"><span class="glyphicon glyphicon-menu-up"></span></button>
+									<button onclick="page.layerOption.positionSetting.down.Y()" class="down"><span class="glyphicon glyphicon-menu-down"></span></button>
+									<input vile-weave="inputPositionYSetting" onchange="page.layerOption.positionSetting.update()" type="number" min="0" max="100">
+									<span>&nbsp;Percent</span>
 								</div>
 							</div>
 						</div>

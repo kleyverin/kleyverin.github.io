@@ -158,7 +158,7 @@ body{
 }
 .list-layer{
 	overflow-y: scroll;
-	height: 200px;
+	height: 150px;
 	border-bottom: 1px solid #ddd;
 	box-shadow: inset 1px 2px 4px rgba(124,124,124,0.3);
 }
@@ -214,6 +214,10 @@ body{
 	background: white;
 	color: black;
 }
+.layer-option-options{
+	overflow-y: scroll;
+	height: 200px;
+}
 .layer-option-options>div{
 	margin: 8px 0;
 }
@@ -242,6 +246,40 @@ body{
 	color: #ce112d;
 }
 .layer-option-options>.angle-setting>div:after{
+	display: block;
+	content: '';
+	clear: both;
+}
+.layer-option-options>.position-setting>div>*{
+	float:left;
+	height: 30px;
+}
+.layer-option-options>.position-setting>div>span{
+	display:block;
+	width: 20px;
+	padding-right:3px;
+	font-weight: bold;
+}
+.layer-option-options>.position-setting>div>label{
+	display:block;
+	content:':';
+}
+.layer-option-options>.position-setting>div>input{
+	width: 60px;
+}
+.layer-option-options>.position-setting>div>button
+{
+	background: #F6F4C2;
+	box-shadow: inset 3px 3px 12px #F0D878, inset -3px -3px 12px #BF9D3E, 0 0 3px rgba(0,0,0,0.3);
+	border: 0;
+}
+.layer-option-options>.position-setting>div>button:active
+{
+	background: white;
+	box-shadow: 0 0 3px rgba(0,0,0,0.3);
+	color: #ce112d;
+}
+.layer-option-options>.position-setting>div:after{
 	display: block;
 	content: '';
 	clear: both;
