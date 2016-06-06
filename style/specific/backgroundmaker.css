@@ -134,6 +134,7 @@ body{
 .control-panel{
 	border-left: 1px solid #ccc;
 	overflow-y: scroll;
+	padding-bottom: 300px;
 }
 .section{
 	margin: 0 -15px;
@@ -217,6 +218,7 @@ body{
 .layer-option-options{
 	overflow-y: scroll;
 	height: 200px;
+	box-shadow: inset 1px 0px 6px rgba(124,124,124,0.3);
 }
 .layer-option-options>div{
 	margin: 8px 0;
@@ -260,10 +262,6 @@ body{
 	padding-right:3px;
 	font-weight: bold;
 }
-.layer-option-options>.position-setting>div>label{
-	display:block;
-	content:':';
-}
 .layer-option-options>.position-setting>div>input{
 	width: 60px;
 }
@@ -284,10 +282,40 @@ body{
 	content: '';
 	clear: both;
 }
-.color-graph{
+.layer-colors{
 	width: 100%;
-	background: black;
 	height: 100px;
+	padding: 5px;
+}
+.color-graph-container{
+	width: 100%;
+}
+.color-graph .ruler{
+	position: absolute;
+	margin-top: 4px;
+	margin-left: 6px;
+	width: calc(100% - 22px);
+	height: 16px;
+	background: black;
+	border: 1px solid black;
+}
+.color-graph .peon{
+	position: absolute;
+	height: 0px;
+	width: calc(100% - 22px);
+}
+.color-graph .peon>div{
+	position: relative;
+	width: 12px;
+	height: 24px;
+	border: 1px solid black;
+	border-radius: 4px;
+}
+.color-graph .peon>div.active{
+	box-shadow: inset 1px 1px 3px #F0D878, inset -1px -1px 3px #BF9D3E, 0 0 4px rgba(0,0,0,0.9);
+}
+.color-graph .peon>div{
+	cursor: pointer;
 }
 .code-panel{
 	transition: right 0.5s ease;
