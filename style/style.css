@@ -65,12 +65,37 @@ body *{
 
 /** MENU **/
 .menu-nav{
-    position: absolute;
-    z-index: 9;
+    position: fixed;
     width: 100%;
-    top: 0;
-    padding-top: 20px;
-    height: 84px;
+    height: 60px;
+}
+
+.menu-nav:after{
+    display: block;
+    clear: both;
+    content: "";
+}
+
+.menu-item{
+    width: 45%;
+}
+
+.menu-left{
+    float: left;
+    text-align: right;
+}
+
+.menu-right{
+    float: right;
+    text-align: left;
+}
+
+.logo{
+    width: 10%;
+}
+
+.logo>img{
+    width: 10%;
 }
 
 /** HOME **/
