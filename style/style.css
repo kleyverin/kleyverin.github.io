@@ -144,18 +144,19 @@ body *{
     font-size: 14px;
 }
 
-/** NEW PRODUCT **/
-.new-product{
+/** HOME PRODUCT **/
+.home-products,
+.home-portfolio{
     min-height: 100%;
     padding: 4em 6em;
 }
 
-.newpro-title{
+.homepro-title{
     font-size: 40px;
     border-bottom: 2px solid rgba(170,170,170,0.06);
 }
 
-.newpro-cont-img{
+.homepro-cont-img{
     height: 80vh;
     background-image: url(../image/backgroundmaker.PNG);
     background-position: center;
@@ -163,17 +164,32 @@ body *{
     background-repeat: no-repeat;
 }
 
-.newpro-cont-txt{
-    text-align: center;
+.homepro-cont-txt{
     display: flex;
-    align-items: center;
-    flex-flow: row;
+    flex-flow: column;
     justify-content: center;
     height: 80vh;
 }
 
 .txt-box{
+    text-align: center;
+    align-items: center;
     padding: 0 2em;
+}
+
+.txt-more-product{
+    text-align: right;
+    padding: 2em 0;
+}
+
+.txt-more-product a{
+    font-weight: bold;
+    text-decoration: none;
+    color: #36D7B7;
+}
+
+.txt-more-product a:hover{
+    color: #03C9A9;
 }
 
 .txt-desc{
