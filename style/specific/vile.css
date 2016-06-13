@@ -194,7 +194,9 @@ div.why>.code{
 }
 
 div.why> p{
-	margin: 5px 0;
+	width: 300px;
+	max-width: 100%;
+	margin: 5px auto;
 }
 
 div.why>.code>code{
