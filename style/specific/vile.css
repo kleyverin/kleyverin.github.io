@@ -12,10 +12,19 @@ body{
 	background-color: #eee;
 }
 
+span.tab{
+	display: inline-block;
+	padding: 0 10px;
+}
+
+.restrict-overflow{
+	overflow: hidden;
+}
+
 .loadingscreen{
 	width: 100%;
 	height: 100vh;
-	position: absolute;
+	position: fixed;
 	top: 0;
 	background: black;
 	display: flex;
@@ -28,9 +37,29 @@ kv-loadicon-wave{
 	color: white;
 }
 
+.download-container button{
+	background: #333;
+	padding: 5px 15px;
+	border: 2px solid #ce112d;
+	color: white;
+	font-size: 1.4em;
+	border-radius: 3px;
+	box-shadow: 0 0 3px black;
+	transition: all 0.1s ease;
+}
+
+.download-container button:hover{
+	background: #ce112d;
+	border: 2px solid white;
+	color: white;
+}
+
+.download-container button:focus{
+	border: 2px solid #333;
+}
+
 .section-vile{
 	text-align: center;
-	height: auto;
 }
 
 .section-vile .split-left,
@@ -38,7 +67,7 @@ kv-loadicon-wave{
 	padding-top: 30px;
 	width: 50%;
 	float:left;
-	padding-bottom: 300px;
+	padding-bottom: 350px;
 }
 .section-vile .split-left{
 	color: white;
@@ -57,7 +86,6 @@ kv-loadicon-wave{
 
 .section-vile h1.title{
 	font-variant: small-caps;
-	text-shadow: 0px 2px 2px #333;
 }
 
 .section-vile h1.title small{
@@ -71,21 +99,20 @@ kv-loadicon-wave{
 	position: absolute;
 	display:block;
 	width: 100%;
-	margin-top: -250px;
+	margin-top: -300px;
 }
 
-.section-vile div.description p{
+.section-vile div.description>p{
 	display: inline-block;
 	background: #333;
 	color: white;
-	padding: 20px 30px;
+	padding: 30px 40px;
 	max-width: 100%;
 	width: 400px;
-	box-shadow: inset 5px 0 0 #ce112d;
-	font-weight: bold;
+	box-shadow: -5px 0 0 #ce112d;
 }
-.section-vile div.description p:after,
-.section-vile div.description p:before{
+.section-vile div.description>p:after,
+.section-vile div.description>p:before{
 	display:block;
 	height: 5px;
 	margin-right: auto;
@@ -93,19 +120,68 @@ kv-loadicon-wave{
 	content: '';
 	width: 30px;
 }
-.section-vile div.description p:after{
-	margin-top: 20px;
-	margin-bottom: -20px;
-	margin-left: -30px;
+.section-vile div.description>p:after{
+	margin-top: 30px;
+	margin-bottom: -35px;
+	margin-left: -45px;
 }
-.section-vile div.description p:before{
-	margin-top: -20px;
-	margin-bottom: 20px;
-	margin-left: -30px;
+.section-vile div.description>p:before{
+	margin-top: -35px;
+	margin-bottom: 30px;
+	margin-left: -45px;
 }
 
 @media only screen and (max-width:400px){
 	.section-vile div.description p{
 		width: 100%;
 	}
+}
+.section-vile div.description div.info-warning{
+	margin-top: 15px;
+	height: auto;
+}
+.section-vile div.description div.info-warning>div{
+	display: inline-block;
+	padding: 15px 30px;
+	background: #333;
+	box-shadow: inset 0 0 0 4px #337ab7, 0 0 4px black;
+	color: white;
+}
+.section-vile div.description div.info-warning>div>p{
+	margin: 3px 0;
+	color: white;
+}
+
+.section-preview:before{
+	content: '';
+	display: block;
+	height: 20px;
+	background: repeating-linear-gradient(-45deg, #ce112d 0px, #ce112d 16px, black 16px, black 32px);
+}
+
+.section-preview>div{
+	padding: 15px;
+}
+
+.section-preview div.why{
+	text-align: center;
+}
+
+.section-preview div.why>.code{
+	text-align: left;
+	display: inline-block;
+	background: #333;
+	padding: 15px;
+	color: white;
+	max-width: 700px;
+	vertical-align: top;
+	word-wrap: break-word;
+	max-width: 100%;
+	margin: 5px 0;
+}
+
+.section-preview div.why>.code>code{
+	font-weight: bold;
+	color: #BEDB39;
+	background: none;
 }

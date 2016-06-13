@@ -10,11 +10,41 @@ var Vile = {
 	/**********************/
 	/*****VileMain*********/
 	/**********************/
+	predefinedConst: {
+		'e': true
+	},
 	initialize: function(page){
-		this.weave(page)
+		try{
+			this.weaveJq(page)
+			console.info('Vile detects JQuery. JQuery weaving enabled.')
+		}catch(e){
+			this.weave(page)
+		}
+		page.weaver = {
+			object : new MutationObserver(function(mutations){
+				mutations.forEach(function(mutation){
+					mutation.removedNodes.forEach(function(node){
+						try{
+							if(node.hasAttribute('vile-weave')){
+								page[node.getAttribute('vile-weave')] = null
+							}
+						}catch(e){}
+					})
+				})
+				Vile.reweave(page)
+			}),
+			off: function(){this.object.disconnect()},
+			on: function(){
+				this.object.observe(document.body,{
+					childList:true,
+					subtree: true
+				})
+			}
+		}
+		page.weaver.on()
 		page.e = this.VileEditor.makeEditor();
-		page.f = this.Factory.makeFactory();
-		page.template = this.weaveTemplate()
+		//page.f = this.Factory.makeFactory();
+		//page.template = this.weaveTemplate()
 	},
 	list_attr_previxes : [
 		"vile-weave"
@@ -62,27 +92,36 @@ var Vile = {
 	/**********************/
 	/*****ElementWeave*****/
 	/**********************/
+	reweave: function(page){
+		//console.info("reweave")
+		try{
+			this.weaveJq(page)
+		}catch(e){
+			this.weave(page)
+		}
+	},
 	weave : function(page){
 		page = this.validate_page_object(page,"weave");
 		var weaver = document.querySelectorAll("*[vile-weave]")
 		for(var i = 0; i<weaver.length; i++){
 			var weave_name = weaver[i].getAttribute('vile-weave');
-			if(weave_name.length > 0){
+			if(weave_name.length > 0 && !this.predefinedConst[weave_name]){
 				page[weave_name] = weaver[i]
 			}
 		}
 		return page;
 	},
 	weaveJq : function(page){
+		console.log(page)
 		try{
-			if (typeof $ == 'undefined' || !window.jQuery) {  
+			if (typeof $ == 'undefined' && !window.jQuery) {  
 				throw ""
 			}
 			page = this.validate_page_object(page,"weave");
 			var weaver = document.querySelectorAll("*[vile-weave]")
 			for(var i = 0; i<weaver.length; i++){
 				var weave_name = weaver[i].getAttribute('vile-weave');
-				if(weave_name.length > 0){
+				if(weave_name.length > 0 && !this.predefinedConst[weave_name]){
 					page[weave_name] = $(weaver[i])
 				}
 			}
@@ -325,7 +364,7 @@ var Vile = {
 			}
 		}
 	})(),
-	
+	/*
 	Factory : {
 		mold: function(template,obj){
 			if(typeof template !== 'string'){
@@ -424,9 +463,9 @@ var Vile = {
 			}
 			return obj
 		}
-	},
+	},*/
 	/**********************/
-	/*****VileLoading******/
+	/*****VileComponent****/
 	/**********************/
 	
 	Component : (function(){

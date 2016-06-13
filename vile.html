@@ -8,13 +8,13 @@
 		<link rel="stylesheet" href="style/font.css">
 		<link rel="stylesheet" href="style/bootstrap/css/bootstrap.css">
 		<link rel="stylesheet" href="style/specific/vile.css">
+		<script src="script/jquery-2.2.1.js"></script>
         <script src="script/vile.js"></script>
 		<script src="script/vile.element.js"></script>
-		<script src="script/jquery-2.2.1.js"></script>
 		<script src="script/specific/vilepage.js"></script>
 	</head>
-	<body>
-		<div class="section section-vile">
+	<body class="restrict-overflow">
+		<div class="section-vile">
 			<div class="split-container">
 				<div class="split-left">
 					<h1 class="title">
@@ -29,11 +29,117 @@
 			</div>
 			<div class="description">
 				<p>
-					Quickly create Custom Elements your web needs. Smartly bind elements and reshape your DOM to perfection.
+					Quickly create Custom Elements your web needs. Smartly bind elements and to quickly edit your dom.
 				</p>
+				<div class="download-container">
+					<a onclick="page.download.showWarning()" href="File:script/vile.js" target="_blank" download>
+						<button>Download</button>
+					</a>
+					<div class="info-warning" style="display:none;" vile-weave="infoWarning">
+						<div>
+							<p>
+								If you see something like this at the bottom of your screen:
+							</p>
+							<img src="image/vile/warning.png">
+							<p>
+								Just click keep and you're done.
+							</p>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
-		<div class="section">
+		<div class="section-preview">
+			<div class="section-title">
+				<h2 class="title">What does Vile.js do?</h2>
+				<p>Faster coding, faster codes.</p>
+			</div>
+			<div class="why">
+				<p><strong>One feature of many given by Vile.js is binding elements to variables</strong></p>
+				<p><br><strong>many times we need to write</strong></p>
+				<div class="code">
+					<strong>
+						this:
+					</strong>
+					<br>
+					<code>
+						document.getElementById('title')
+					</code>
+					<br>
+					<code>
+						document.getElementById('alert').style="display:none;"
+					</code>
+					<br>
+					<code>
+						document.getElementById('tyrion').appendChild(<br>
+						function(){<br>
+						<span class="tab"></span>var div = document.createElement('div');<br>
+						<span class="tab"></span>div.textContent = "wine"<br>
+						<span class="tab"></span>return div<br>
+						})
+					</code>
+				</div>
+				<div class="code">
+					<strong>
+						or with jquery, still, this:
+					</strong>
+					<br>
+					<code>
+						$('#title')
+					</code>
+					<br>
+					<code>
+						$('#alert').hide()
+					</code>
+					<br>
+					<code>
+						$('#tyrion').append($('div').text('wine'))
+					</code>
+				</div>
+				<p>
+				<br><strong>What we do is simply purge those codes on the top, into this:</strong></p>
+				<div class="code">
+					<code>
+						page.alert.hide()
+					</code>
+					<br>
+					<code>
+						page.tyrion.append($('div').text('wine'))
+					</code>
+				</div>
+				<p>
+					<strong>We don't need the codes on the top.</strong>
+				</p>
+				<p>
+				<br>
+					<strong>There's this element creator. It is intuitive, structured like how you write HTML.</strong>
+				</p>
+				<div vile-weave="h1Demo" class="code">
+					<code>
+						page.e.make('h3',{<br>
+						<span class="tab"></span>class:'vile',<br>
+						<span class="tab"></span>onclick:'dosomething()'<br>
+						},'Vile.js')
+					</code>
+					<div>
+						The code above creates this:
+					</div>
+				</div>
+				<p>
+				<br>
+					<strong>And then there's this custom load icon</strong>
+				</p>
+				<div class="code">
+					<code>
+						&lt;kv-loadicon-wave&gt;&lt;/kv-loadicon-wave&gt;
+					</code>
+					<div>
+						<kv-loadicon-wave></kv-loadicon-wave>
+					</div>
+					No cluttered scripts on [whateverfilename].js you have
+				</div>
+				<p>All you can have with <strong>Vile.js</strong></p>
+			</div>
 		</div>
 		<div vile-weave="loadingScreen" class="loadingscreen">
 			<kv-loadicon-wave>
