@@ -49,9 +49,9 @@
 				</div>
 			</div>
 		</div>
-		<div class="section-preview">
+		<div id='preview' class="section-preview">
 			<div class="section-title">
-				<h2 class="title">What does Vile.js do?</h2>
+				<h2 class="title">What does Vile.js do? <small><a class="jump" href="#installation">Jump to installation&gt;&gt;</a></small></h2>
 				<p>Faster coding, faster codes.</p>
 			</div>
 			<div class="why">
@@ -97,7 +97,7 @@
 					</code>
 				</div>
 				<p>
-				<br><strong>What we do is simply purge those codes on the top, into this:</strong></p>
+				<br><strong>What it does is simply purge those codes on the top, into this:</strong></p>
 				<div class="code">
 					<code>
 						page.alert.hide()
@@ -112,7 +112,7 @@
 				</p>
 				<p>
 				<br>
-					<strong>There's this element creator. It is intuitive, structured like how you write HTML.</strong>
+					<strong>There's this element creator. It is intuitive, structured like how HTML is written, but in javascript.</strong>
 				</p>
 				<div vile-weave="h1Demo" class="code">
 					<code>
@@ -140,6 +140,97 @@
 				</div>
 				<p>All you can have with <strong>Vile.js</strong></p>
 			</div>
+		</div>
+		<div id='installation' class="section-installation">
+			<div class="section-title">
+				<h2 class="title">Installation and Usage <small><a class="jump" href="#preview">&lt;&lt;Preview</a></small></h2>
+				<p>Let's start.</p>
+			</div>
+			<div class="why">
+				<p>
+					<strong>
+						1. install it on your html view
+					</strong>
+				</p>
+				<div class="code">
+					<code>
+						&lt;script src="[your path]/vile.js"&gt;&lt;/script&gt;
+					</code>
+					<br>
+					or load it from github
+					<br>
+					<code>
+						&lt;script src="http://kleyverin.github.io/script/vile.js"&gt;&lt;/script&gt;
+					</code>
+				</div>
+			</div>
+			<div class="why">
+				<p>
+					<strong>
+						2. Make a script on your HTML file or load a .js file. Inside it, make an object variable. We prefer to use 'var page'
+					</strong>
+				</p>
+				<div class="code">
+					<code>
+						var page = {}
+					</code>
+				</div>
+			</div>
+			<div class="why">
+				<p>
+					<strong>
+						3. Run the vile on top of the 'page' variable
+					</strong>
+				</p>
+				<div class="code">
+					<code>
+						Vile.initialize(page)
+					</code>
+				</div>
+				<p>
+					<strong>
+						Now the 'page' variable will recognize every HTML tag which has the attribute 'vile-weave', e.g.
+					</strong>
+				</p>
+				<div class="code">
+					HTML:<br>
+					<code>
+						&lt;input name='username' vile-weave="inputUsername"&gt;
+					</code>
+				</div>
+				<p>
+					<strong>
+						The 'page' variable recognize the input element above as:
+					</strong>
+				</p>
+				<div class="code">
+					<code>
+						page.inputUsername
+					</code>
+				</div>
+				<p>
+					<strong>
+						The bound object now can be manipulated like any other elements.
+					</strong>
+				</p>
+				<div class="code">
+					<code>
+						page.inputUsername.value = "Vile.js"
+					</code>
+				</div>
+				<p>
+					<strong>
+						Note: if you install JQuery. The element will instead turn into JQuery Element<br>
+						You should do this instead.
+					</strong>
+				</p>
+				<div class="code">
+					<code>
+						page.inputUsername.val("Vile.js")
+					</code>
+				</div>
+			</div>
+			<p>To be continued</p>
 		</div>
 		<div vile-weave="loadingScreen" class="loadingscreen">
 			<kv-loadicon-wave>

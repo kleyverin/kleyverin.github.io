@@ -11,7 +11,8 @@ var Vile = {
 	/*****VileMain*********/
 	/**********************/
 	predefinedConst: {
-		'e': true
+		'e': true,
+		'weaver': true
 	},
 	initialize: function(page){
 		try{

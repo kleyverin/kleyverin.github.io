@@ -17,6 +17,14 @@ span.tab{
 	padding: 0 10px;
 }
 
+a.jump{
+	font-weight: bold;
+}
+
+code{
+	padding: 0;
+}
+
 .restrict-overflow{
 	overflow: hidden;
 }
@@ -152,22 +160,27 @@ kv-loadicon-wave{
 	color: white;
 }
 
+.section-preview{
+	padding-bottom: 30px;
+}
+
 .section-preview:before{
 	content: '';
 	display: block;
 	height: 20px;
 	background: repeating-linear-gradient(-45deg, #ce112d 0px, #ce112d 16px, black 16px, black 32px);
+	background-attachment: fixed;
 }
 
 .section-preview>div{
 	padding: 15px;
 }
 
-.section-preview div.why{
+div.why{
 	text-align: center;
 }
 
-.section-preview div.why>.code{
+div.why>.code{
 	text-align: left;
 	display: inline-block;
 	background: #333;
@@ -180,8 +193,28 @@ kv-loadicon-wave{
 	margin: 5px 0;
 }
 
-.section-preview div.why>.code>code{
+div.why> p{
+	margin: 5px 0;
+}
+
+div.why>.code>code{
 	font-weight: bold;
 	color: #BEDB39;
 	background: none;
+}
+
+.section-installation{
+	padding-bottom: 30px;
+}
+
+.section-installation:before{
+	content: '';
+	display: block;
+	height: 20px;
+	background: repeating-linear-gradient(45deg, #ce112d 0px, #ce112d 16px, black 16px, black 32px);
+	background-attachment: fixed;
+}
+
+.section-installation>div{
+	padding: 15px;
 }
