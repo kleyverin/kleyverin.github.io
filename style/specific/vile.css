@@ -172,10 +172,6 @@ kv-loadicon-wave{
 	background-attachment: fixed;
 }
 
-.section-preview>div{
-	padding: 15px;
-}
-
 div.why{
 	text-align: center;
 }
@@ -186,11 +182,16 @@ div.why>.code{
 	background: #333;
 	padding: 15px;
 	color: white;
-	max-width: 700px;
+	max-width: 500px;
 	vertical-align: top;
 	word-wrap: break-word;
-	max-width: 100%;
 	margin: 5px 0;
+}
+
+@media only screen and (max-width:700px){
+	div.why>.code{
+		max-width: 100%;
+	}
 }
 
 div.why> p{

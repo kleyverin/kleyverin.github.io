@@ -187,23 +187,16 @@
 						Vile.initialize(page)
 					</code>
 				</div>
-				<p>
-					<strong>
-						Now the 'page' variable will recognize every HTML tag which has the attribute 'vile-weave', e.g.
-					</strong>
-				</p>
+				<div></div>
 				<div class="code">
+					Now the 'page' variable will recognize every HTML tag which has the attribute 'vile-weave', e.g.<br>
 					HTML:<br>
 					<code>
 						&lt;input name='username' vile-weave="inputUsername"&gt;
 					</code>
 				</div>
-				<p>
-					<strong>
-						The 'page' variable recognize the input element above as:
-					</strong>
-				</p>
 				<div class="code">
+					The 'page' variable recognize the input element above as:<br>
 					<code>
 						page.inputUsername
 					</code>
@@ -218,13 +211,9 @@
 						page.inputUsername.value = "Vile.js"
 					</code>
 				</div>
-				<p>
-					<strong>
-						Note: if you install <em>JQuery</em>. The element will instead turn into <em>JQuery Element</em>.<br>
-						You should do this instead.
-					</strong>
-				</p>
 				<div class="code">
+					Note: if you install <em>JQuery</em>. The element will instead turn into <em>JQuery Element</em>.<br>
+					You should do this instead.<br>
 					<code>
 						page.inputUsername.val("Vile.js")
 					</code>
