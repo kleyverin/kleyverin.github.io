@@ -1,0 +1,111 @@
+*{  
+    font-family: Quicksand;
+	box-sizing: border-box;
+}
+
+html,body{
+	width: 100%;
+}
+
+body{
+	min-height: 100%;
+	background-color: #eee;
+}
+
+.loadingscreen{
+	width: 100%;
+	height: 100vh;
+	position: absolute;
+	top: 0;
+	background: black;
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: center;
+	align-items: center;
+}
+
+kv-loadicon-wave{
+	color: white;
+}
+
+.section-vile{
+	text-align: center;
+	height: auto;
+}
+
+.section-vile .split-left,
+.section-vile .split-right{
+	padding-top: 30px;
+	width: 50%;
+	float:left;
+	padding-bottom: 300px;
+}
+.section-vile .split-left{
+	color: white;
+	text-align: right;
+	background: #333;
+}
+.section-vile .split-right{
+	text-align: left;
+}
+
+.section-vile .split-container:after{
+	display: block;
+	content: '';
+	clear: both;
+}
+
+.section-vile h1.title{
+	font-variant: small-caps;
+	text-shadow: 0px 2px 2px #333;
+}
+
+.section-vile h1.title small{
+	vertical-align: super;
+	font-variant: normal;
+	font-size: 0.5em;
+	font-weight: bold;
+}
+
+.section-vile div.description{
+	position: absolute;
+	display:block;
+	width: 100%;
+	margin-top: -250px;
+}
+
+.section-vile div.description p{
+	display: inline-block;
+	background: #333;
+	color: white;
+	padding: 20px 30px;
+	max-width: 100%;
+	width: 400px;
+	box-shadow: inset 5px 0 0 #ce112d;
+	font-weight: bold;
+}
+.section-vile div.description p:after,
+.section-vile div.description p:before{
+	display:block;
+	height: 5px;
+	margin-right: auto;
+	background: #ce112d;
+	content: '';
+	width: 30px;
+}
+.section-vile div.description p:after{
+	margin-top: 20px;
+	margin-bottom: -20px;
+	margin-left: -30px;
+}
+.section-vile div.description p:before{
+	margin-top: -20px;
+	margin-bottom: 20px;
+	margin-left: -30px;
+}
+
+@media only screen and (max-width:400px){
+	.section-vile div.description p{
+		width: 100%;
+	}
+}
