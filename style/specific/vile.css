@@ -114,7 +114,7 @@ kv-loadicon-wave{
 	display: inline-block;
 	background: #333;
 	color: white;
-	padding: 30px 40px;
+	padding: 30px 20px;
 	max-width: 100%;
 	width: 400px;
 	box-shadow: -5px 0 0 #ce112d;
@@ -131,12 +131,12 @@ kv-loadicon-wave{
 .section-vile div.description>p:after{
 	margin-top: 30px;
 	margin-bottom: -35px;
-	margin-left: -45px;
+	margin-left: -25px;
 }
 .section-vile div.description>p:before{
 	margin-top: -35px;
 	margin-bottom: 30px;
-	margin-left: -45px;
+	margin-left: -25px;
 }
 
 @media only screen and (max-width:400px){
@@ -170,6 +170,10 @@ kv-loadicon-wave{
 	height: 20px;
 	background: repeating-linear-gradient(-45deg, #ce112d 0px, #ce112d 16px, black 16px, black 32px);
 	background-attachment: fixed;
+}
+
+.section-preview>div{
+	padding: 15px;
 }
 
 div.why{

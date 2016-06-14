@@ -12,10 +12,6 @@ $(document).ready(function(){
 			},5000)
 		}
 	}
-	page.h1Demo.append(page.e.make('h3',{
-		class:'vile',
-		onclick:'dosomething()'
-		},'Vile.js'))
 	setTimeout(function(){
 		document.title = "Vile.js | Kley & Verin";
 		$(page.loadingScreen).fadeOut()
