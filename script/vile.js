@@ -581,10 +581,27 @@ var Vile = {
 
 		if(typeof Worker !== 'undefined'){
 			function workerMedium(e){
+				function assembleArguments(args){
+					for(var i in args.prepArgs){
+						if(args.argsType[i]=='function'){
+							args.prepArgs[i] = Function(args[i].prepParam,args[i].prepFunc)
+						}
+						else if(args.argsType[i] == 'object'){
+							args.prepArgs[i] = assembleArguments(args.prepArgs[i])
+						}
+					}
+					return args.prepArgs
+				}
 				var data = JSON.parse(e.data)
-				var args = data.args
-				var func = Function(data.prepArgs,data.func)
+				var args = assembleArguments({
+					prepArgs: data.prepArgs,
+					argsType: data.prepParam
+				})
+				var func = Function(data.prepParam,data.prepFunc)
+				
 				var ret = {}
+				ret.args = args
+				ret.debug = data.prepParam
 				ret.error = false;
 				try{
 					ret.result = func.apply(this,args)	
@@ -600,30 +617,56 @@ var Vile = {
 			var worker = new Worker(url)
 			worker.onmessage = function(e){
 				var data = JSON.parse(e.data)
-				console.log(data)
 				if(data.error!==false){
 					throw data.error
 				}
 				else{
 					obj.success.apply(this,[data.result])
 				}
-				var newDate = Date.now()-oldDate
 			}
-			var preparedFunction = obj.function.toString().trim()
-			var startArgs = preparedFunction.indexOf('(')
-			var lastArgs = preparedFunction.indexOf(')')
-			var preparedArguments = preparedFunction.substring(startArgs+1,lastArgs).replace(' ','').split(',')
-			startArgs = preparedFunction.indexOf('{')
-			lastArgs = preparedFunction.lastIndexOf('}')
-			preparedFunction = preparedFunction.substring(startArgs+1,lastArgs).trim();
+			//preparefunction
+			var disassembledFunction = Vile.Utility.disassembleFunction(obj.function)
+			var disassembledArguments = Vile.Utility.disassembleArguments(obj.arguments)
 			worker.postMessage(JSON.stringify({
-				func: preparedFunction,
-				prepArgs: preparedArguments,
-				args: obj.arguments
+				prepFunc: disassembledFunction.prepFunc,
+				prepParam: disassembledFunction.prepParam,
+				prepArgs: disassembledArguments.prepArgs,
+				argsType: disassembledArguments.argsType
 			}))
 		}else{
 			obj.success.apply(this,obj.function.apply(this,obj.arguments))
 		}
+	},
+	Utility: {
+		disassembleFunction: function(func){
+			var prepFunc = func.toString().trim()
+			var startArgs = prepFunc.indexOf('(')
+			var lastArgs = prepFunc.indexOf(')')
+			var prepParam = prepFunc.substring(startArgs+1,lastArgs).replace(' ','').split(',')
+			startArgs = prepFunc.indexOf('{')
+			lastArgs = prepFunc.lastIndexOf('}')
+			prepFunc = prepFunc.substring(startArgs+1,lastArgs).trim();
+			return {
+				prepFunc: prepFunc,
+				prepParam: prepParam
+			}
+		},
+		disassembleArguments: function(args){
+			var prepArgs = args
+			var argsType = []
+			for(var i in prepArgs){
+				argsType.push(typeof prepArgs[i])
+				if(typeof prepArgs[i] == 'function'){
+					prepArgs[i] = this.disassembleFunction(prepArgs[i])
+				}
+				else if(typeof prepArgs[i] == 'object'){
+					prepArgs[i] = this.disassembleArguments(prepArgs[i])
+				}
+			}
+			return {
+				prepArgs: prepArgs,
+				argsType: argsType
+			}
+		}
 	}
-	
 }
