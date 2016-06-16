@@ -56,154 +56,32 @@
 		<script src="script/vile.element.js"></script>
 		<script>
 			var page = {};
-			function twoDigit(number){
-				number = String(number)
-				if(number.length == 0){
-					number = "00"
-				}
-				else if(number.length == 1){
-					number = "0"+number
-				}
-				else if(number.length > 2){
-					number = number.substr(number.length-2)
-				}
-				return number
-			}
-			
+			page.thread = Vile.Component.createThreader();
 			window.onload = function(){
-				var wow = [
-					"The most precious thing you can give to someone is your time.",
-					"Time is precious, waste it wisely.",
-					"I recommend you to take care of the minutes, for the hours will take care of themselves.",
-					"Time is a gift that most of us take for granted. We get so caught up in the busyness of our daily lives that we rarely stop and take a serious look at how we're spending this gift.",
-					"The key is to have a balanced life. Set aside a fraction of your time to carry out your dreams and ambitions.",
-					"Every minute of your time is either spent helping or hurting your chance for the victory you are seeking in your life.",
-					"Don't wait for desperate times!",
-					"It's easy to make it through the good times; it's how we handle the bad times that can separates us from the crowd and move us closer to our goals.",
-					"I wish I could stand on a busy corner, hat in hand, and beg people to throw me all their wasted hours.",
-					"You may delay, but time will not.",
-					"You wake up in the morning and lo! Your purse is magically filled with twenty-four hours of the unmanufactured tissue of the universe of your life. It is yours. It is the most precious of your possessions. No one can take it from you. It is unstealable. And no one receives either more or less than you receive.",
-					"Yesterday is long gone, and there are no guarantees we will see tomorrow. Today is what we have and how we use it determines our appreciation of time.",
-					"Don't let the fear of the time it will take to accomplish something stand in the way of your doing it. The time will pass anyway; we might just as well put that passing time to the best possible use.",
-					"Time is a circus, always packing up and moving away.",
-					"One thing you can't recycle is wasted time. Lost time is never found again."
-				]
-				Vile.initialize(page)
-				page.caster = {}
-				Vile.ShadowCaster.custom({
-					name: 'kv-clock',
-					content: '<div class="hour"></div><div class="minute"></div><div class="second"></div>',
-					callback: {
-						onattach: function(){
-							var element = this
-							function update(){
-								element.update();
-							}
-							setInterval(update,500)
-							element.update()
+				Vile.initialize(page);
+				page.runworker = function(){
+					//testworker
+					function addition( a,b){
+						for(var i = 0; i<10000; i++){
+							
 						}
-					},
-					method: {
-						update: function(){
-							var hour = this.querySelector('.hour')
-							var minute = this.querySelector('.minute')
-							var second = this.querySelector('.second')
-							var date = new Date();
-							/*
-							var red = Math.round(date.getHours() / 23 * 128) + 64
-							var green = Math.round(date.getMinutes() / 59 * 128) + 64
-							var blue = Math.round(date.getSeconds() / 59 * 128) + 64
-							*/
-							var h = Math.round(360*(date.getHours()+(date.getMinutes()/59)+(date.getSeconds()/59/59))/23)
-							
-							hour.innerHTML = twoDigit(date.getHours())
-							//hour.style = "box-shadow: inset 0 0 1.9em rgba("+red+","+green+","+blue+","+( 0.25 + date.getHours()/23/2 )+")"
-							hour.style = "box-shadow: inset 0 0 1.9em hsla("+h+","+Math.round(60-30*date.getHours()/23 )+"%,"+Math.round(30+date.getHours()/23*65)+"%,1)"
-							
-							minute.innerHTML = twoDigit(date.getMinutes())
-							//minute.style = "box-shadow: inset 0 0 1.9em rgba("+red+","+green+","+blue+","+( 0.25 + date.getMinutes()/59/2 )+")"
-							minute.style = "box-shadow: inset 0 0 1.9em hsla("+h+","+Math.round(60-30*date.getMinutes()/59 )+"%,"+Math.round(30+date.getMinutes()/59*65)+"%,1)"
-							
-							second.innerHTML = twoDigit(date.getSeconds())
-							//second.style = "box-shadow: inset 0 0 1.9em rgba("+red+","+green+","+blue+","+( 0.25 + date.getSeconds()/59/2 )+")"
-							second.style = "box-shadow: inset 0 0 1.9em hsla("+h+","+Math.round(60-30*date.getSeconds()/59 )+"%,"+Math.round(30+date.getSeconds()/59*65)+"%,1)"	
-
+						return "fucking shit"
+					}
+					var oldDate = Date.now()
+					page.thread({
+						function: addition,
+						arguments: [1,3],
+						success: function(data){
+							var newDate = Date.now()-oldDate
+							console.log('Time1:', newDate)
 						}
-					}
-				})
-				Vile.ShadowCaster.custom({
-					extends: 'input',
-					name: 'input-money',
-					content: function(element){
-						return element.innerHTML + 9
-					}
-				})
-				function getRandomWow(){
-					var index = Math.round(Math.random()*(wow.length-1))
-					page.wordofwisdom.innerHTML = wow[index].replace('time','<strong>time</strong>').replace('Time','<strong>Time</strong>')
-					/*
-				text-shadow: 2px 1px 40px rgba(23,200,100,0.5);*/
-					var r = Math.round(Math.random()*255),
-						g = Math.round(Math.random()*255),
-						b = Math.round(Math.random()*255)/*
-					var r1 = Math.round(Math.random()*255),
-						g1 = Math.round(Math.random()*255),
-						b1 = Math.round(Math.random()*255)
-					var r2 = Math.round(Math.random()*255),
-						g2 = Math.round(Math.random()*255),
-						b2 = Math.round(Math.random()*255)
-					var r3 = Math.round(Math.random()*255),
-						g3 = Math.round(Math.random()*255),
-						b3 = Math.round(Math.random()*255)
-					var r4 = Math.round(Math.random()*255),
-						g4 = Math.round(Math.random()*255),
-						b4 = Math.round(Math.random()*255)
-					var r5 = Math.round(Math.random()*255),
-						g5 = Math.round(Math.random()*255),
-						b5 = Math.round(Math.random()*255)
-					var r6 = Math.round(Math.random()*255),
-						g6 = Math.round(Math.random()*255),
-						b6 = Math.round(Math.random()*255)
-					var r7 = Math.round(Math.random()*255),
-						g7 = Math.round(Math.random()*255),
-						b7 = Math.round(Math.random()*255)*/
-					page.wordofwisdom.style = "text-shadow: 2px 1px 20px rgba("+r+","+g+","+b+",0.5)"/*
-						+"2px 1px 20px rgba("+r1+","+g1+","+b1+",0.2),"
-						+"2px 1px 20px rgba("+r2+","+g2+","+b2+",0.2),"
-						+"2px 1px 20px rgba("+r3+","+g3+","+b3+",0.2),"
-						+"2px 1px 20px rgba("+r4+","+g4+","+b4+",0.2),"
-						+"2px 1px 20px rgba("+r5+","+g5+","+b5+",0.2),"
-						+"2px 1px 20px rgba("+r6+","+g6+","+b6+",0.2),"
-						+"2px 1px 20px rgba("+r7+","+g7+","+b7+",0.2)"*/	
-				}
-				setInterval(getRandomWow,10000)
-				getRandomWow()
-				Vile.Element.activate('kv-loadicon-wave')
-				page.loader = Vile.Component.createLoader(
-					function(){
-						page.loadIcon.style="opacity:1"
-					},
-					function(){
-						page.loadIcon.style="opacity:0"
-					}
-				)
-				page.load.onclick = function(){
-					page.loader.enqueue('a')
-					page.loader.enqueue('b')
-				}
-				page.unload.onclick = function(){
-					page.loader.dequeue('a')
-					page.loader.dequeue('b')
+					})
 				}
 			}
 		</script>
 	</head>
 	<body>
-		<kv-clock id="clock"></kv-clock>
-		<kv-loadicon-wave vile-weave="loadIcon"></kv-loadicon-wave>
-		<blockquote vile-weave="wordofwisdom"></blockquote>
-		<button vile-weave="load">Loading</button>
-		<button vile-weave="unload">Selesai Loading</button>
-		<input type='number' vile-weave="inputTest" value='3'>
+		<button onclick="page.runworker()">test</button>
+		<input vile-weave="joker">
 	</body>
 </html>

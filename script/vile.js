@@ -1,11 +1,23 @@
 'use strict'
-function VileException(message = "Error occured", name = "VileException"){
-	this.name = name
-	this.message = message
-    this.level =       "Show Stopper"
-    this.htmlMessage = message
-    this.toString =    function(){return this.name + ": " + this.message;}
+function ExtendsFrom(classVar){
+	var extendor = function(){}
+	extendor.prototype = classVar.prototype
+	return new extendor();
 }
+var VileException = function(message = "Error occured", name = "VileException"){
+    var tmp = Error.apply(this, arguments)
+    tmp.name = this.name = 'MyError'
+    this.message = tmp.message = message
+    Object.defineProperty(this, 'stack', {
+        get: function () {
+            return tmp.stack
+        }
+    })
+
+    return this
+}
+VileException.prototype = ExtendsFrom(Error)
+
 var Vile = {
 	/**********************/
 	/*****VileMain*********/
@@ -113,7 +125,7 @@ var Vile = {
 		return page;
 	},
 	weaveJq : function(page){
-		console.log(page)
+		//console.log(page)
 		try{
 			if (typeof $ == 'undefined' && !window.jQuery) {  
 				throw ""
@@ -216,12 +228,16 @@ var Vile = {
 					nAttribute = content
 					nContent = attrib
 				}
-				else if((typeof attrib != 'function' || typeof attrib != 'object') && typeof content != 'undefined'){
+				else if((typeof attrib != 'function' || typeof attrib != 'object') && typeof attrib != 'undefined'){
 					nAttribute = {}
 					nContent = attrib
 				}
 				else if(isObject(attrib)){
 					nAttribute = attrib
+					nContent = ''
+				}
+				else if(typeof content == 'undefined' && typeof attrib == 'undefined'){
+					nAttribute = {}
 					nContent = ''
 				}
 				else{
@@ -234,6 +250,14 @@ var Vile = {
 				else{
 					return editor.makeVoid(element,nAttribute);
 				}
+			}
+			editor.nodify = function(html_string){
+				var d = document.createElement('div');
+				d.innerHTML = html_string;
+				return d.firstChild;
+			}
+			editor.makeNode = function(element,attrib,content){
+				return editor.nodify(editor.make(element,attrib,content));
 			}
 			editor.makeStyle = function(element,attrib){
 				return element+'{'+editor.generateAttributesForStyle(attrib)+'}'
@@ -475,6 +499,24 @@ var Vile = {
 			if(typeof onload !=='function' || typeof onfinish !=='function'){
 				throw new VileException("Page loader needs onload and on finish function");		
 			}
+			/*
+				page.loader = Vile.Component.createLoader(
+					function(){
+						page.loadIcon.style="opacity:1"
+					},
+					function(){
+						page.loadIcon.style="opacity:0"
+					}
+				)
+				page.load.onclick = function(){
+					page.loader.enqueue('a')
+					page.loader.enqueue('b')
+				}
+				page.unload.onclick = function(){
+					page.loader.dequeue('a')
+					page.loader.dequeue('b')
+				}
+			*/
 			var loader = {
 				processes: [],
 				get: function(string){
@@ -520,7 +562,68 @@ var Vile = {
 			}
 			return loader
 		}
+		component.createThreader = function(){
+			return Vile.Threader
+		}
 		
 		return component
-	})()
+	})(),
+	Threader : function(obj){
+		if(typeof obj.function !== 'function'){
+			throw new VileException('You must pass arguments into VileThread')
+		}
+		if(typeof obj.arguments !== 'object'){
+			obj.arguments = []
+		}
+		if(typeof obj.success !== 'function'){
+			obj.success = function(data){ console.log(data) }
+		}
+
+		if(typeof Worker !== 'undefined'){
+			function workerMedium(e){
+				var data = JSON.parse(e.data)
+				var args = data.args
+				var func = Function(data.prepArgs,data.func)
+				var ret = {}
+				ret.error = false;
+				try{
+					ret.result = func.apply(this,args)	
+				}catch(e){
+					ret.error = e
+				}
+				postMessage(JSON.stringify(ret))
+			}
+
+			var bodyExtract = workerMedium.toString();
+			var blob = new Blob(['onmessage = '+bodyExtract])
+			var url = window.URL.createObjectURL(blob)
+			var worker = new Worker(url)
+			worker.onmessage = function(e){
+				var data = JSON.parse(e.data)
+				console.log(data)
+				if(data.error!==false){
+					throw data.error
+				}
+				else{
+					obj.success.apply(this,[data.result])
+				}
+				var newDate = Date.now()-oldDate
+			}
+			var preparedFunction = obj.function.toString().trim()
+			var startArgs = preparedFunction.indexOf('(')
+			var lastArgs = preparedFunction.indexOf(')')
+			var preparedArguments = preparedFunction.substring(startArgs+1,lastArgs).replace(' ','').split(',')
+			startArgs = preparedFunction.indexOf('{')
+			lastArgs = preparedFunction.lastIndexOf('}')
+			preparedFunction = preparedFunction.substring(startArgs+1,lastArgs).trim();
+			worker.postMessage(JSON.stringify({
+				func: preparedFunction,
+				prepArgs: preparedArguments,
+				args: obj.arguments
+			}))
+		}else{
+			obj.success.apply(this,obj.function.apply(this,obj.arguments))
+		}
+	}
+	
 }
