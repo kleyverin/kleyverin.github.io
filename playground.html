@@ -56,26 +56,30 @@
 		<script src="script/vile.element.js"></script>
 		<script>
 			var page = {};
+			//var cord = new Vile.Telepath.Cord()
 			page.thread = Vile.Component.createThreader();
 			window.onload = function(){
 				Vile.initialize(page);
-				page.joker.onchange = function(){
-					page.thread({
-						function: function(a){
-							return a > 0 ? a + a : a - a
-						},
-						arguments: [Number(page.joker.value)],
-						success: function(a){
-							page.batman.innerHTML = a+" persons died"
-						}
-					})
-				}
+				/*
+				cord.setHardBound(true)
+				cord.addSlave(page.batman)
+				cord.addSlave(page.gordon)
+				cord.addSlave(page.robin)
+				cord.addMaster(page.joker)
+				cord.addMaster(page.penguin)
+				cord.addMaster(page.ivy)
+				*/
+				var cord = Vile.Telepath.quickbind(page.joker,page.batman)	
 			}
 		</script>
 	</head>
 	<body>
-		<button onclick="page.runworker()">test</button>
-		<input type="number" vile-weave="joker">
+		<button>test</button>
+		<input type="text" vile-weave="joker" placeholder="joker">
+		<input type="number" vile-weave="penguin" placeholder="penguin">
+		<input type="password" vile-weave="ivy" placeholder="ivy">
 		<span vile-weave="batman"></span>
+		<span vile-weave="gordon"></span>
+		<span vile-weave="robin"></span>
 	</body>
 </html>
