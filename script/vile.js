@@ -752,7 +752,6 @@ var Vile = {
 			element.onchange = null
 		},
 		bindMaster: function(element,cord){
-			console.log(cord)
 			element.onkeyup = null
 			element.onchange = null
 			if(element.nodeName == 'INPUT'){
@@ -802,8 +801,12 @@ var Vile = {
 		quickbind: function(master,slave,hardBound=true){
 			var cord = new Vile.Telepath.Cord()
 			cord.setHardBound(hardBound)
-			cord.addMaster(master)
-			cord.addSlave(slave)
+			for(var i in master){
+				cord.addMaster(master[i])
+			}
+			for(var i in slave){
+				cord.addSlave(slave[i])
+			}
 			return cord
 		},
 		Cord: function(){

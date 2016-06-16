@@ -69,15 +69,18 @@
 				cord.addMaster(page.penguin)
 				cord.addMaster(page.ivy)
 				*/
-				var cord = Vile.Telepath.quickbind(page.joker,page.batman)	
+				var cord = Vile.Telepath.quickbind([page.joker,page.penguin,page.ivy],[page.batman,page.gordon,page.robin])
+				cord.setSlaveFilter(page.batman,function(){
+					return Number(page.joker.value)+Number(page.penguin.value)+Number(page.ivy.value)
+				})
 			}
 		</script>
 	</head>
 	<body>
 		<button>test</button>
-		<input type="text" vile-weave="joker" placeholder="joker">
+		<input type="number" vile-weave="joker" placeholder="joker">
 		<input type="number" vile-weave="penguin" placeholder="penguin">
-		<input type="password" vile-weave="ivy" placeholder="ivy">
+		<input type="number" vile-weave="ivy" placeholder="ivy">
 		<span vile-weave="batman"></span>
 		<span vile-weave="gordon"></span>
 		<span vile-weave="robin"></span>
