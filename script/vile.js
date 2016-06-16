@@ -576,7 +576,10 @@ var Vile = {
 			obj.arguments = []
 		}
 		if(typeof obj.success !== 'function'){
-			obj.success = function(data){ console.log(data) }
+			obj.success = function(data){ console.log('data: ',	data) }
+		}
+		if(typeof obj.error !== 'function'){
+			obj.error = function(error){ throw error }
 		}
 
 		if(typeof Worker !== 'undefined'){
@@ -606,7 +609,7 @@ var Vile = {
 				try{
 					ret.result = func.apply(this,args)	
 				}catch(e){
-					ret.error = e
+					ret.error = e.message
 				}
 				postMessage(JSON.stringify(ret))
 			}
@@ -618,11 +621,12 @@ var Vile = {
 			worker.onmessage = function(e){
 				var data = JSON.parse(e.data)
 				if(data.error!==false){
-					throw data.error
+					obj.error.apply(this,[data.error])
 				}
 				else{
 					obj.success.apply(this,[data.result])
 				}
+				worker.terminate()
 			}
 			//preparefunction
 			var disassembledFunction = Vile.Utility.disassembleFunction(obj.function)
@@ -634,7 +638,11 @@ var Vile = {
 				argsType: disassembledArguments.argsType
 			}))
 		}else{
-			obj.success.apply(this,obj.function.apply(this,obj.arguments))
+			try{
+				obj.success.apply(this,[obj.function.apply(this,obj.arguments)])
+			}catch(e){
+				obj.error.apply(this,[e.message])
+			}
 		}
 	},
 	Utility: {

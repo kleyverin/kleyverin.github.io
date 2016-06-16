@@ -59,21 +59,14 @@
 			page.thread = Vile.Component.createThreader();
 			window.onload = function(){
 				Vile.initialize(page);
-				page.runworker = function(){
-					//testworker
-					function functionKiller(obj){
-						return obj
-					}
+				page.joker.onchange = function(){
 					page.thread({
-						function: functionKiller,
-						arguments: [{
-							a:3,
-							b:{
-								c: function(){return 3}
-							}
-						}],
-						success: function(data){
-							console.log(data)
+						function: function(a){
+							return a > 0 ? a + a : a - a
+						},
+						arguments: [Number(page.joker.value)],
+						success: function(a){
+							page.batman.innerHTML = a+" persons died"
 						}
 					})
 				}
@@ -82,6 +75,7 @@
 	</head>
 	<body>
 		<button onclick="page.runworker()">test</button>
-		<input vile-weave="joker">
+		<input type="number" vile-weave="joker">
+		<span vile-weave="batman"></span>
 	</body>
 </html>
