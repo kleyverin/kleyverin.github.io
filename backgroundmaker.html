@@ -127,6 +127,60 @@
 						</div>
 					</div>
 					<div vile-weave="sectionColorOption" class="section section-color-option hidden">
+						<label>Color</label>
+						<div class="color-mode">
+							<label>Mode</label>
+							<select vile-weave="colorMode">
+								<option value="rgb">RGB</option>
+								<option value="hsl">HSL</option>
+							</select>
+						</div>
+						<div class="rgb-only hidden">
+							<div class="color-slider colorR">
+								<label>R</label><span>:</span><input type="number" min="0" max="255">
+								<div class="slider-container">
+									<div vile-weave="RRuler" class="ruler"></div>
+									<div vile-weave="RGraph" class="color-peon-container"></div>
+								</div>
+							</div>
+							<div class="color-slider colorG">
+								<label>G</label><span>:</span><input type="number" min="0" max="255">
+								<div class="slider-container">
+									<div vile-weave="GRuler" class="ruler"></div>
+									<div vile-weave="GGraph" class="color-peon-container"></div>
+								</div>
+							</div>
+							<div class="color-slider colorB">
+								<label>B</label><span>:</span><input type="number" min="0" max="255">
+								<div class="slider-container">
+									<div vile-weave="BRuler" class="ruler"></div>
+									<div vile-weave="BGraph" class="color-peon-container"></div>
+								</div>
+							</div>
+						</div>
+						<div class="hsl-only hidden">
+							<div class="color-slider colorH">
+								<label>H</label><span>:</span><input type="number" min="0" max="255">
+								<div class="slider-container">
+									<div vile-weave="HRuler" class="ruler"></div>
+									<div vile-weave="HGraph" class="color-peon-container"></div>
+								</div>
+							</div>
+							<div class="color-slider colorS">
+								<label>S</label><span>:</span><input type="number" min="0" max="255">
+								<div class="slider-container">
+									<div vile-weave="SRuler" class="ruler"></div>
+									<div vile-weave="SGraph" class="color-peon-container"></div>
+								</div>
+							</div>
+							<div class="color-slider colorL">
+								<label>L</label><span>:</span><input type="number" min="0" max="255">
+								<div class="slider-container">
+									<div vile-weave="LRuler" class="ruler"></div>
+									<div vile-weave="LGraph" class="color-peon-container"></div>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>

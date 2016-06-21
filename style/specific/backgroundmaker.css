@@ -1,6 +1,5 @@
 *{  
     font-family: Quicksand;
-    transition: all 0.5 ease;
 }
 
 html, body{
@@ -154,6 +153,16 @@ body{
 .section:last-child{
 	border-bottom: none;
 }
+.section p,
+.section label{
+	-webkit-user-select: none; /* Chrome/Safari */        
+	-moz-user-select: none; /* Firefox */
+	-ms-user-select: none; /* IE10+ */
+
+	/* Rules below not implemented in browsers yet */
+	-o-user-select: none;
+	user-select: none;
+}
 .section .button-container{
 	border-bottom: 1px solid #ddd;
 }
@@ -284,8 +293,9 @@ body{
 }
 .layer-colors{
 	width: 100%;
-	height: 100px;
+	height: 130px;
 	padding: 5px;
+	padding-bottom: 150px;
 }
 .color-graph-container{
 	width: 100%;
@@ -322,7 +332,78 @@ body{
 	box-shadow: inset 1px 1px 3px #F0D878, inset -1px -1px 3px #BF9D3E, 0 0 4px rgba(0,0,0,0.9);
 	z-index: 1000;
 }
+.color-graph .peon>div.toBeDeleted{
+	opacity: 0.5;
+}
 .color-graph .peon>div{
+	cursor: pointer;
+}
+.color-mode,
+.rgb-only,
+.hsl-only{
+	width: 100%;
+	padding: 5px;
+}
+.color-slider>label:first-child{
+	display: inline-block;
+	width: 10px;
+}
+.color-slider>span:nth-child(2){
+	display: inline-block;
+	width: 10px;
+	text-align: center;
+}
+.color-slider>input:nth-child(3){
+	width: 70px;
+}
+.color-slider .slider-container{
+	height: 40px;
+}
+.color-slider .ruler{
+	position: absolute;
+	margin-top: 4px;
+	margin-left: 6px;
+	width: calc(100% - 22px);
+	height: 16px;
+	background: black;
+	border: 1px solid black;
+}
+.colorR .ruler{
+	background: linear-gradient(90deg,black,red);
+}
+.colorG .ruler{
+	background: linear-gradient(90deg,black,green);
+}
+.colorB .ruler{
+	background: linear-gradient(90deg,black,blue);
+}
+.colorH .ruler{
+	background: linear-gradient(90deg,hsl(0,100%,50%),hsl(60,100%,50%),hsl(120,100%,50%),hsl(180,100%,50%),hsl(240,100%,50%),hsl(300,100%,50%));
+}
+.color-slider .peon{
+	position: absolute;
+	height: 0px;
+	width: calc(100% - 22px);
+}
+.color-slider .peon>div{
+	position: relative;
+	width: 12px;
+	height: 24px;
+	border: 1px solid black;
+	border-radius: 4px;
+}
+.color-slider .peon>div.active{
+	box-shadow: inset 1px 1px 3px #F0D878, inset -1px -1px 3px #BF9D3E, 0 0 4px rgba(0,0,0,0.9);
+	z-index: 800;
+}
+.color-slider .peon>div.dragged{
+	box-shadow: inset 1px 1px 3px #F0D878, inset -1px -1px 3px #BF9D3E, 0 0 4px rgba(0,0,0,0.9);
+	z-index: 1000;
+}
+.color-slider .peon>div.toBeDeleted{
+	opacity: 0.5;
+}
+.color-slider .peon>div{
 	cursor: pointer;
 }
 .code-panel{

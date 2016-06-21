@@ -1,6 +1,6 @@
 var page = {}
 Vile.preload(page)
-function Color(){
+Vile.Color = function(){
 	var self = this
 	this.hsl = false;
 	this.r = 255
@@ -11,19 +11,35 @@ function Color(){
 	this.l = 100
 	this.a = 1
 	this.refreshHSL = function(){
-		var newConf = rgbToHsl(r,g,b);
-		self.h = newConf.h
-		self.s = newConf.s
-		self.l = newConf.l
+		Vile.Color.refreshHSL(this)
 	}
 	this.refreshRGB = function(){
-		var newConf = hslToRgb(h,s,l)
-		self.r = newConf.r
-		self.g = newConf.g
-		self.b = newConf.b
+		Vile.Color.refreshRGB(this)
+	}
+	this.refresh = function(){
+		Vile.Color.refresh(this)
 	}
 }
-function hslToRgb(h,s,l){
+Vile.Color.refreshHSL = function(color){
+	var newConf = Vile.Color.rgbToHsl(r,g,b);
+	color.h = newConf.h
+	color.s = newConf.s
+	color.l = newConf.l
+}
+Vile.Color.refreshRGB = function(color){
+	var newConf = Vile.Color.hslToRgb(h,s,l)
+	color.r = newConf.r
+	color.g = newConf.g
+	color.b = newConf.b
+}
+Vile.Color.refresh = function(color){
+	if(color.hsl = true){
+		Vile.Color.refreshRGB(color)
+	}else{
+		Vile.Color.refreshHSL(color)
+	}
+}
+Vile.Color.hslToRgb = function(h,s,l){
 	var ret = {}
 	var c = (1-Math.abs((2*l/100-1)))*(s/100)
 	var x = c * (1-Math.abs(((h/60)%2)-1))
@@ -40,7 +56,7 @@ function hslToRgb(h,s,l){
 	ret.b = Math.round((b+m)*255)
 	return ret
 }
-function rgbToHsl(r,g,b){
+Vile.Color.rgbToHsl = function(r,g,b){
 	var ret = {}
 	ret.h;ret.s;ret.l;
 	var min = 100, max = 0
@@ -53,7 +69,6 @@ function rgbToHsl(r,g,b){
 	if(r>max){max = r}
 	if(g>max){max = g}
 	if(b>max){max = b}
-	console.log(max-min)
 	//l
 	ret.l = (max+min)/2
 	//s
@@ -65,6 +80,15 @@ function rgbToHsl(r,g,b){
 	else if(max==g){ ret.h = 60 * (((b-r)/(max-min))+2) }
 	else if(max==b){ ret.h = 60 * (((r-g)/(max-min))+4) }
 	return ret
+}
+Vile.Color.codifyColor = function(colors){
+	var color = colors.color
+	if(color.hsl){
+		return "hsla("+color.h+","+color.s+"%,"+color.l+"%,"+color.a+")"
+	}
+	else{
+		return "rgba("+color.r+","+color.g+","+color.b+","+color.a+")"
+	}
 }
 function decimalToHex(number){
 	function toHex(numbers){
@@ -115,7 +139,6 @@ function hexToDecimal(string){
 	var pow = 1;
 	var p = string.length-1
 	while(true){
-		console.log(p)
 		if(p<0){
 			break;
 		}
@@ -149,15 +172,6 @@ function hexToRgb(string){
 		throw "Hex invalid";
 	}
 }
-function codifyColor(colors){
-	var color = colors.color
-	if(color.hsl){
-		return "hsla("+color.h+","+color.s+","+color.l+","+color.a+")"
-	}
-	else{
-		return "rgba("+color.r+","+color.g+","+color.b+","+color.a+")"
-	}
-}
 function codifyLayer(layer){
 	var attribute = ""
 	if(layer.linear){attribute += "linear-gradient( "}
@@ -166,7 +180,7 @@ function codifyLayer(layer){
 		if(i!=0){
 			attribute+=" , "
 		}
-		attribute+=codifyColor(layer.colors[i])
+		attribute+=Vile.Color.codifyColor(layer.colors[i])
 		attribute+=" "+(layer.colors[i].position*100)+"%"
 	}
 	attribute+= " )"
@@ -341,12 +355,13 @@ page.layerOption.positionSetting.refresh = function(){
 }
 page.layerOption.colorGraph={}
 page.layerOption.colorGraph.selectPeon = function(event, element){
-	if(selectedColor != selectedLayer.colors[element.getAttribute('data-index')]){
+	if(selectedPeon != element){
 		$(selectedPeon).removeClass('active')
 		selectedPeon = element
 		$(selectedPeon).addClass('active')
-		selectedColor = selectedLayer.colors[selectedPeon.getAttribute['data-index']]
+		page.colorOption.selectColor(selectedPeon.getAttribute('data-index'))
 	}else{
+		page.colorOption.unselectColor();
 		page.layerOption.colorGraph.unselectPeon(event,element)
 	}
 	draggedPeon = element
@@ -355,10 +370,16 @@ page.layerOption.colorGraph.selectPeon = function(event, element){
 page.layerOption.colorGraph.unselectPeon = function(event, element){
 	$(selectedPeon).removeClass('active')
 	selectedPeon = null
-	selectedColor = null
+	page.colorOption.unselectColor()
 }
 page.layerOption.colorGraph.undragPeon = function(e){
 	if(draggedPeon!=null){
+		var toBeDeleted = $(draggedPeon).hasClass('toBeDeleted')
+		if(toBeDeleted){
+			var index = draggedPeon.getAttribute('data-index')
+			page.layerOption.colorGraph.unselectPeon()	
+			selectedLayer.colors.splice(index,1)
+		}
 		$(draggedPeon).removeClass('dragged')
 		draggedPeon = null
 		page.layerOption.colorGraph.refresh()
@@ -366,12 +387,18 @@ page.layerOption.colorGraph.undragPeon = function(e){
 }
 page.layerOption.colorGraph.movePeon = function(e){
 	if(draggedPeon!=null){
+		var top = e.pageY - page.colorGraph[0].getBoundingClientRect().top
 		var left = ((e.pageX - (draggedPeon.offsetWidth/2) - page.colorGraph[0].getBoundingClientRect().left)/(page.colorGraph[0].offsetWidth-12)*100);
 		if(left>100){
 			left=100
 		}
 		else if(left<0){
 			left=0
+		}
+		if(top>29 || top<-5){
+			$(selectedPeon).addClass('toBeDeleted')
+		}else{
+			$(selectedPeon).removeClass('toBeDeleted')
 		}
 		selectedLayer.colors[$(draggedPeon).attr('data-index')].position = left;
 		$(draggedPeon).css('left',left+"%") 
@@ -386,7 +413,7 @@ window.addEventListener('mousemove',function(e){
 page.layerOption.colorGraph.newColor = function(){
 	selectedLayer.colors.push({
 		position: 50,
-		color: new Color()
+		color: new Vile.Color()
 	})
 	page.layerOption.colorGraph.refresh()
 }
@@ -396,7 +423,7 @@ page.layerOption.colorGraph.makePeon = function(color,index,selected){
 		class: selected?'active':'',
 		onmousedown: "page.layerOption.colorGraph.selectPeon(event,this)",
 		style: page.e.generateAttributesForStyle({
-			background: codifyColor(color),
+			background: Vile.Color.codifyColor(color),
 			left: color.position+"%"
 		})
 	})
@@ -436,8 +463,17 @@ page.layerCount = 0
 page.layers = []
 
 
-page.colorOption = {}
 var selectedColor = null
+page.colorOption = {}
+page.colorOption.selectColor = function(index){
+	selectedColor = selectedLayer.colors[index]
+	page.colorOption.refresh()
+	page.sectionColorOption.removeClass('hidden')
+}
+page.colorOption.unselectColor = function(index){
+	selectedColor = null
+	page.sectionColorOption.addClass('hidden')
+}
 /******
 document ready
 *****/
@@ -481,7 +517,7 @@ $(document).ready(function(){
 			//mode, if linear == false than it is radial gradient
 			name: 'layer '+(++page.layerCount),
 			linear: true,
-			colors: [{position: 0,color:new Color()},{position:100,color:new Color()}],
+			colors: [{position: 0,color:new Vile.Color()},{position:100,color:new Vile.Color()}],
 			angle: 0,
 			shape: "circle",
 			position:{
@@ -491,4 +527,20 @@ $(document).ready(function(){
 		})
 		page.refreshLayers();
 	}
+	page.colorOption.refresh = function(){
+		page.colorOption.mode.set(selectedColor.color.hsl?'hsl':'rgb')
+	}
+	page.colorOption.mode = page.e.quickcord([page.colorMode[0]],[],false)
+	page.colorOption.mode.onchange(function(){
+		if(this.get()=='rgb'){
+			selectedColor.color.hsl = false
+			$('.hsl-only').addClass('hidden')
+			$('.rgb-only').removeClass('hidden')	
+		}
+		else if(this.get()=='hsl'){
+			selectedColor.color.hsl = true
+			$('.hsl-only').removeClass('hidden')
+			$('.rgb-only').addClass('hidden')	
+		}
+	})
 })
