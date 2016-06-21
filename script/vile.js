@@ -6,7 +6,7 @@ function ExtendsFrom(classVar){
 }
 var VileException = function(message = "Error occured", name = "VileException"){
     var tmp = Error.apply(this, arguments)
-    tmp.name = this.name = 'MyError'
+    tmp.name = this.name = 'VileException'
     this.message = tmp.message = message
     Object.defineProperty(this, 'stack', {
         get: function () {
@@ -826,9 +826,13 @@ var Vile = {
 				changed = true
 			}
 			cord.value = ref;
-			if(cord.onchange!=null && changed){
-				cord.onchange()
-			};
+			
+			if(pub.onchangecallback!=null && changed){
+				pub.onchangecallback()
+			}
+			if(pub.onupdatecallback!=null){
+				pub.onupdatecallback()
+			}
 			if(changed){
 				pub.refresh()
 			}
@@ -839,22 +843,23 @@ var Vile = {
 				slaveElement: [],
 				masterElement: [],
 				lockRefresh: false,
-				hardBound: false,
-				onchange: null,
-				onupdate: null
+				hardBound: false
 			};
 			var pub = {}
+			pub.onchangecallback = null
+			pub.onupdatecallback = null
 			pub.onchange = function(func){
 				if(!(typeof func == 'function' || func == null)){
 					throw new VileException('onchange must be function')
 				}
-				cord.onchange = func
+				this.onchangecallback = func
+
 			}
 			pub.update = function(func){
 				if(!(typeof func == 'function' || func == null)){
 					throw new VileException('onchange must be function')
 				}
-				cord.onchange = func
+				this.onchangecallback = func
 			}
 			pub.getCord = function(){return cord}
 			pub.set = function(ref){
