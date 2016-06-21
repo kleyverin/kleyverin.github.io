@@ -290,6 +290,9 @@ body{
 .color-graph-container{
 	width: 100%;
 }
+.color-graph .button-container{
+	margin-bottom: 5px;
+}
 .color-graph .ruler{
 	position: absolute;
 	margin-top: 4px;
@@ -313,6 +316,11 @@ body{
 }
 .color-graph .peon>div.active{
 	box-shadow: inset 1px 1px 3px #F0D878, inset -1px -1px 3px #BF9D3E, 0 0 4px rgba(0,0,0,0.9);
+	z-index: 800;
+}
+.color-graph .peon>div.dragged{
+	box-shadow: inset 1px 1px 3px #F0D878, inset -1px -1px 3px #BF9D3E, 0 0 4px rgba(0,0,0,0.9);
+	z-index: 1000;
 }
 .color-graph .peon>div{
 	cursor: pointer;

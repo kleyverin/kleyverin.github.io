@@ -1,3 +1,5 @@
+var page = {}
+Vile.preload(page)
 function Color(){
 	var self = this
 	this.hsl = false;
@@ -177,7 +179,6 @@ function codifyLayers(){
 	}
 	return attributes
 }
-var page = {}
 /******
 layer management
 *****/
@@ -340,25 +341,32 @@ page.layerOption.positionSetting.refresh = function(){
 }
 page.layerOption.colorGraph={}
 page.layerOption.colorGraph.selectPeon = function(event, element){
-	if(selectedPeon!=element){
+	if(selectedColor != selectedLayer.colors[element.getAttribute('data-index')]){
 		$(selectedPeon).removeClass('active')
 		selectedPeon = element
 		$(selectedPeon).addClass('active')
+		selectedColor = selectedLayer.colors[selectedPeon.getAttribute['data-index']]
 	}else{
-		$(selectedPeon).removeClass('active')
-		selectedPeon = null
+		page.layerOption.colorGraph.unselectPeon(event,element)
 	}
 	draggedPeon = element
+	$(draggedPeon).addClass('dragged')
 }
-window.addEventListener('mouseup',function(e){
+page.layerOption.colorGraph.unselectPeon = function(event, element){
+	$(selectedPeon).removeClass('active')
+	selectedPeon = null
+	selectedColor = null
+}
+page.layerOption.colorGraph.undragPeon = function(e){
 	if(draggedPeon!=null){
+		$(draggedPeon).removeClass('dragged')
 		draggedPeon = null
+		page.layerOption.colorGraph.refresh()
 	}
-})
-page.colorOption = {}
-window.addEventListener('mousemove',function(e){
+}
+page.layerOption.colorGraph.movePeon = function(e){
 	if(draggedPeon!=null){
-		var left = ((e.pageX - (draggedPeon.offsetWidth/2) - page.colorGraph.getBoundingClientRect().left)/(page.colorGraph.offsetWidth-12)*100);
+		var left = ((e.pageX - (draggedPeon.offsetWidth/2) - page.colorGraph[0].getBoundingClientRect().left)/(page.colorGraph[0].offsetWidth-12)*100);
 		if(left>100){
 			left=100
 		}
@@ -368,10 +376,24 @@ window.addEventListener('mousemove',function(e){
 		selectedLayer.colors[$(draggedPeon).attr('data-index')].position = left;
 		$(draggedPeon).css('left',left+"%") 
 	}
+}
+window.addEventListener('mouseup',function(e){
+	page.layerOption.colorGraph.undragPeon(e)
 })
-page.layerOption.colorGraph.makePeon = function(color,index){
+window.addEventListener('mousemove',function(e){
+	page.layerOption.colorGraph.movePeon(e)
+})
+page.layerOption.colorGraph.newColor = function(){
+	selectedLayer.colors.push({
+		position: 50,
+		color: new Color()
+	})
+	page.layerOption.colorGraph.refresh()
+}
+page.layerOption.colorGraph.makePeon = function(color,index,selected){
 	var inside = page.e.make('div',{
 		'data-index': index,
+		class: selected?'active':'',
 		onmousedown: "page.layerOption.colorGraph.selectPeon(event,this)",
 		style: page.e.generateAttributesForStyle({
 			background: codifyColor(color),
@@ -387,18 +409,35 @@ page.layerOption.colorGraph.refreshRuler = function(){
 	page.colorRuler.style="background:"+codifyLayer(selectedLayer)
 }
 page.layerOption.colorGraph.refresh = function(){
+	if(selectedPeon!=null){
+		selectedColor = selectedLayer.colors[selectedPeon.getAttribute('data-index')]
+	}
+	selectedLayer.colors.sort(function(a,b){
+		return a.position - b.position
+	})
 	page.layerOption.colorGraph.refreshRuler()
 	var colorPeons = ""
+	var selectedIndex = -1
 	for(var i = 0; i<selectedLayer.colors.length; i++){
-		colorPeons+=page.layerOption.colorGraph.makePeon(selectedLayer.colors[i],i)
+		var selected = false
+		if(selectedColor == selectedLayer.colors[i]){
+			selectedIndex = i
+			selected = true
+		}
+		colorPeons+=page.layerOption.colorGraph.makePeon(selectedLayer.colors[i],i,selected)
 	}
 	$(page.colorGraph).html(colorPeons)
+	selectedPeon = $('.peon>div[data-index="'+selectedIndex+'"]')[0]
 }
 var selectedPeon = null
 var draggedPeon = null
 
 page.layerCount = 0
 page.layers = []
+
+
+page.colorOption = {}
+var selectedColor = null
 /******
 document ready
 *****/

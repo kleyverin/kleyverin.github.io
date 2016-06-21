@@ -22,9 +22,16 @@ var Vile = {
 	/**********************/
 	/*****VileMain*********/
 	/**********************/
+	isElement: function(obj){
+		return obj instanceof HTMLElement
+	},
 	predefinedConst: {
 		'e': true,
 		'weaver': true
+	},
+	preload: function(page){
+		page.e = this.VileEditor.makeEditor();
+		page.e.quickcord = Vile.Telepath.quickcord;
 	},
 	initialize: function(page){
 		try{
@@ -55,7 +62,7 @@ var Vile = {
 			}
 		}
 		page.weaver.on()
-		page.e = this.VileEditor.makeEditor();
+		page = Vile.preload(page)
 		//page.f = this.Factory.makeFactory();
 		//page.template = this.weaveTemplate()
 	},
@@ -220,19 +227,22 @@ var Vile = {
 			editor.make = function(element,attrib,content){
 				var nAttribute;
 				var nContent;
-				if(isObject(attrib) && (typeof content != 'function' || typeof content != 'object') && typeof content != 'undefined'){
+				if(typeof element != 'string'){
+					throw new VileException('first argument must be string')
+				}
+				if(isObject(attrib) && (!isObject(content) && typeof content != 'function') && typeof content != 'undefined'){
 					nAttribute = attrib
 					nContent = content
 				}
-				else if(isObject(content) && (typeof attrib != 'function' || typeof attrib != 'object') && typeof content != 'undefined'){
+				else if(isObject(content) && (!isObject(attrib) && typeof attrib != 'function') && typeof attrib != 'undefined'){
 					nAttribute = content
 					nContent = attrib
 				}
-				else if((typeof attrib != 'function' || typeof attrib != 'object') && typeof attrib != 'undefined'){
+				else if(!isObject(attrib) && typeof attrib != 'function' && content == null){
 					nAttribute = {}
 					nContent = attrib
 				}
-				else if(isObject(attrib)){
+				else if(isObject(attrib) && content == null){
 					nAttribute = attrib
 					nContent = ''
 				}
@@ -678,13 +688,24 @@ var Vile = {
 		}
 	},
 	Telepath: {
+		quickcord: function(master=[],slave=[],hardBound=true){
+			var cord = new Vile.Telepath.Cord()
+			cord.setHardBound(hardBound)
+			for(var i in master){
+				cord.addMaster(master[i])
+			}
+			for(var i in slave){
+				cord.addSlave(slave[i])
+			}
+			return cord
+		},
 		list_master: function(){
 			return {
 						'INPUT': true,
 						'SELECT': true
 					}
 		},
-		transmit: function(value,element){
+		cord_transmit: function(value,element){
 			if(typeof element.filter === 'function'){
 				value = element.filter(value)
 			}
@@ -725,7 +746,7 @@ var Vile = {
 				}
 			}
 		},
-		receive: function(element,cord){
+		cord_receive: function(element,cord){
 			if(cord.getCord().lockReceive){
 				return
 			}
@@ -733,59 +754,59 @@ var Vile = {
 			if(element.nodeName == 'INPUT'){
 				var type = element.getAttribute('type')
 				if(type=='radio' || type=='checkbox'){
-					cord.getCord().value = element.checked
+					cord.set(element.checked) 
 					cord.refresh(element)
 				}
 				else{
-					cord.getCord().value = element.value
+					cord.set(element.value) 
 					cord.refresh(element)
 				}
 			}
 			else if(element.nodeName == 'SELECT'){
-				cord.getCord().value = element.value
+				cord.set(element.value)
 				cord.refresh(element)
 			}
 			cord.getCord().lockReceive = false
 		},
-		removeMaster: function(element){
+		cord_removeMaster: function(element){
 			element.onkeyup = null
 			element.onchange = null
 		},
-		bindMaster: function(element,cord){
+		cord_bindMaster: function(element,cord){
 			element.onkeyup = null
 			element.onchange = null
 			if(element.nodeName == 'INPUT'){
 				var type = element.getAttribute('type')
 				if(type=='radio' || type=='checkbox'){
 					element.onchange = function(){
-						Vile.Telepath.receive(element,cord)
+						Vile.Telepath.cord_receive(element,cord)
 					}
 				}
 				else{
 					if(cord.getCord().hardBound){
 						element.onkeyup = function(){
-							Vile.Telepath.receive(element,cord)
+							Vile.Telepath.cord_receive(element,cord)
 						}
 						element.onchange = function(){
-							Vile.Telepath.receive(element,cord)
+							Vile.Telepath.cord_receive(element,cord)
 						}
 					}
 					else{
 						element.onchange = function(){
-							Vile.Telepath.receive(element,cord)
+							Vile.Telepath.cord_receive(element,cord)
 						}
 					}
 				}
 			}
 			else if(element.nodeName == 'SELECT'){
 				element.onchange = function(){
-					Vile.Telepath.receive(element,cord)
+					Vile.Telepath.cord_receive(element,cord)
 					cord.getCord().value = element.value
-					cord.refresh()
+					cord.refresh(element)
 				}
 			}
 		},
-		searchCordElement: function(list,element){
+		cord_searchElement: function(list,element){
 			for(var i = 0; i<list.length; i++){
 				if(list[i].element == element){
 					return i;
@@ -795,19 +816,22 @@ var Vile = {
 		rebindAllMaster: function(cord){
 			var mE = cord.getCord().masterElement
 			for(var i = 0; i<mE.length; i++){
-				Vile.Telepath.bindMaster(mE[i],this)
+				Vile.Telepath.cord_bindMaster(mE[i],this)
 			}
 		},
-		quickbind: function(master,slave,hardBound=true){
-			var cord = new Vile.Telepath.Cord()
-			cord.setHardBound(hardBound)
-			for(var i in master){
-				cord.addMaster(master[i])
+		cord_set : function(pub,ref){
+			var changed = false;
+			var cord = pub.getCord()
+			if( ref!=cord.value){
+				changed = true
 			}
-			for(var i in slave){
-				cord.addSlave(slave[i])
+			cord.value = ref;
+			if(cord.onchange!=null && changed){
+				cord.onchange()
+			};
+			if(changed){
+				pub.refresh()
 			}
-			return cord
 		},
 		Cord: function(){
 			var cord = {
@@ -815,65 +839,102 @@ var Vile = {
 				slaveElement: [],
 				masterElement: [],
 				lockRefresh: false,
-				hardBound: false
+				hardBound: false,
+				onchange: null,
+				onupdate: null
 			};
 			var pub = {}
+			pub.onchange = function(func){
+				if(!(typeof func == 'function' || func == null)){
+					throw new VileException('onchange must be function')
+				}
+				cord.onchange = func
+			}
+			pub.update = function(func){
+				if(!(typeof func == 'function' || func == null)){
+					throw new VileException('onchange must be function')
+				}
+				cord.onchange = func
+			}
 			pub.getCord = function(){return cord}
-			pub.set = function(ref){cord.value = ref;pub.refresh()}
+			pub.set = function(ref){
+				Vile.Telepath.cord_set(this,ref)
+			}
 			pub.setHardBound = function(bool){cord.hardBound = bool; Vile.Telepath.rebindAllMaster(this)}
 			pub.get = function(){return cord.value}
 			pub.addMaster = function(element){
 				if(Vile.Telepath.list_master()[element.nodeName]!=true){
-					throw new VileException('This element cannot be master')
+					throw new VileException('This HTMLElement cannot be master')
 				}
 				if(element instanceof HTMLElement){
 					cord.masterElement.push({
 						element: element
 					})
 				}else{
-					throw VileException('Not an HTMLElement')
+					throw new VileException('The first parameter must be an HTMLElement')
 				}
-				Vile.Telepath.transmit(cord.value,cord.masterElement[cord.masterElement.length-1])
-				Vile.Telepath.bindMaster(element,this)
+				Vile.Telepath.cord_transmit(cord.value,cord.masterElement[cord.masterElement.length-1])
+				Vile.Telepath.cord_bindMaster(element,this)
 			}
 			pub.removeMaster = function(element){
-				cord.masterElement.splice(Vile.Telepath.searchCordElement(cord.masterElement,element),1)
-				Vile.removeMaster(element)
+				if(!Vile.isElement(element)){
+					throw new VileException('The first parameter must be an HTMLElement')
+				}
+				cord.masterElement.splice(Vile.Telepath.cord_searchElement(cord.masterElement,element),1)
+				Vile.Telepath.cord_removeMaster(element)
 			}
 			pub.addSlave = function(element,attribute){
-				if(element instanceof HTMLElement){
+				if(Vile.isElement(element)){
 					cord.slaveElement.push({
 						element: element,
 						attribute: attribute
 					})
 				}else{
-					throw VileException('Not an HTMLElement')
+					throw new VileException('The first parameter must be an HTMLElement')
 				}
-				Vile.Telepath.transmit(cord.value,cord.slaveElement[cord.slaveElement.length-1])
+				Vile.Telepath.cord_transmit(cord.value,cord.slaveElement[cord.slaveElement.length-1])
 			}
 			pub.removeSlave = function(element){
-				cord.slaveElement.splice(Vile.Telepath.searchCordElement(cord.slaveElement,element),1)
+				if(!Vile.isElement(element)){
+					throw new VileException('The first parameter must be an HTMLElement')
+				}
+				cord.slaveElement.splice(Vile.Telepath.cord_searchElement(cord.slaveElement,element),1)
 			}
 			pub.setSlaveFilter = function(element,filter){
 				if(typeof filter !== 'function'){
 					throw new VileException('Filter must be function that returns string which is an altered parameter')
 				}
-				var index = Vile.Telepath.searchCordElement(cord.slaveElement,element)
+				if(!Vile.isElement(element)){
+					throw new VileException('The first parameter must be an HTMLElement')
+				}
+				var index = Vile.Telepath.cord_searchElement(cord.slaveElement,element)
 				cord.slaveElement[index].filter = filter
-				Vile.Telepath.transmit(cord.value,cord.slaveElement[index])
+				Vile.Telepath.cord_transmit(cord.value,cord.slaveElement[index])
 			}
 			pub.removeSlaveFilter = function(element){
-				cord.slaveElement[Vile.Telepath.searchCordElement(cord.slaveElement,element)].filter = null
-				Vile.Telepath.transmit(cord.value,element)
+				if(!Vile.isElement(element)){
+					throw new VileException('The first parameter must be an HTMLElement')
+				}
+				cord.slaveElement[Vile.Telepath.cord_searchElement(cord.slaveElement,element)].filter = null
+				Vile.Telepath.cord_transmit(cord.value,element)
 			}
 			pub.setSlaveAttribute = function(element,attribute){
-				var index = Vile.Telepath.searchCordElement(cord.slaveElement,element)
+				if(!Vile.isElement(element)){
+					throw new VileException('The first parameter must be an HTMLElement')
+				}
+				if(typeof attribute != 'string'){
+					throw new VileException('Attribute must be string')
+				}
+				var index = Vile.Telepath.cord_searchElement(cord.slaveElement,element)
 				cord.slaveElement[index].attribute = attribute
-				Vile.Telepath.transmit(cord.value,cord.slaveElement[index])
+				Vile.Telepath.cord_transmit(cord.value,cord.slaveElement[index])
 			}
 			pub.removeSlaveAttribute = function(element){
-				cord.slaveElement[Vile.Telepath.searchCordElement(cord.slaveElement,element)].attribute = null
-				Vile.Telepath.transmit(cord.value,element)
+				if(!Vile.isElement(element)){
+					throw new VileException('The first parameter must be an HTMLElement')
+				}
+				cord.slaveElement[Vile.Telepath.cord_searchElement(cord.slaveElement,element)].attribute = null
+				Vile.Telepath.cord_transmit(cord.value,element)
 			}
 			pub.refresh = function(exception){
 				if(cord.lockRefresh){
@@ -882,11 +943,11 @@ var Vile = {
 				cord.lockRefresh = true
 				for(var i = 0; i<cord.masterElement.length; i++){
 					if(cord.masterElement[i].element!=exception){
-						Vile.Telepath.transmit(cord.value,cord.masterElement[i])
+						Vile.Telepath.cord_transmit(cord.value,cord.masterElement[i])
 					}
 				}
 				for(var i = 0; i<cord.slaveElement.length; i++){
-					Vile.Telepath.transmit(cord.value,cord.slaveElement[i])
+					Vile.Telepath.cord_transmit(cord.value,cord.slaveElement[i])
 				}
 				cord.lockRefresh = false
 			}
