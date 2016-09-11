@@ -46,7 +46,10 @@ var Vile = {
 		// }catch(e){
 		// 	this.weave(page)
 		// }
-		page = page || {};
+		if(page == undefined){
+			Vile.devlog('Inputted page object was undefined. Creating new object for page object.')
+			page = {};
+		}
 		this.weave(page)
 		page.weaver = {
 			object : new MutationObserver(function(mutations){
