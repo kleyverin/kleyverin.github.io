@@ -22,7 +22,7 @@ var Vile = {
 	debug: {},
 	devlog: function(string){
 		if(Vile.debug){
-			console.log(string))
+			console.log(string)
 		}
 	},
 	/**********************/
