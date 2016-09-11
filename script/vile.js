@@ -65,6 +65,13 @@ var Vile = {
 							}
 						}catch(e){}
 					})
+					mutation.addedNodes.forEach(function(node){
+						try{
+							if(node.hasAttribute('data-vile-weave')){
+								page[node.getAttribute('data-vile-weave')] = node
+							}
+						}catch(e){}
+					})
 				})
 			}),
 			off: function(){this.object.disconnect()},
