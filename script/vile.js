@@ -76,11 +76,11 @@ var Vile = {
 		page.weaver.on()
 		page = Vile.preload(page)
 
-		Vile.devlog('Page Object initialized:')
-		Vile.devlog(page)
 		//page.f = this.Factory.makeFactory();
 		//page.template = this.weaveTemplate()
-		return page;
+		Vile.devlog('Page Object initialized:')
+		Vile.devlog(page)
+		return page
 	},
 	list_attr_previxes : [
 		"data-vile-weave"
