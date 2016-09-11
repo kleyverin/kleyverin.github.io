@@ -73,6 +73,7 @@ var Vile = {
 		page.weaver.on()
 		page = Vile.preload(page)
 
+		Vile.devlog('Page Object initialized:')
 		Vile.devlog(page)
 		//page.f = this.Factory.makeFactory();
 		//page.template = this.weaveTemplate()
