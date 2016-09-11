@@ -71,6 +71,7 @@ var Vile = {
 		page = Vile.preload(page)
 		//page.f = this.Factory.makeFactory();
 		//page.template = this.weaveTemplate()
+		return page;
 	},
 	list_attr_previxes : [
 		"data-vile-weave"
