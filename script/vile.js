@@ -47,8 +47,9 @@ var Vile = {
 		// 	this.weave(page)
 		// }
 		if(page == undefined){
-			Vile.devlog('Inputted page object was undefined. Creating new object for page object.')
 			page = {};
+			Vile.devlog('Inputted page object was undefined. Creating new object for page object:')
+			Vile.devlog(page)
 		}
 		this.weave(page)
 		page.weaver = {
