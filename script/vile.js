@@ -45,8 +45,8 @@ var Vile = {
 				mutations.forEach(function(mutation){
 					mutation.removedNodes.forEach(function(node){
 						try{
-							if(node.hasAttribute('vile-weave')){
-								page[node.getAttribute('vile-weave')] = null
+							if(node.hasAttribute('data-vile-weave')){
+								page[node.getAttribute('data-vile-weave')] = null
 							}
 						}catch(e){}
 					})
@@ -67,7 +67,7 @@ var Vile = {
 		//page.template = this.weaveTemplate()
 	},
 	list_attr_previxes : [
-		"vile-weave"
+		"data-vile-weave"
 	],
 	validate_page_object: function(page,action){
 		if(typeof page !== 'object' && typeof page !== 'undefined'){
@@ -82,8 +82,8 @@ var Vile = {
 	isAlpha : function(str){
 		return str.match(/[a-z]/i)
 	},
-	
-	
+
+
 	//ESCAPE UNESCAPE BY http://shebang.brandonmintern.com/
 	escape:function(str) {
 		var div = document.createElement('div');
@@ -104,11 +104,11 @@ var Vile = {
          .replace("&quot;","\"")
          .replace("&#039;","'");
 	},
-	
-	
-	
-	
-	
+
+
+
+
+
 	/**********************/
 	/*****ElementWeave*****/
 	/**********************/
@@ -122,9 +122,9 @@ var Vile = {
 	},
 	weave : function(page){
 		page = this.validate_page_object(page,"weave");
-		var weaver = document.querySelectorAll("*[vile-weave]")
+		var weaver = document.querySelectorAll("*[data-vile-weave]")
 		for(var i = 0; i<weaver.length; i++){
-			var weave_name = weaver[i].getAttribute('vile-weave');
+			var weave_name = weaver[i].getAttribute('data-vile-weave');
 			if(weave_name.length > 0 && !this.predefinedConst[weave_name]){
 				page[weave_name] = weaver[i]
 			}
@@ -134,13 +134,13 @@ var Vile = {
 	weaveJq : function(page){
 		//console.log(page)
 		try{
-			if (typeof $ == 'undefined' && !window.jQuery) {  
+			if (typeof $ == 'undefined' && !window.jQuery) {
 				throw ""
 			}
 			page = this.validate_page_object(page,"weave");
-			var weaver = document.querySelectorAll("*[vile-weave]")
+			var weaver = document.querySelectorAll("*[data-vile-weave]")
 			for(var i = 0; i<weaver.length; i++){
-				var weave_name = weaver[i].getAttribute('vile-weave');
+				var weave_name = weaver[i].getAttribute('data-vile-weave');
 				if(weave_name.length > 0 && !this.predefinedConst[weave_name]){
 					page[weave_name] = $(weaver[i])
 				}
@@ -164,11 +164,11 @@ var Vile = {
 		}
 		return page;
 	},
-	
-	
-	
-	
-	
+
+
+
+
+
 	/**********************/
 	/*****VileEditors******/
 	/**********************/
@@ -213,7 +213,7 @@ var Vile = {
 				if(list_void[element]!=true){
 					return editor.makeE(element,'',attrib);
 				}
-				
+
 				var attributes = editor.generateAttributes(attrib)
 				return "<"+element+attributes+">";
 			}
@@ -253,7 +253,7 @@ var Vile = {
 				else{
 					throw new VileException("Invalid parameters. editor.make parameters should be element(string),content(string),attrib(object) or element(string),attrib(object),content(string)");
 				}
-				
+
 				if(list_void[element]!=true){
 					return editor.makeE(element,nContent,nAttribute);
 				}
@@ -295,8 +295,8 @@ var Vile = {
 			return editor
 		}
 	},
-	
-	
+
+
 	/**********************/
 	/*****ShadowCaster*****/
 	/**********************/
@@ -308,15 +308,15 @@ var Vile = {
 			},
 			custom: function(command){
 				command = Vile.validate_page_object(command)
-				
+
 				var extend = command.extends;
 				var elementName = command.name.toLowerCase();
 				var content = command.content
 				var callback = command.callback
 				var method = command.method
-				
+
 				//ERROR HANDLER
-				
+
 				if((typeof extend !== 'string' && typeof extend !=='undefined') && extend != null){
 					throw new VileException("Extend parameter must be string");
 				}
@@ -333,21 +333,21 @@ var Vile = {
 				}
 				callback = Vile.validate_page_object(callback)
 				method = Vile.validate_page_object(method)
-				
+
 				var prototype = Object.create(HTMLElement.prototype)
 				for(var key in method){
 					prototype[key] = method[key]
 				}
 				prototype.shadow = function(set){
 					if(set == null){
-						
+
 						if(this.shadowElement==null){
 							this.shadowElement = this.createShadowRoot();
 						}
 						return this.shadowElement;
-					
+
 					}else if(typeof set == 'string'){
-						
+
 						if(this.shadowElement==null){
 							this.shadowElement = this.createShadowRoot();
 						}
@@ -362,7 +362,7 @@ var Vile = {
 						this.innerHTML = content
 					}
 				}
-				
+
 				//ATTACHING callback
 				if(typeof callback.oncreate == 'function'){
 					prototype.createdCallback = callback.oncreate
@@ -376,7 +376,7 @@ var Vile = {
 				if(typeof callback.onattributechange == 'function'){
 					prototype.attributeChangedCallback = callback.onattributechange
 				}
-				
+
 				//RENDERING THE ELEMENT'S CHILD
 				if(!prototype.attachedCallback){
 					prototype.attachedCallback = prototype.refresh
@@ -416,21 +416,21 @@ var Vile = {
 					start = startEscape
 					escape = true
 				}
-				
+
 				//search for end tag
 				var end = template.indexOf('%&gt;',start+6)
-				
+
 				//checking if the next start tag is valid or not
 				var nextStart = template.indexOf('&lt;%=',start+6)
 				var nextStartEscape = template.indexOf('&lt;%-',start+6)
 				if(nextStartEscape<nextStart && nextStartEscape>=0){
 					nextStart = nextStartEscape
 				}
-				
+
 				if(end>nextStart && nextStart>=0){
 					end = -1
 				}
-				
+
 				return {
 					start: start,
 					end: end,
@@ -449,20 +449,20 @@ var Vile = {
 						replacor = Vile.escape(replacor)
 					}
 				}
-				
+
 				template = template.substr(0,positions.start) + replacor + template.substr(positions.end+5)
-				
+
 				return replacor
 			}
-			
+
 			//---------------------
 			//Start iterating through the template
 			var p = 0;
 			while(p<template.length){
 				var positions = searchTag(p)
-				
+
 				//NO OPENING TAGS FOUND
-				
+
 				console.log(p,positions)
 				if(positions.start == -1){
 					break;
@@ -470,7 +470,7 @@ var Vile = {
 				else if(positions.start >= 0 && positions.end == -1){
 					throw new VileException('There\'s an error in the given template.')
 				}
-				
+
 				p=positions.start
 				var replacor = moldTag(positions)
 				p+=replacor.length;
@@ -502,12 +502,12 @@ var Vile = {
 	/**********************/
 	/*****VileComponent****/
 	/**********************/
-	
+
 	Component : (function(){
 		var component = {}
 		component.createLoader = function(onload, onfinish){
 			if(typeof onload !=='function' || typeof onfinish !=='function'){
-				throw new VileException("Page loader needs onload and on finish function");		
+				throw new VileException("Page loader needs onload and on finish function");
 			}
 			/*
 				page.loader = Vile.Component.createLoader(
@@ -575,7 +575,7 @@ var Vile = {
 		component.createThreader = function(){
 			return Vile.Threader
 		}
-		
+
 		return component
 	})(),
 	Threader : function(obj){
@@ -611,13 +611,13 @@ var Vile = {
 					argsType: data.prepParam
 				})
 				var func = Function(data.prepParam,data.prepFunc)
-				
+
 				var ret = {}
 				ret.args = args
 				ret.debug = data.prepParam
 				ret.error = false;
 				try{
-					ret.result = func.apply(this,args)	
+					ret.result = func.apply(this,args)
 				}catch(e){
 					ret.error = e.message
 				}
@@ -712,18 +712,18 @@ var Vile = {
 			if(typeof value == 'boolean' || typeof value == 'number' || typeof value == 'string'){
 				if(element.attribute == null){
 					switch(element.element.nodeName.toUpperCase()){
-							case 'BUTTON'	: 
-							case 'METER'	: 
-							case 'PROGRESS'	: 
-							case 'TEXTAREA'	: 
+							case 'BUTTON'	:
+							case 'METER'	:
+							case 'PROGRESS'	:
+							case 'TEXTAREA'	:
 							case 'PARAM'	:
-							case 'SELECT'	: element.element.value = value; break 
+							case 'SELECT'	: element.element.value = value; break
 							case 'INPUT'	:
 								if(element.element.getAttribute('type')=='checkbox'
 								   || element.element.getAttribute('type')=='radio'){
 									element.element.checked = value
 								}else{
-									element.element.value = value; break 
+									element.element.value = value; break
 								}
 							case 'AREA'		:
 							case 'BASE'		:
@@ -754,11 +754,11 @@ var Vile = {
 			if(element.nodeName == 'INPUT'){
 				var type = element.getAttribute('type')
 				if(type=='radio' || type=='checkbox'){
-					cord.set(element.checked) 
+					cord.set(element.checked)
 					cord.refresh(element)
 				}
 				else{
-					cord.set(element.value) 
+					cord.set(element.value)
 					cord.refresh(element)
 				}
 			}
@@ -826,7 +826,7 @@ var Vile = {
 				changed = true
 			}
 			cord.value = ref;
-			
+
 			if(pub.onchangecallback!=null && changed){
 				pub.onchangecallback()
 			}
