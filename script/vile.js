@@ -38,6 +38,7 @@ var Vile = {
 	preload: function(page){
 		page.e = this.VileEditor.makeEditor();
 		page.e.quickcord = Vile.Telepath.quickcord;
+		return page
 	},
 	initialize: function(page){
 		// try{
