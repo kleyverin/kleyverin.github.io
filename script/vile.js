@@ -19,7 +19,7 @@ var VileException = function(message = "Error occured", name = "VileException"){
 VileException.prototype = ExtendsFrom(Error)
 
 var Vile = {
-	debug: true,
+	debug: false,
 	devlog: function(string){
 		if(Vile.debug){
 			console.log(string)
