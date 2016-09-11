@@ -75,8 +75,11 @@ var Vile = {
 			}
 		}
 		page.weaver.on()
+		Vile.devlog('Page weaver attached and activated')
+		Vile.devlog(page)
 		page = Vile.preload(page)
-
+		Vile.devlog('Page preloads attached')
+		Vile.devlog(page)
 		//page.f = this.Factory.makeFactory();
 		//page.template = this.weaveTemplate()
 		Vile.devlog('Page Object initialized:')
