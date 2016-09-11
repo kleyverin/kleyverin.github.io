@@ -41,6 +41,7 @@ var Vile = {
 		// }catch(e){
 		// 	this.weave(page)
 		// }
+		page = page || {};
 		this.weave(page)
 		page.weaver = {
 			object : new MutationObserver(function(mutations){
