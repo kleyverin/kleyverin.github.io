@@ -19,6 +19,7 @@ var VileException = function(message = "Error occured", name = "VileException"){
 VileException.prototype = ExtendsFrom(Error)
 
 var Vile = {
+	debug = false;
 	/**********************/
 	/*****VileMain*********/
 	/**********************/
@@ -43,6 +44,10 @@ var Vile = {
 		this.weave(page)
 		page.weaver = {
 			object : new MutationObserver(function(mutations){
+				if(Vile.debug){
+					console.log('Document Mutated: ')
+					console.log(mutations)
+				}
 				mutations.forEach(function(mutation){
 					mutation.removedNodes.forEach(function(node){
 						try{
