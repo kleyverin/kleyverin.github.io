@@ -218,6 +218,7 @@ page.unselectLayer = function(){
 	$(page.listLayer).children('.layer-item').removeClass('active')
 	selectedLayer = null
 	page.layerOption.refresh()
+	page.colorOption.unselectColor()
 }
 page.layerOption = {}
 page.layerOption.changeGradientMode = function(event,element){
