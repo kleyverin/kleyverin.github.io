@@ -34,12 +34,13 @@ var Vile = {
 		page.e.quickcord = Vile.Telepath.quickcord;
 	},
 	initialize: function(page){
-		try{
-			this.weaveJq(page)
-			console.info('Vile detects JQuery. JQuery weaving enabled.')
-		}catch(e){
-			this.weave(page)
-		}
+		// try{
+		// 	this.weaveJq(page)
+		// 	console.info('Vile detects JQuery. JQuery weaving enabled.')
+		// }catch(e){
+		// 	this.weave(page)
+		// }
+		this.weave(page)
 		page.weaver = {
 			object : new MutationObserver(function(mutations){
 				mutations.forEach(function(mutation){
@@ -51,11 +52,10 @@ var Vile = {
 						}catch(e){}
 					})
 				})
-				Vile.reweave(page)
 			}),
 			off: function(){this.object.disconnect()},
 			on: function(){
-				this.object.observe(document.body,{
+				this.object.observe(document,{
 					childList:true,
 					subtree: true
 				})
@@ -114,11 +114,12 @@ var Vile = {
 	/**********************/
 	reweave: function(page){
 		//console.info("reweave")
-		try{
-			this.weaveJq(page)
-		}catch(e){
-			this.weave(page)
-		}
+		this.weave(page)
+		// try{
+		// 	this.weaveJq(page)
+		// }catch(e){
+		// 	this.weave(page)
+		// }
 	},
 	weave : function(page){
 		page = this.validate_page_object(page,"weave");
@@ -131,26 +132,26 @@ var Vile = {
 		}
 		return page;
 	},
-	weaveJq : function(page){
-		//console.log(page)
-		try{
-			if (typeof $ == 'undefined' && !window.jQuery) {
-				throw ""
-			}
-			page = this.validate_page_object(page,"weave");
-			var weaver = document.querySelectorAll("*[data-vile-weave]")
-			for(var i = 0; i<weaver.length; i++){
-				var weave_name = weaver[i].getAttribute('data-vile-weave');
-				if(weave_name.length > 0 && !this.predefinedConst[weave_name]){
-					page[weave_name] = $(weaver[i])
-				}
-			}
-			return page;
-		}
-		catch(e){
-			throw new VileException('JQuery is not loaded')
-		}
-	},
+	// weaveJq : function(page){
+	// 	//console.log(page)
+	// 	try{
+	// 		if (typeof $ == 'undefined' && !window.jQuery) {
+	// 			throw ""
+	// 		}
+	// 		page = this.validate_page_object(page,"weave");
+	// 		var weaver = document.querySelectorAll("*[data-vile-weave]")
+	// 		for(var i = 0; i<weaver.length; i++){
+	// 			var weave_name = weaver[i].getAttribute('data-vile-weave');
+	// 			if(weave_name.length > 0 && !this.predefinedConst[weave_name]){
+	// 				page[weave_name] = $(weaver[i])
+	// 			}
+	// 		}
+	// 		return page;
+	// 	}
+	// 	catch(e){
+	// 		throw new VileException('JQuery is not loaded')
+	// 	}
+	// },
 	weaveTemplate : function(page){
 		page = this.validate_page_object(page,"weave templates");
 		var templates = document.querySelectorAll("template")
