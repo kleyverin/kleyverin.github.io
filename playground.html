@@ -54,29 +54,31 @@
 		</style>
 		<script src="script/vile.js"></script>
 		<script src="script/vile.element.js"></script>
+		<script src="script/vile.telepath.js"></script>
 		<script>
-			var page = {};var cord;
+			Vile.debug = true
+			var page = Vile.initialize();
+			var cord;
 			page.thread = Vile.Component.createThreader();
 			window.onload = function(){
-				Vile.initialize(page);
-				cord = Vile.Telepath.quickcord([page.joker,page.penguin,page.ivy],[page.batman,page.gordon,page.robin])
-				cord.setSlaveFilter(page.batman,function(){
-					return Number(page.joker.value)+Number(page.penguin.value)+Number(page.ivy.value)
-				})
-				cord.removeSlaveFilter(page.batman)
-				cord.onchange(function(){
-					console.log("something changed")
-				})
+				// cord = Vile.Telepath.quickcord([page.joker,page.penguin,page.ivy],[page.batman,page.gordon,page.robin])
+				// cord.setSlaveFilter(page.batman,function(){
+				// 	return Number(page.joker.value)+Number(page.penguin.value)+Number(page.ivy.value)
+				// })
+				// cord.removeSlaveFilter(page.batman)
+				// cord.onchange(function(){
+				// 	console.log("something changed")
+				// })
 			}
 		</script>
 	</head>
 	<body>
 		<button>test</button>
-		<input type="number" vile-weave="joker" placeholder="joker">
-		<input type="number" vile-weave="penguin" placeholder="penguin">
-		<input type="number" vile-weave="ivy" placeholder="ivy">
-		<span vile-weave="batman"></span>
-		<span vile-weave="gordon"></span>
-		<span vile-weave="robin"></span>
+		<input type="number" data-vile-weave="input.joker" placeholder="joker">
+		<input type="number" data-vile-weave="input.penguin" placeholder="penguin">
+		<input type="number" data-vile-weave="input.ivy" placeholder="ivy">
+		<span data-vile-weave="batman"></span>
+		<span data-vile-weave="gordon"></span>
+		<span data-vile-weave="robin"></span>
 	</body>
 </html>

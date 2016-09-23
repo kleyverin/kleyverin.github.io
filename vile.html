@@ -9,54 +9,36 @@
 		<link rel="stylesheet" href="style/bootstrap/css/bootstrap.css">
 		<link rel="stylesheet" href="style/specific/vile.css">
 		<script src="script/jquery-2.2.1.js"></script>
-        <script src="script/vile.js"></script>
-		<script src="script/vile.element.js"></script>
+    <script src="script/vile.js"></script>
 		<script src="script/specific/vilepage.js"></script>
 	</head>
 	<body class="restrict-overflow">
-		<div class="section-vile">
-			<div class="split-container">
-				<div class="split-left">
-					<h1 class="title">
-						Vile.
-					</h1>
-				</div>
-				<div class="split-right">
-					<h1 class="title">
-						js<small>beta</small>
-					</h1>
-				</div>
-			</div>
-			<div class="description">
-				<p>
-					Smart DOM, <wbr>Smart Page.
-				</p>
-				<div class="download-container">
-					<a onclick="page.download.showWarning()" href="File:script/vile.js" target="_blank" download>
-						<button>Download</button>
-					</a>
-					<div class="info-warning" style="display:none;" vile-weave="infoWarning">
-						<div>
-							<p>
-								If you see something like this at the bottom of your screen:
-							</p>
-							<img src="image/vile/warning.png">
-							<p>
-								Just click keep and you're done.
-							</p>
-						</div>
-					</div>
+		<header data-vile-weave="app_header" class="app-header big">
+			<div data-vile-weave="app_header_card" class="app-header-card">
+				<img src="image/vile/vile_logo.svg"/>
+				<h1 class="title">Vile.JS</h1>
+				<div class="loading-indicator">
+					<svg viewBox="0 0 100 100" width="100%" height="100%">
+						<circle id="c-load-1" cx="20%" cy="20%" r="15%" fill="#B3EDF2">
+							<animate id="anim1" attributeName="cy" attributeType="XML" from="20%" to="80%" begin="anim5.end; 0s" dur="0.3s" fill="freeze" calcMode="spline" keySplines="0.4 0 1 1" keyTimes="0;1"/>
+							<animate id="anim2" attributeName="cx" attributeType="XML" from="20%" to="80%" begin="anim1.end" dur="0.3s" fill="freeze" calcMode="spline" keySplines="0.4 0 1 1" keyTimes="0;1"/>
+							<animate id="anim3" attributeName="cy" attributeType="XML" from="80%" to="20%" begin="anim1.end" dur="0.3s" fill="freeze" calcMode="spline" keySplines="0.4 0 1 1" keyTimes="0;1"/>
+							<animate id="anim4" attributeName="cy" attributeType="XML" from="20%" to="80%" begin="anim2.end" dur="0.3s" fill="freeze" calcMode="spline" keySplines="0.4 0 1 1" keyTimes="0;1"/>
+							<animate id="anim5" attributeName="cx" attributeType="XML" from="80%" to="20%" begin="anim4.end" dur="0.3s" fill="freeze" calcMode="spline" keySplines="0.4 0 1 1" keyTimes="0;1"/>
+							<animate id="anim6" attributeName="cy" attributeType="XML" from="80%" to="20%" begin="anim4.end" dur="0.3s" fill="freeze" calcMode="spline" keySplines="0.4 0 1 1" keyTimes="0;1"/>
+						</circle>
+						<circle id="c-load-2" cx="20%" cy="20%" r="10%" fill="#60C3CC">
+							<animate id="anim1" attributeName="cy" attributeType="XML" from="20%" to="80%" begin="anim5.end; 0s" dur="0.3s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" keyTimes="0;1"/>
+							<animate id="anim2" attributeName="cx" attributeType="XML" from="20%" to="80%" begin="anim1.end" dur="0.3s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" keyTimes="0;1"/>
+							<animate id="anim3" attributeName="cy" attributeType="XML" from="80%" to="20%" begin="anim1.end" dur="0.3s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" keyTimes="0;1"/>
+							<animate id="anim4" attributeName="cy" attributeType="XML" from="20%" to="80%" begin="anim2.end" dur="0.3s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" keyTimes="0;1"/>
+							<animate id="anim5" attributeName="cx" attributeType="XML" from="80%" to="20%" begin="anim4.end" dur="0.3s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" keyTimes="0;1"/>
+							<animate id="anim6" attributeName="cy" attributeType="XML" from="80%" to="20%" begin="anim4.end" dur="0.3s" fill="freeze" calcMode="spline" keySplines="0.4 0 0.2 1" keyTimes="0;1"/>
+						</circle>
+					</svg>
+					<div class="loading-text">Is now loading</div>
 				</div>
 			</div>
-		</div>
-		<div id='preview' class="section-preview">
-			<div class="why">
-				<h4>Under construction</h4>
-			</div>
-		</div>
-		<div vile-weave="loadingScreen" class="loadingscreen">
-			<kv-loadicon-wave>
-			</kv-loadicon-wave>
-		</div>
+		</header>
 	</body>
 </html>
