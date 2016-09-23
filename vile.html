@@ -8,7 +8,7 @@
 		<link rel="stylesheet" href="style/font.css">
 		<link rel="stylesheet" href="style/bootstrap/css/bootstrap.css">
 		<link rel="stylesheet" href="style/specific/vile.css">
-		<script src="script/jquery-2.2.1.js"></script>
+		<script src="script/jquery-3.1.1.min.js"></script>
     <script src="script/vile.js"></script>
 		<script src="script/specific/vilepage.js"></script>
 	</head>
@@ -16,8 +16,8 @@
 		<header data-vile-weave="app_header" class="app-header big">
 			<div data-vile-weave="app_header_card" class="app-header-card">
 				<img src="image/vile/vile_logo.svg"/>
-				<h1 class="title">Vile.JS</h1>
-				<div class="loading-indicator">
+				<h4 class="title">Vile.JS</h4>
+				<div data-vile-weave="loading_indicator" class="loading-indicator">
 					<svg viewBox="0 0 100 100" width="100%" height="100%">
 						<circle id="c-load-1" cx="20%" cy="20%" r="15%" fill="#B3EDF2">
 							<animate id="anim1" attributeName="cy" attributeType="XML" from="20%" to="80%" begin="anim5.end; 0s" dur="0.3s" fill="freeze" calcMode="spline" keySplines="0.4 0 1 1" keyTimes="0;1"/>
@@ -40,5 +40,14 @@
 				</div>
 			</div>
 		</header>
+		<main>
+			<h3>Hey!</h3>
+			<p>
+				This is Vile!! The coolest DOM generator, Custom Element Maker, and Element Keeper javascript library with many more features. Quickly edit your DOM. Mark important elements for Vile to remember.
+			</p>
+			<p>
+				<strong>The library is currently being built by developer and isn't available right now, unfortunately.</strong><br>Be patient. We're coming...
+			</p>
+		</main>
 	</body>
 </html>

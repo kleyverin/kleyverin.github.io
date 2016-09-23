@@ -6,12 +6,27 @@ a.jump{font-weight: bold;}
 code{padding: 0;}
 .hidden{display:none;}
 
+.app-header{height 0.3s ease; text-align: center;}
+.app-header>.app-header-card{transition: all 0.3s ease; text-align: center; padding: 5px 10px; background: #fafafa; box-shadow: 0 1px 3px rgba(0,0,0,0.2);}
+.app-header>.app-header-card>img{transition: transform 0.3s ease; height: 40px; width: auto}
+.app-header>.app-header-card>.title{margin-top: 0; text-align: center;}
 .app-header>.title{color: red; text-shadow: 0 0 0 5px black;}
 
-.app-header.big{height: 100%; text-align: center;}
-.app-header.big>.app-header-card>*{flex: 0 1 auto;}
-.app-header.big>.app-header-card{height: 100%; display: flex; flex-flow: column nowrap; justify-content: center; align-items:center;}
-.app-header.big>.app-header-card>img{max-width: 50%;}
-.app-header.big>.app-header-card>.title{max-width: 50%; text-align: right;}
+.app-header.big{height: 100%; text-align: center}
+.app-header.big>.app-header-card{height: 100%; width: 100%; padding-top: 20vh;}
+.app-header.big>.app-header-card>img{transform: scale(3)}
+.app-header.big>.app-header-card>.title{width: 100%;}
 
+.disappear.loading-indicator{opacity:0;}
+.loading-indicator{position: absolute; transition: all 0.4s ease; opacity:1; width: 100%;}
 .loading-indicator>svg{width: 30px; height: 30px;}
+
+main{
+  padding: 15px;
+}
+
+@media only screen and (min-width:768px){
+  main{
+    padding: 15px 30%;
+  }
+}
